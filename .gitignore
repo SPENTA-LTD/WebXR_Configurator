@@ -1,0 +1,19 @@
+# Dependencies & Node
+node_modules/
+npm-debug.log*
+
+# Python & Temporary Scratch Files
+__pycache__/
+*.pyc
+scratch/
+*.tmp
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor Files
+.vscode/
+.idea/
+*.swp
