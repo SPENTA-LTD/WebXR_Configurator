@@ -4,17 +4,73 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Apple Liquid Glass Cursor Refraction Effect
-  document.addEventListener('mousemove', (e) => {
-    const glassElements = document.querySelectorAll('.studio-top-left-header, .studio-radio-menu, .drawer-content-box, .studio-right-dock, .editor-panel, .spec-overlay-card, .bottom-tools-left, .vr-pill-btn');
-    glassElements.forEach(el => {
-      const rect = el.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      el.style.setProperty('--mouse-x', `${x}px`);
-      el.style.setProperty('--mouse-y', `${y}px`);
+  // Apple Liquid Glass Refraction Physics (VisionOS Smooth Lerp Engine)
+  const glassElements = document.querySelectorAll(
+    '.studio-top-left-header, .studio-radio-menu, .drawer-content-box, .studio-right-dock, .editor-panel, .spec-overlay-card, .bottom-tools-left, .vr-pill-btn, .navbar'
+  );
+
+  const glassData = new Map();
+  glassElements.forEach(el => {
+    glassData.set(el, {
+      currentX: 0,
+      currentY: 0,
+      targetX: 0,
+      targetY: 0,
+      targetOpacity: 0.4,
+      currentOpacity: 0.4
+    });
+
+    el.addEventListener('mouseenter', () => {
+      const data = glassData.get(el);
+      if (data) data.targetOpacity = 1.0;
+    });
+
+    el.addEventListener('mouseleave', () => {
+      const data = glassData.get(el);
+      if (data) data.targetOpacity = 0.4;
     });
   });
+
+  document.addEventListener('mousemove', (e) => {
+    glassElements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      const isHovering = (
+        e.clientX >= rect.left &&
+        e.clientX <= rect.right &&
+        e.clientY >= rect.top &&
+        e.clientY <= rect.bottom
+      );
+
+      const data = glassData.get(el);
+      if (data) {
+        data.targetX = e.clientX - rect.left;
+        data.targetY = e.clientY - rect.top;
+        if (isHovering) {
+          data.targetOpacity = 1.0;
+        }
+      }
+    });
+  });
+
+  // Smooth animation frame loop for liquid glass refraction physics
+  function animateGlassRefraction() {
+    glassElements.forEach(el => {
+      const data = glassData.get(el);
+      if (!data) return;
+
+      // Lerp positions (0.14 factor for smooth fluid motion)
+      data.currentX += (data.targetX - data.currentX) * 0.14;
+      data.currentY += (data.targetY - data.currentY) * 0.14;
+      data.currentOpacity += (data.targetOpacity - data.currentOpacity) * 0.1;
+
+      el.style.setProperty('--mouse-x', `${data.currentX.toFixed(1)}px`);
+      el.style.setProperty('--mouse-y', `${data.currentY.toFixed(1)}px`);
+      el.style.setProperty('--mouse-opacity', data.currentOpacity.toFixed(2));
+    });
+
+    requestAnimationFrame(animateGlassRefraction);
+  }
+  requestAnimationFrame(animateGlassRefraction);
   const modelViewer = document.getElementById('bmw-viewer');
   const viewerLoader = document.querySelector('.viewer-loader');
   const watermarkEl = document.getElementById('studio-watermark');

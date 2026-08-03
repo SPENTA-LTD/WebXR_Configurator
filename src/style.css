@@ -15,20 +15,22 @@
   --bmw-text-muted: #6e6e73;
   --border-light: rgba(255, 255, 255, 0.6);
   
-  /* Apple Liquid Glass Design System Tokens (Refined Light Blur 14px & Refraction) */
-  --liquid-glass-bg: rgba(255, 255, 255, 0.45);
-  --liquid-glass-dark-bg: rgba(20, 24, 34, 0.50);
-  --liquid-glass-blur: blur(14px) saturate(190%);
-  --liquid-glass-border: 1px solid rgba(255, 255, 255, 0.75);
-  --liquid-glass-dark-border: 1px solid rgba(255, 255, 255, 0.20);
+  /* Apple Liquid Glass Design System Tokens (VisionOS / macOS Sequoia Refraction Engine) */
+  --liquid-glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.22) 100%);
+  --liquid-glass-dark-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+  --liquid-glass-blur: blur(25px) saturate(210%) contrast(104%);
+  --liquid-glass-border: 1px solid rgba(255, 255, 255, 0.70);
+  --liquid-glass-dark-border: 1px solid rgba(255, 255, 255, 0.22);
   --liquid-glass-shadow: 
-    0 20px 40px -10px rgba(0, 0, 0, 0.08),
-    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.9),
-    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.05);
+    0 30px 60px -12px rgba(0, 0, 0, 0.16),
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.95),
+    inset 1.5px 0 2px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.12);
   --liquid-glass-dark-shadow: 
-    0 25px 50px -10px rgba(0, 0, 0, 0.4),
-    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.3),
-    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.5);
+    0 35px 70px -15px rgba(0, 0, 0, 0.55),
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.35),
+    inset 1.5px 0 2px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.6);
 
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -302,6 +304,92 @@ body {
   color: #ffffff;
 }
 
+/* ==========================================================================
+   Universal Apple Liquid Glass Refraction Pseudo-Elements Architecture
+   ========================================================================== */
+.studio-top-left-header,
+.studio-radio-menu,
+.spec-overlay-card,
+.editor-panel,
+.studio-right-dock,
+.drawer-content-box,
+.bottom-tools-left,
+.vr-pill-btn,
+.navbar {
+  position: relative;
+  overflow: hidden;
+  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Layer 1: Fixed Specular Lens Reflection Sheen */
+.studio-top-left-header::before,
+.studio-radio-menu::before,
+.spec-overlay-card::before,
+.editor-panel::before,
+.studio-right-dock::before,
+.drawer-content-box::before,
+.bottom-tools-left::before,
+.vr-pill-btn::before,
+.navbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.08) 40%, transparent 65%);
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+/* Layer 2: Dynamic Cursor Light Refraction Spotlight (Above Backdrop Blur) */
+.studio-top-left-header::after,
+.studio-radio-menu::after,
+.spec-overlay-card::after,
+.editor-panel::after,
+.studio-right-dock::after,
+.drawer-content-box::after,
+.bottom-tools-left::after,
+.vr-pill-btn::after,
+.navbar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle 240px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.70) 0%,
+    rgba(255, 255, 255, 0.20) 45%,
+    transparent 80%
+  );
+  opacity: var(--mouse-opacity, 0.6);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  border-radius: inherit;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.dark-theme .studio-top-left-header::after,
+.dark-theme .studio-radio-menu::after,
+.dark-theme .spec-overlay-card::after,
+.dark-theme .editor-panel::after,
+.dark-theme .studio-right-dock::after,
+.dark-theme .drawer-content-box::after,
+.dark-theme .bottom-tools-left::after,
+.dark-theme .vr-pill-btn::after {
+  background: radial-gradient(
+    circle 240px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(28, 105, 210, 0.25) 50%,
+    transparent 80%
+  );
+  mix-blend-mode: color-dodge;
+}
+
 /* Top Left Overlay Header (Pill Shaped Panel) */
 .studio-top-left-header {
   position: absolute;
@@ -311,17 +399,16 @@ body {
   display: flex;
   flex-direction: column;
   padding: 14px 28px;
-  background: radial-gradient(circle 140px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.45) 0%, transparent 100%), var(--liquid-glass-bg);
+  background: var(--liquid-glass-bg);
   backdrop-filter: var(--liquid-glass-blur);
   -webkit-backdrop-filter: var(--liquid-glass-blur);
   border: var(--liquid-glass-border);
   border-radius: var(--radius-pill);
   box-shadow: var(--liquid-glass-shadow);
-  transition: all 0.3s ease;
 }
 
 .dark-theme .studio-top-left-header {
-  background: radial-gradient(circle 140px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15) 0%, transparent 100%), var(--liquid-glass-dark-bg);
+  background: var(--liquid-glass-dark-bg);
   border: var(--liquid-glass-dark-border);
   box-shadow: var(--liquid-glass-dark-shadow);
 }
@@ -334,6 +421,7 @@ body {
   line-height: 1;
   text-transform: uppercase;
   color: var(--bmw-black);
+  z-index: 3;
 }
 
 .dark-theme .vehicle-title {
@@ -347,6 +435,7 @@ body {
   color: var(--bmw-text-muted);
   margin-top: 4px;
   text-transform: uppercase;
+  z-index: 3;
 }
 
 .dark-theme .vehicle-subtitle {
@@ -388,7 +477,7 @@ body {
   flex-direction: column;
   gap: 10px;
   padding: 22px 24px;
-  background: radial-gradient(circle 160px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.5) 0%, transparent 100%), var(--liquid-glass-bg);
+  background: var(--liquid-glass-bg);
   backdrop-filter: var(--liquid-glass-blur);
   -webkit-backdrop-filter: var(--liquid-glass-blur);
   border: var(--liquid-glass-border);
@@ -397,7 +486,7 @@ body {
 }
 
 .dark-theme .studio-radio-menu {
-  background: radial-gradient(circle 160px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15) 0%, transparent 100%), var(--liquid-glass-dark-bg);
+  background: var(--liquid-glass-dark-bg);
   border: var(--liquid-glass-dark-border);
   box-shadow: var(--liquid-glass-dark-shadow);
 }
@@ -489,7 +578,7 @@ body {
   right: 96px;
   transform: translateY(-50%) translateX(30px);
   width: 330px;
-  background: radial-gradient(circle 180px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.5) 0%, transparent 100%), var(--liquid-glass-bg);
+  background: var(--liquid-glass-bg);
   backdrop-filter: var(--liquid-glass-blur);
   -webkit-backdrop-filter: var(--liquid-glass-blur);
   border: var(--liquid-glass-border);
@@ -503,7 +592,7 @@ body {
 }
 
 .dark-theme .spec-overlay-card {
-  background: radial-gradient(circle 180px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15) 0%, transparent 100%), var(--liquid-glass-dark-bg);
+  background: var(--liquid-glass-dark-bg);
   border: var(--liquid-glass-dark-border);
   box-shadow: var(--liquid-glass-dark-shadow);
   color: #ffffff;
@@ -564,7 +653,7 @@ body {
   top: 32px;
   right: 96px;
   width: 340px;
-  background: radial-gradient(circle 180px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.5) 0%, transparent 100%), var(--liquid-glass-bg);
+  background: var(--liquid-glass-bg);
   backdrop-filter: var(--liquid-glass-blur);
   -webkit-backdrop-filter: var(--liquid-glass-blur);
   border: var(--liquid-glass-border);
@@ -579,7 +668,7 @@ body {
 }
 
 .dark-theme .editor-panel {
-  background: radial-gradient(circle 180px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15) 0%, transparent 100%), var(--liquid-glass-dark-bg);
+  background: var(--liquid-glass-dark-bg);
   border: var(--liquid-glass-dark-border);
   box-shadow: var(--liquid-glass-dark-shadow);
   color: #ffffff;
@@ -759,7 +848,7 @@ body {
   flex-direction: column;
   gap: 12px;
   padding: 14px 12px;
-  background: radial-gradient(circle 80px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.55) 0%, transparent 100%), var(--liquid-glass-bg);
+  background: var(--liquid-glass-bg);
   backdrop-filter: var(--liquid-glass-blur);
   -webkit-backdrop-filter: var(--liquid-glass-blur);
   border: var(--liquid-glass-border);
@@ -768,7 +857,7 @@ body {
 }
 
 .dark-theme .studio-right-dock {
-  background: radial-gradient(circle 80px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15) 0%, transparent 100%), var(--liquid-glass-dark-bg);
+  background: var(--liquid-glass-dark-bg);
   border: var(--liquid-glass-dark-border);
   box-shadow: var(--liquid-glass-dark-shadow);
 }
@@ -833,7 +922,7 @@ body {
 /* Pill Shaped Drawer Panel */
 .drawer-content-box {
   position: relative;
-  background: radial-gradient(circle 220px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.55) 0%, transparent 100%), var(--liquid-glass-bg);
+  background: var(--liquid-glass-bg);
   backdrop-filter: var(--liquid-glass-blur);
   -webkit-backdrop-filter: var(--liquid-glass-blur);
   padding: 16px 26px;
@@ -845,7 +934,7 @@ body {
 }
 
 .dark-theme .drawer-content-box {
-  background: radial-gradient(circle 220px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15) 0%, transparent 100%), var(--liquid-glass-dark-bg);
+  background: var(--liquid-glass-dark-bg);
   border: var(--liquid-glass-dark-border);
   box-shadow: var(--liquid-glass-dark-shadow);
 }
@@ -1149,7 +1238,7 @@ model-viewer.camera-orbiting {
   display: flex;
   gap: 10px;
   padding: 6px;
-  background: radial-gradient(circle 90px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.55) 0%, transparent 100%), var(--liquid-glass-bg);
+  background: var(--liquid-glass-bg);
   backdrop-filter: var(--liquid-glass-blur);
   -webkit-backdrop-filter: var(--liquid-glass-blur);
   border: var(--liquid-glass-border);
@@ -1158,7 +1247,7 @@ model-viewer.camera-orbiting {
 }
 
 .dark-theme .bottom-tools-left {
-  background: radial-gradient(circle 90px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15) 0%, transparent 100%), var(--liquid-glass-dark-bg);
+  background: var(--liquid-glass-dark-bg);
   border: var(--liquid-glass-dark-border);
   box-shadow: var(--liquid-glass-dark-shadow);
 }
@@ -1193,7 +1282,7 @@ model-viewer.camera-orbiting {
   align-items: center;
   gap: 8px;
   padding: 12px 26px;
-  background: radial-gradient(circle 120px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.55) 0%, transparent 100%), var(--liquid-glass-bg);
+  background: var(--liquid-glass-bg);
   backdrop-filter: var(--liquid-glass-blur);
   -webkit-backdrop-filter: var(--liquid-glass-blur);
   border: var(--liquid-glass-border);
@@ -1208,7 +1297,7 @@ model-viewer.camera-orbiting {
 }
 
 .dark-theme .vr-pill-btn {
-  background: radial-gradient(circle 120px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.15) 0%, transparent 100%), var(--liquid-glass-dark-bg);
+  background: var(--liquid-glass-dark-bg);
   border: var(--liquid-glass-dark-border);
   box-shadow: var(--liquid-glass-dark-shadow);
   color: #ffffff;
