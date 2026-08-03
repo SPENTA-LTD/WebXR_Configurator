@@ -277,10 +277,14 @@ document.addEventListener('DOMContentLoaded', () => {
     return [((num >> 16) & 255) / 255, ((num >> 8) & 255) / 255, (num & 255) / 255, 1.0];
   }
 
-  function setActiveDockBtn(activeBtn) {
+  function deactivateAllDockBtns() {
     dockButtons.forEach(btn => {
       if (btn) btn.classList.remove('active');
     });
+  }
+
+  function setActiveDockBtn(activeBtn) {
+    deactivateAllDockBtns();
     if (activeBtn) activeBtn.classList.add('active');
   }
 
@@ -309,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
         else specOverlayCard.classList.remove('active');
 
         if (viewKey === 'wheels') {
-          if (dockWheelBtn) dockWheelBtn.click();
+          if (dockWheelBtn && !dockWheelBtn.classList.contains('active')) dockWheelBtn.click();
         }
 
         if (config.autoLights) setLightsState(true);
@@ -425,58 +429,82 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     3. Right Dock Actions
+     3. Right Dock Toggle Actions
      ========================================================================== */
   if (dockPaintBtn) {
     dockPaintBtn.addEventListener('click', () => {
-      setActiveDockBtn(dockPaintBtn);
-      drawerHeaderTitle.textContent = 'PAINT';
-      drawerHeaderSubtitle.textContent = 'COLOR';
-      paintSwatchesGroup.classList.remove('hide');
-      seatSwatchesGroup.classList.add('hide');
-      wheelSwatchesGroup.classList.add('hide');
-      bottomColorDrawer.classList.add('active');
+      const isAlreadyActive = dockPaintBtn.classList.contains('active');
+      deactivateAllDockBtns();
 
-      watermarkEl.textContent = 'PAINT COLOR';
-      if (modelViewer) {
-        modelViewer.cameraOrbit = '45deg 75deg 6m';
-        modelViewer.cameraTarget = 'auto auto auto';
+      if (isAlreadyActive) {
+        bottomColorDrawer.classList.remove('active');
+        watermarkEl.textContent = 'OVERVIEW';
+      } else {
+        dockPaintBtn.classList.add('active');
+        drawerHeaderTitle.textContent = 'PAINT';
+        drawerHeaderSubtitle.textContent = 'COLOR';
+        paintSwatchesGroup.classList.remove('hide');
+        seatSwatchesGroup.classList.add('hide');
+        wheelSwatchesGroup.classList.add('hide');
+        bottomColorDrawer.classList.add('active');
+
+        watermarkEl.textContent = 'PAINT COLOR';
+        if (modelViewer) {
+          modelViewer.cameraOrbit = '45deg 75deg 6m';
+          modelViewer.cameraTarget = 'auto auto auto';
+        }
       }
     });
   }
 
   if (dockSeatBtn) {
     dockSeatBtn.addEventListener('click', () => {
-      setActiveDockBtn(dockSeatBtn);
-      drawerHeaderTitle.textContent = 'INTERIOR';
-      drawerHeaderSubtitle.textContent = 'COLOR';
-      seatSwatchesGroup.classList.remove('hide');
-      paintSwatchesGroup.classList.add('hide');
-      wheelSwatchesGroup.classList.add('hide');
-      bottomColorDrawer.classList.add('active');
+      const isAlreadyActive = dockSeatBtn.classList.contains('active');
+      deactivateAllDockBtns();
 
-      watermarkEl.textContent = 'INTERIOR COLOR';
-      if (modelViewer) {
-        modelViewer.cameraOrbit = '0deg 30deg 3.2m';
-        modelViewer.cameraTarget = '0m 0.5m 0m';
+      if (isAlreadyActive) {
+        bottomColorDrawer.classList.remove('active');
+        watermarkEl.textContent = 'OVERVIEW';
+      } else {
+        dockSeatBtn.classList.add('active');
+        drawerHeaderTitle.textContent = 'INTERIOR';
+        drawerHeaderSubtitle.textContent = 'COLOR';
+        seatSwatchesGroup.classList.remove('hide');
+        paintSwatchesGroup.classList.add('hide');
+        wheelSwatchesGroup.classList.add('hide');
+        bottomColorDrawer.classList.add('active');
+
+        watermarkEl.textContent = 'INTERIOR COLOR';
+        if (modelViewer) {
+          modelViewer.cameraOrbit = '0deg 30deg 3.2m';
+          modelViewer.cameraTarget = '0m 0.5m 0m';
+        }
       }
     });
   }
 
   if (dockWheelBtn) {
     dockWheelBtn.addEventListener('click', () => {
-      setActiveDockBtn(dockWheelBtn);
-      drawerHeaderTitle.textContent = 'WHEEL';
-      drawerHeaderSubtitle.textContent = 'OPTION';
-      wheelSwatchesGroup.classList.remove('hide');
-      paintSwatchesGroup.classList.add('hide');
-      seatSwatchesGroup.classList.add('hide');
-      bottomColorDrawer.classList.add('active');
+      const isAlreadyActive = dockWheelBtn.classList.contains('active');
+      deactivateAllDockBtns();
 
-      watermarkEl.textContent = 'WHEELS';
-      if (modelViewer) {
-        modelViewer.cameraOrbit = '65deg 88deg 2.4m';
-        modelViewer.cameraTarget = '0.75m 0.35m 1.35m';
+      if (isAlreadyActive) {
+        bottomColorDrawer.classList.remove('active');
+        watermarkEl.textContent = 'OVERVIEW';
+      } else {
+        dockWheelBtn.classList.add('active');
+        drawerHeaderTitle.textContent = 'WHEEL';
+        drawerHeaderSubtitle.textContent = 'OPTION';
+        wheelSwatchesGroup.classList.remove('hide');
+        paintSwatchesGroup.classList.add('hide');
+        seatSwatchesGroup.classList.add('hide');
+        bottomColorDrawer.classList.add('active');
+
+        watermarkEl.textContent = 'WHEELS';
+        if (modelViewer) {
+          modelViewer.cameraOrbit = '65deg 88deg 2.4m';
+          modelViewer.cameraTarget = '0.75m 0.35m 1.35m';
+        }
       }
     });
   }
@@ -519,15 +547,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (dockDoorBtn) {
     dockDoorBtn.addEventListener('click', () => {
-      setActiveDockBtn(dockDoorBtn);
+      const isAlreadyActive = dockDoorBtn.classList.contains('active');
+      deactivateAllDockBtns();
       bottomColorDrawer.classList.remove('active');
-      watermarkEl.textContent = 'DOORS';
-      
-      if (modelViewer) {
-        modelViewer.cameraOrbit = '110deg 75deg 5.5m';
-        modelViewer.cameraTarget = '0m 0.5m 0m';
+
+      if (isAlreadyActive) {
+        setDoorsState(false);
+        watermarkEl.textContent = 'OVERVIEW';
+      } else {
+        watermarkEl.textContent = 'DOORS';
+        if (modelViewer) {
+          modelViewer.cameraOrbit = '110deg 75deg 5.5m';
+          modelViewer.cameraTarget = '0m 0.5m 0m';
+        }
+        setDoorsState(true);
       }
-      setDoorsState(!doorsOpen);
     });
   }
 
@@ -624,21 +658,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (dockWindowBtn) {
     dockWindowBtn.addEventListener('click', () => {
-      setActiveDockBtn(dockWindowBtn);
+      const isAlreadyActive = dockWindowBtn.classList.contains('active');
+      deactivateAllDockBtns();
       bottomColorDrawer.classList.remove('active');
-      watermarkEl.textContent = 'WINDOWS';
-      windowRolledUp = !windowRolledUp;
 
-      if (dockWindowBtn) {
-        if (!windowRolledUp) dockWindowBtn.classList.add('active');
-        else dockWindowBtn.classList.remove('active');
-      }
-
-      if (modelViewer) {
-        modelViewer.cameraOrbit = '95deg 82deg 3m';
-        modelViewer.cameraTarget = '0m 0.8m 0m';
-        // Target offset 0 for closed (up), -0.45 meters down for open (slid into door frames)
-        animateWindowGlassPhysical(windowRolledUp ? 0 : -0.45);
+      if (isAlreadyActive) {
+        windowRolledUp = true;
+        if (dockWindowBtn) dockWindowBtn.classList.remove('active');
+        watermarkEl.textContent = 'OVERVIEW';
+        if (modelViewer) {
+          animateWindowGlassPhysical(0);
+        }
+      } else {
+        windowRolledUp = false;
+        if (dockWindowBtn) dockWindowBtn.classList.add('active');
+        watermarkEl.textContent = 'WINDOWS';
+        if (modelViewer) {
+          modelViewer.cameraOrbit = '95deg 82deg 3m';
+          modelViewer.cameraTarget = '0m 0.8m 0m';
+          animateWindowGlassPhysical(-0.45);
+        }
       }
     });
   }
@@ -660,21 +699,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (dockLightsBtn) {
     dockLightsBtn.addEventListener('click', () => {
-      setActiveDockBtn(dockLightsBtn);
+      const isAlreadyActive = dockLightsBtn.classList.contains('active');
+      deactivateAllDockBtns();
       bottomColorDrawer.classList.remove('active');
-      watermarkEl.textContent = 'LIGHTS';
 
-      if (modelViewer) {
-        modelViewer.cameraOrbit = '0deg 85deg 3.8m';
-        modelViewer.cameraTarget = '0m 0.6m 1.8m';
+      if (isAlreadyActive) {
+        setLightsState(false);
+        watermarkEl.textContent = 'OVERVIEW';
+      } else {
+        watermarkEl.textContent = 'LIGHTS';
+        if (modelViewer) {
+          modelViewer.cameraOrbit = '0deg 85deg 3.8m';
+          modelViewer.cameraTarget = '0m 0.6m 1.8m';
+        }
+        setLightsState(true);
       }
-      setLightsState(!lightsOn);
     });
   }
 
   if (closeDrawerBtn) {
     closeDrawerBtn.addEventListener('click', () => {
       bottomColorDrawer.classList.remove('active');
+      deactivateAllDockBtns();
     });
   }
 
