@@ -6,7 +6,7 @@ This repository contains the interactive 3D Studio Configurator and WebXR Augmen
 
 ## 🏗️ Architecture & Technical Stack
 
-- **Frontend:** Standard HTML5, Vanilla CSS3 (Apple Liquid Glass Design Tokens), JavaScript ES6 Modules.
+- **Frontend:** Standard HTML5, Vanilla CSS3 (Apple Liquid Glass Design Tokens & `color-mix()` Reflex Engine), JavaScript ES6 Modules.
 - **3D Engine:** Google `<model-viewer>` v3.5.0 with custom PBR material controllers.
 - **Development Server:** `server.py` (Python HTTP Server with CORS headers and GLB/USDZ/HDR MIME types on port 8080).
 - **Environment Maps & Assets:** Polyhaven Studio HDRI (`./assets/studio.hdr`), Wheel option GLB files (`./assets/bmw_x7_wheel_1.glb`, `./assets/bmw_x7_wheel_2.glb`).
@@ -19,11 +19,12 @@ This repository contains the interactive 3D Studio Configurator and WebXR Augmen
    - Color swatches & paint controls MUST strictly target `inmx7m60i_body` (and variants starting with `inmx7m60i_body.`).
    - Never apply paint colors globally to all materials; black grilles, carbon trim, headlights, taillights, diffusers, and side skirts must remain untouched.
 
-2. **Apple Liquid Glass UI System:**
-   - Visual tokens: `backdrop-filter: blur(14px) saturate(190%)`.
-   - Specular bevels: `inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.9)`.
-   - Curvatures: `border-radius: 40px` for cards/drawers and `9999px` for pill buttons.
-   - Swatches: 100% circular swatches with interactive hover scale and active ring borders.
+2. **Apple Liquid Glass UI & Reflex Optics System (`color-mix()` Engine):**
+   - **Reflex Multipliers:** Uses `--glass-reflex-light` (1.0 light theme, 0.35 dark theme) and `--glass-reflex-dark` (1.0 light theme, 2.2 dark theme) to calculate optical reflections dynamically.
+   - **10-Point Specular Shadow Stack:** Employs multi-tier `color-mix(in srgb, ...)` inset shadows to compute crisp top-left rim highlights, edge caustics, and ambient drop shadows.
+   - **Dual-Layer Refraction Pseudo-Elements:** `::before` fixed lens sheen + `::after` cursor light spotlight (`mix-blend-mode: overlay` / `color-dodge`).
+   - **Lerped Animation Damping:** `requestAnimationFrame` animation loop in `main.js` lerping `--mouse-x`, `--mouse-y`, and `--mouse-opacity` per glass panel.
+   - Curvatures & Swatches: `border-radius: 40px` for panels/drawers, `9999px` for pill buttons, 100% circular swatches with scale toggle spring keyframe feedback.
 
 3. **16 Official BMW Paint Finishes & Live MSRP:**
    - Base Price: **$108,700** starting MSRP.

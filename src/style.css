@@ -15,22 +15,40 @@
   --bmw-text-muted: #6e6e73;
   --border-light: rgba(255, 255, 255, 0.6);
   
-  /* Apple Liquid Glass Design System Tokens (VisionOS / macOS Sequoia Refraction Engine) */
-  --liquid-glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.22) 100%);
-  --liquid-glass-dark-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
-  --liquid-glass-blur: blur(25px) saturate(210%) contrast(104%);
-  --liquid-glass-border: 1px solid rgba(255, 255, 255, 0.70);
-  --liquid-glass-dark-border: 1px solid rgba(255, 255, 255, 0.22);
+  /* Advanced Liquid Glass Reflex Optics Engine (color-mix() & Multi-Inset Specular Stacks) */
+  --c-glass: #bbbbbc;
+  --c-light: #ffffff;
+  --c-dark: #000000;
+  --glass-reflex-light: 1;
+  --glass-reflex-dark: 1;
+  --glass-saturation: 210%;
+  
+  --liquid-glass-bg: color-mix(in srgb, var(--c-glass) 14%, transparent);
+  --liquid-glass-dark-bg: color-mix(in srgb, var(--c-glass) 8%, transparent);
+  --liquid-glass-blur: blur(20px) saturate(var(--glass-saturation)) contrast(104%);
+  --liquid-glass-border: 1px solid color-mix(in srgb, var(--c-light) 40%, transparent);
+  --liquid-glass-dark-border: 1px solid color-mix(in srgb, var(--c-light) 20%, transparent);
+
+  /* Multi-Tier 10-Point Specular Shadow Stack using color-mix() */
   --liquid-glass-shadow: 
-    0 30px 60px -12px rgba(0, 0, 0, 0.16),
-    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.95),
-    inset 1.5px 0 2px 0 rgba(255, 255, 255, 0.5),
-    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.12);
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 12%), transparent),
+    inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 95%), transparent), 
+    inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent), 
+    inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent), 
+    inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 12%), transparent), 
+    inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent), 
+    inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent), 
+    inset 2px -6.5px 1px -4px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent), 
+    0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent), 
+    0px 12px 30px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 14%), transparent);
+
   --liquid-glass-dark-shadow: 
-    0 35px 70px -15px rgba(0, 0, 0, 0.55),
-    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.35),
-    inset 1.5px 0 2px 0 rgba(255, 255, 255, 0.2),
-    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.6);
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
+    inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent), 
+    inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 40%), transparent), 
+    inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 30%), transparent), 
+    inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 40%), transparent), 
+    0px 18px 45px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 35%), transparent);
 
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -302,6 +320,8 @@ body {
 .studio-viewport-container.dark-theme {
   background: radial-gradient(circle at 50% 35%, #1c202c 0%, #0a0b0e 100%);
   color: #ffffff;
+  --glass-reflex-light: 0.35;
+  --glass-reflex-dark: 2.2;
 }
 
 /* ==========================================================================
