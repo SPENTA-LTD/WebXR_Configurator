@@ -22,10 +22,10 @@ This repository contains the interactive 3D Studio Configurator and WebXR Augmen
 2. **Apple Liquid Glass UI & Reflex Optics System (`color-mix()` Engine):**
    - **Reflex Multipliers:** Uses `--glass-reflex-light` (1.0 light theme, 0.35 dark theme) and `--glass-reflex-dark` (1.0 light theme, 2.2 dark theme) to calculate optical reflections dynamically.
    - **10-Point Specular Shadow Stack:** Employs multi-tier `color-mix(in srgb, ...)` inset shadows to compute crisp top-left rim highlights, edge caustics, and ambient drop shadows.
-   - **Right Dock Anatomy System:** Vertical glass pill container (`.studio-right-dock`). Each item features an icon (`7`), uppercase label text underneath (`6`), active glass pill indicator (`2`), and active green status dot (`4`). Excludes FAB (`8`) and Menu icon (`9`).
+   - **Right Dock Anatomy System:** Vertical glass pill container (`.studio-right-dock`). Each item features a 100% round circular liquid glass disk (`.dock-circle-disk`, 48px), icon, uppercase label text underneath (`.dock-label`), and active VisionOS illuminated sapphire glass lens optics. Excludes green status dots, FAB (8), and Menu icon (9).
    - **Dual-Layer Refraction Pseudo-Elements:** `::before` fixed lens sheen + `::after` cursor light spotlight (`mix-blend-mode: overlay` / `color-dodge`).
    - **Lerped Animation Damping:** `requestAnimationFrame` animation loop in `main.js` lerping `--mouse-x`, `--mouse-y`, and `--mouse-opacity` per glass panel.
-   - Curvatures & Swatches: `border-radius: 40px` for panels/drawers, `9999px` for pill buttons, 100% circular swatches with scale toggle spring keyframe feedback.
+   - Curvatures & Swatches: `border-radius: 40px` for panels/drawers, `50%` round circular glass disks for dock buttons, 100% circular swatches with scale toggle spring keyframe feedback.
 
 3. **16 Official BMW Paint Finishes & Live MSRP:**
    - Base Price: **$108,700** starting MSRP.
