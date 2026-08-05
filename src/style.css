@@ -819,6 +819,27 @@ body {
   color: #ffffff;
 }
 
+.fx-mode-btn {
+  width: 100%;
+  padding: 8px 14px;
+  background: rgba(30, 35, 45, 0.88);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.fx-mode-btn:hover {
+  background: rgba(45, 52, 68, 0.95);
+  transform: translateY(-1px);
+}
+
 .color-picker-row {
   display: flex;
   align-items: center;
@@ -1229,6 +1250,18 @@ body {
   color: var(--bmw-blue);
 }
 
+/* 3D Viewport Hardware Composited Wrapper for Real-time Post-FX */
+.model-viewer-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  will-change: filter;
+  transform: translateZ(0);
+}
+
 /* 3D Canvas with High-Quality Anti-Aliasing & Motion Blur Support */
 model-viewer {
   position: absolute;
@@ -1237,13 +1270,14 @@ model-viewer {
   width: 100%;
   height: 100%;
   z-index: 5;
-  transition: filter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: filter;
+  transform: translateZ(0);
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
 }
 
 model-viewer.camera-orbiting {
-  filter: blur(0.7px) contrast(1.04);
+  /* Prevent overriding live JS Post-FX filters */
 }
 
 /* Volumetric Fog Headlight Cones System */

@@ -10,10 +10,23 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Model Viewer Component -->
-  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <!-- ES Module Shim & Import Map for Three.js & Model-Viewer-Effects -->
+  <script async src="https://ga.jspm.io/npm:es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.min.js",
+      "@google/model-viewer": "https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer-module.min.js",
+      "@google/model-viewer-effects": "https://cdn.jsdelivr.net/npm/@google/model-viewer-effects@1.5.0/dist/model-viewer-effects.min.js"
+    }
+  }
+  </script>
 
-  <link rel="stylesheet" href="./src/style.css" />
+  <!-- Google Model Viewer v3.5.0 & Model Viewer Effects Components -->
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer-module.min.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer-effects@1.5.0/dist/model-viewer-effects.min.js"></script>
+
+  <link rel="stylesheet" href="./src/style.css?v=1.0.2" />
 </head>
 <body>
 
@@ -184,6 +197,7 @@
         <div class="editor-tabs-nav">
           <button class="editor-tab-btn active" data-tab="lighting">💡 Lighting</button>
           <button class="editor-tab-btn" data-tab="materials">🎨 Materials</button>
+          <button class="editor-tab-btn" data-tab="postfx">✨ Post-FX</button>
           <button class="editor-tab-btn" data-tab="export">💾 Export</button>
         </div>
 
@@ -245,7 +259,66 @@
             </div>
           </div>
 
-          <!-- Tab 3: Export Configuration -->
+          <!-- Tab 3: Post-FX (Bloom, SSAO, Color Adjustments & Tonemapping) -->
+          <div class="editor-tab-content" id="tab-postfx">
+            <div class="editor-control-group">
+              <label>Headlight Bloom Mode</label>
+              <button id="btn-bloom-mode" class="fx-mode-btn">Selective Headlight Bloom Active</button>
+            </div>
+
+            <div class="editor-control-group">
+              <label>Headlight Bloom Intensity: <span id="val-bloom-intensity">1.50</span></label>
+              <input type="range" id="input-bloom-intensity" min="0.0" max="10.0" step="0.1" value="1.50" />
+            </div>
+
+            <div class="editor-control-group">
+              <label>Headlight Bloom Radius: <span id="val-bloom-radius">0.40</span></label>
+              <input type="range" id="input-bloom-radius" min="0.0" max="2.0" step="0.05" value="0.40" />
+            </div>
+
+            <div class="editor-control-group">
+              <label>Bloom Threshold: <span id="val-bloom-threshold">0.85</span></label>
+              <input type="range" id="input-bloom-threshold" min="0.50" max="1.00" step="0.02" value="0.85" />
+            </div>
+
+            <div class="editor-control-group">
+              <label>SSAO Shadow Intensity: <span id="val-ssao-intensity">1.40</span></label>
+              <input type="range" id="input-ssao-intensity" min="0.0" max="5.0" step="0.1" value="1.40" />
+            </div>
+
+            <div class="editor-control-group">
+              <label>SSAO Radius: <span id="val-ssao-radius">0.30</span></label>
+              <input type="range" id="input-ssao-radius" min="0.01" max="1.0" step="0.01" value="0.30" />
+            </div>
+
+            <div class="editor-control-group">
+              <label>Color Contrast: <span id="val-contrast">0.00</span></label>
+              <input type="range" id="input-contrast" min="-0.5" max="1.0" step="0.01" value="0.00" />
+            </div>
+
+            <div class="editor-control-group">
+              <label>Color Saturation: <span id="val-saturation">0.00</span></label>
+              <input type="range" id="input-saturation" min="-1.0" max="1.0" step="0.01" value="0.00" />
+            </div>
+
+            <div class="editor-control-group">
+              <label>Color Brightness Offset: <span id="val-brightness">0.00</span></label>
+              <input type="range" id="input-brightness" min="-0.5" max="0.5" step="0.01" value="0.00" />
+            </div>
+
+            <div class="editor-control-group">
+              <label>Color Grading Tonemapping</label>
+              <select id="select-tonemapping" class="editor-select">
+                <option value="aces" selected>ACES Filmic</option>
+                <option value="commerce">Reinhard (Commerce)</option>
+                <option value="agx">AgX (Filmic 2)</option>
+                <option value="neutral">Neutral Studio</option>
+                <option value="linear">Linear / None</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Tab 4: Export Configuration -->
           <div class="editor-tab-content" id="tab-export">
             <p class="export-desc">Copy your live studio lighting & color settings as a JSON preset:</p>
             <textarea id="export-json-text" class="export-textarea" readonly></textarea>
@@ -438,64 +511,74 @@
         </div>
       </div>
 
-      <!-- Center Interactive 3D Model Viewer -->
-      <model-viewer
-        id="bmw-viewer"
-        src="./assets/bmw_x7_wheel_1.glb"
-        ios-src="./assets/bmw_x7.usdz"
-        alt="BMW X7 M60i 3D Model"
-        ar
-        ar-modes="webxr scene-viewer quick-look"
-        ar-scale="auto"
-        ar-placement="floor"
-        camera-controls
-        touch-action="pan-y"
-        shadow-intensity="1.5"
-        shadow-softness="0.3"
-        exposure="1.1"
-        tone-mapping="neutral"
-        environment-image="./assets/studio.hdr"
-        camera-orbit="45deg 75deg 6m"
-        field-of-view="35deg"
-        min-camera-orbit="auto auto 2.5m"
-        max-camera-orbit="auto auto 10m"
-        interaction-prompt="auto"
-      >
-        <!-- Loading Progress Slot -->
-        <div slot="progress-bar" class="viewer-loader">
-          <div class="loader-spinner"></div>
-          <span>Loading 3D Studio Model...</span>
-        </div>
+      <!-- Center Interactive 3D Model Viewer Wrapper -->
+      <div id="model-viewer-wrapper" class="model-viewer-wrapper">
+        <model-viewer
+          id="bmw-viewer"
+          src="./assets/bmw_x7_wheel_1.glb"
+          ios-src="./assets/bmw_x7.usdz"
+          alt="BMW X7 M60i 3D Model"
+          ar
+          ar-modes="webxr scene-viewer quick-look"
+          ar-scale="auto"
+          ar-placement="floor"
+          camera-controls
+          touch-action="pan-y"
+          shadow-intensity="1.5"
+          shadow-softness="0.3"
+          exposure="1.1"
+          tone-mapping="neutral"
+          environment-image="./assets/studio.hdr"
+          camera-orbit="45deg 75deg 6m"
+          field-of-view="35deg"
+          min-camera-orbit="auto auto 2.5m"
+          max-camera-orbit="auto auto 10m"
+          interaction-prompt="auto"
+        >
+          <!-- Real Post-Processing Effect Composer (@google/model-viewer-effects) -->
+          <effect-composer id="effect-composer" render-mode="quality">
+            <ssao-effect id="ssao-effect" strength="1.40" radius="0.30"></ssao-effect>
+            <bloom-effect id="bloom-effect" strength="0.80" radius="0.40" threshold="0.85"></bloom-effect>
+            <color-grade-effect id="color-grade-effect" contrast="0.00" saturation="0.00" brightness="0.00" tonemapping="aces"></color-grade-effect>
+            <smaa-effect></smaa-effect>
+          </effect-composer>
 
-        <!-- Volumetric Fog Headlight Cones Overlay -->
-        <div id="volumetric-fog-container" class="volumetric-fog-wrapper">
-          <div class="volumetric-beam beam-left"></div>
-          <div class="volumetric-beam beam-right"></div>
-        </div>
-
-        <!-- Hotspot Pins -->
-        <button class="hotspot" slot="hotspot-grille" data-position="0m 0.7m 2.3m" data-normal="0m 0m 1m">
-          <div class="hotspot-pin"></div>
-          <div class="hotspot-card">
-            <h4>Illuminated Kidney Grille</h4>
-            <p>Cascade LED ambient lighting.</p>
+          <!-- Loading Progress Slot -->
+          <div slot="progress-bar" class="viewer-loader">
+            <div class="loader-spinner"></div>
+            <span>Loading 3D Studio Model...</span>
           </div>
-        </button>
 
-        <button class="hotspot" slot="hotspot-wheel" data-position="0.9m 0.45m 1.4m" data-normal="1m 0m 0m">
-          <div class="hotspot-pin"></div>
-          <div class="hotspot-card">
-            <h4>22" M Double-Spoke Wheels</h4>
-            <p>M Sport blue brake calipers.</p>
+          <!-- Volumetric Fog Headlight Cones Overlay -->
+          <div id="volumetric-fog-container" class="volumetric-fog-wrapper">
+            <div class="volumetric-beam beam-left"></div>
+            <div class="volumetric-beam beam-right"></div>
           </div>
-        </button>
 
-        <!-- AR Overlay Button -->
-        <button slot="ar-button" id="ar-trigger" class="ar-overlay-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-          <span>View in AR / Your Space</span>
-        </button>
-      </model-viewer>
+          <!-- Hotspot Pins -->
+          <button class="hotspot" slot="hotspot-grille" data-position="0m 0.7m 2.3m" data-normal="0m 0m 1m">
+            <div class="hotspot-pin"></div>
+            <div class="hotspot-card">
+              <h4>Illuminated Kidney Grille</h4>
+              <p>Cascade LED ambient lighting.</p>
+            </div>
+          </button>
+
+          <button class="hotspot" slot="hotspot-wheel" data-position="0.9m 0.45m 1.4m" data-normal="1m 0m 0m">
+            <div class="hotspot-pin"></div>
+            <div class="hotspot-card">
+              <h4>22" M Double-Spoke Wheels</h4>
+              <p>M Sport blue brake calipers.</p>
+            </div>
+          </button>
+
+          <!-- AR Overlay Button -->
+          <button slot="ar-button" id="ar-trigger" class="ar-overlay-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            <span>View in AR / Your Space</span>
+          </button>
+        </model-viewer>
+      </div>
 
       <!-- Bottom Studio Toolbar -->
       <div class="studio-bottom-bar">
@@ -657,6 +740,19 @@
     </div>
   </footer>
 
-  <script type="module" src="./src/main.js"></script>
+  <!-- SVG Filter for Dynamic Post-FX Bloom -->
+  <svg class="svg-postfx-defs" style="position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none;" aria-hidden="true">
+    <defs>
+      <filter id="post-fx-bloom-filter" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur id="svg-bloom-blur" stdDeviation="4" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
+      </filter>
+    </defs>
+  </svg>
+
+  <script type="module" src="./src/main.js?v=1.0.2"></script>
 </body>
 </html>
