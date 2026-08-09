@@ -5,16 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "python server.py",
-    "build": "echo Static site ready",
+    "build": "echo 'Static build complete'",
     "start": "python server.py",
     "preview": "python server.py"
-  },
-  "dependencies": {
-    "@google/model-viewer": "^3.5.0",
-    "@google/model-viewer-effects": "^1.5.0",
-    "three": "^0.163.0"
-  },
-  "devDependencies": {
-    "vite": "^5.2.0"
   }
 }
