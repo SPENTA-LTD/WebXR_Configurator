@@ -17,14 +17,14 @@
     "imports": {
       "three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.min.js",
       "@google/model-viewer": "https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer-module.min.js",
-      "@google/model-viewer-effects": "https://cdn.jsdelivr.net/npm/@google/model-viewer-effects@1.5.0/dist/model-viewer-effects.min.js"
+      "@google/model-viewer-effects": "https://cdn.jsdelivr.net/npm/@google/model-viewer-effects@1.2.0/dist/model-viewer-effects.min.js"
     }
   }
   </script>
 
   <!-- Google Model Viewer v3.5.0 & Model Viewer Effects Components -->
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer-module.min.js"></script>
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer-effects@1.5.0/dist/model-viewer-effects.min.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer-effects@1.2.0/dist/model-viewer-effects.min.js"></script>
 
   <link rel="stylesheet" href="./src/style.css?v=5.2.0" />
 </head>
@@ -139,6 +139,8 @@
           min-camera-orbit="auto auto 2.0m"
           max-camera-orbit="auto auto 12m"
           interaction-prompt="none"
+          loading="eager"
+          reveal="auto"
         >
           <!-- Real Post-Processing Effect Composer (@google/model-viewer-effects) -->
           <effect-composer id="effect-composer" render-mode="quality">

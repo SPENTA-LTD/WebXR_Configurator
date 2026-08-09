@@ -1091,14 +1091,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function onModelReady() {
     hideLoader();
-    scanAllSceneMaterials();
-    populateMaterialDropdown();
-    applyActiveCustomizations();
-    applyPostFx();
-    updateConfigJson();
+    try { scanAllSceneMaterials(); } catch (e) { console.warn('scanMaterials warn:', e); }
+    try { populateMaterialDropdown(); } catch (e) { console.warn('populateDropdown warn:', e); }
+    try { applyActiveCustomizations(); } catch (e) { console.warn('applyCustomizations warn:', e); }
+    try { applyPostFx(); } catch (e) { console.warn('applyPostFx warn:', e); }
+    try { updateConfigJson(); } catch (e) { console.warn('updateConfigJson warn:', e); }
     setTimeout(() => {
-      updateTabSlider();
-      updateSegSlider();
+      try { updateTabSlider(); } catch (e) {}
+      try { updateSegSlider(); } catch (e) {}
     }, 60);
   }
 
