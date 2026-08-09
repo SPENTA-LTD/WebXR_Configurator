@@ -36,7 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const activeFinishTitle = document.getElementById('active-finish-title');
   const activeFinishPrice = document.getElementById('active-finish-price');
   const activeWheelTitle = document.getElementById('active-wheel-title');
+  const activeWheelPrice = document.getElementById('active-wheel-price');
   const activeInteriorTitle = document.getElementById('active-interior-title');
+  const activeInteriorPrice = document.getElementById('active-interior-price');
 
   // Interactive Mechanics Switches
   const toggleDoorsBtn = document.getElementById('toggle-doors-btn');
@@ -63,6 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentPaintRoughness = 0.12;
   let currentPaintMetallic = 0.08;
 
+  let currentWheelPrice = 0;
+  let currentSeatPrice = 0;
   let currentSeatHex = '#8B4513';
   let currentSeatName = 'Cognac Brown Leather';
   let currentWheelOption = 'set1';
@@ -224,18 +228,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Update Live MSRP Counter
+  // Update Live MSRP Counter & Breakdown
   function updatePriceDisplay() {
-    const total = BASE_PRICE + currentPaintPrice;
+    const totalOptions = currentPaintPrice + currentWheelPrice + currentSeatPrice;
+    const total = BASE_PRICE + totalOptions;
     const formatted = `$${total.toLocaleString()}`;
     if (topPriceDisplay) topPriceDisplay.textContent = formatted;
     if (totalPriceDisplay) totalPriceDisplay.textContent = formatted;
 
-    const priceDelta = currentPaintPrice > 0 ? `(+$${currentPaintPrice.toLocaleString()})` : '($0)';
+    const priceDelta = totalOptions > 0 ? `(+$${totalOptions.toLocaleString()})` : '($0)';
     if (activePaintLbl) activePaintLbl.textContent = `2026. ${currentPaintName.toUpperCase()} ${priceDelta}`;
     if (activeFinishTitle) activeFinishTitle.textContent = currentPaintName;
     if (activeFinishPrice) activeFinishPrice.textContent = currentPaintPrice > 0 ? `+$${currentPaintPrice.toLocaleString()}` : '$0';
-    if (buildSummaryLbl) buildSummaryLbl.textContent = `${currentPaintName} • 523 HP V8`;
+    if (activeWheelPrice) activeWheelPrice.textContent = currentWheelPrice > 0 ? `+$${currentWheelPrice.toLocaleString()}` : '$0';
+    if (activeInteriorPrice) activeInteriorPrice.textContent = currentSeatPrice > 0 ? `+$${currentSeatPrice.toLocaleString()}` : '$0';
+    if (buildSummaryLbl) buildSummaryLbl.textContent = `${currentPaintName} • ${currentWheelName} • $${total.toLocaleString()}`;
   }
 
   // Locate Three.js Scene Root in Model-Viewer
@@ -687,7 +694,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const option = card.getAttribute('data-wheel');
       const name = card.getAttribute('data-name');
+      currentWheelPrice = parseInt(card.getAttribute('data-price') || '0', 10);
       switchWheelModel(option, name);
+      updatePriceDisplay();
+      updateConfigJson();
       glideCameraTo('wheels');
     });
   });
@@ -704,9 +714,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       currentSeatHex = card.getAttribute('data-color');
       currentSeatName = card.getAttribute('data-name');
+      currentSeatPrice = parseInt(card.getAttribute('data-price') || '0', 10);
       if (activeInteriorTitle) activeInteriorTitle.textContent = currentSeatName;
 
       applyActiveCustomizations();
+      updatePriceDisplay();
+      updateConfigJson();
       glideCameraTo('cabin');
     });
   });
@@ -912,10 +925,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateConfigJson() {
     if (!exportJsonText) return;
+    const totalOptions = currentPaintPrice + currentWheelPrice + currentSeatPrice;
     const config = {
+      model: "BMW X7 M60i xDrive (2026)",
+      basePrice: BASE_PRICE,
+      totalEstimatedMsrp: BASE_PRICE + totalOptions,
       paint: { name: currentPaintName, hex: currentPaintHex, price: currentPaintPrice },
-      wheel: { option: currentWheelOption, name: currentWheelName },
-      interior: { seatHex: currentSeatHex, name: currentSeatName },
+      wheel: { option: currentWheelOption, name: currentWheelName, price: currentWheelPrice },
+      interior: { seatHex: currentSeatHex, name: currentSeatName, price: currentSeatPrice },
       lighting: { exposure: currentExposure, shadowIntensity: currentShadowIntensity, hdri: currentHdri },
       postfx: { bloomMode, bloomIntensity, bloomRadius, bloomThreshold, tonemapping: colorTonemapping }
     };
