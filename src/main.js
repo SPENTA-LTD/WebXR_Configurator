@@ -86,9 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentHdri = './assets/studio.hdr';
 
   let bloomMode = 'headlight';
-  let bloomIntensity = 1.00;
-  let bloomRadius = 0.40;
-  let bloomThreshold = 0.74;
+  let bloomIntensity = 1.20;
+  let bloomRadius = 0.50;
+  let bloomThreshold = 0.20;
   let ssaoIntensity = 0.00;
   let ssaoRadius = 0.05;
   let colorContrast = 0.00;
@@ -291,24 +291,44 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Update Emissive Factors exclusively on genuine light materials
+  // Uses high values (8-20x) to ensure they exceed the bloom threshold
   function updateEmissiveMaterials() {
-    if (!modelViewer || !modelViewer.model) return;
-    modelViewer.model.materials.forEach(mat => {
+    if (!modelViewer || !modelViewer.model) {
+      // Model not ready yet — retry on next animation frame
+      requestAnimationFrame(() => updateEmissiveMaterials());
+      return;
+    }
+    const materials = modelViewer.model.materials;
+    if (!materials || materials.length === 0) {
+      requestAnimationFrame(() => updateEmissiveMaterials());
+      return;
+    }
+    materials.forEach(mat => {
       const mName = mat.name ? mat.name.toLowerCase() : '';
       if (isActualLightMaterial(mName)) {
         if (lightsOn) {
-          const scale = Math.min(2.5, Math.max(0.8, bloomIntensity * 0.5));
+          // Use very high emissive values so they always exceed threshold and bloom
           if (mName.includes('tail') || mName.includes('chmsl') || mName.includes('rearlight')) {
-            mat.setEmissiveFactor([2.5 * scale, 0.1 * scale, 0.1 * scale]);
+            // Red taillights
+            mat.setEmissiveFactor([20.0, 0.4, 0.4]);
           } else if (mName.includes('signal')) {
-            mat.setEmissiveFactor([2.0 * scale, 1.0 * scale, 0.1 * scale]);
+            // Amber turn signals
+            mat.setEmissiveFactor([18.0, 8.0, 0.2]);
+          } else if (mName.includes('fog')) {
+            // Fog lights – warm white
+            mat.setEmissiveFactor([16.0, 14.0, 10.0]);
+          } else if (mName.includes('running')) {
+            // DRL running lights – blue-white LED
+            mat.setEmissiveFactor([10.0, 14.0, 20.0]);
           } else {
-            mat.setEmissiveFactor([2.0 * scale, 2.0 * scale, 2.5 * scale]);
+            // Headlights / highbeam – bright cool white
+            mat.setEmissiveFactor([16.0, 18.0, 22.0]);
           }
         } else {
           mat.setEmissiveFactor([0, 0, 0]);
         }
       } else {
+        // Enforce zero emissive on all non-light materials
         if (typeof mat.setEmissiveFactor === 'function') {
           mat.setEmissiveFactor([0, 0, 0]);
         }
@@ -352,21 +372,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (bloomEffect) {
       if (bloomMode === 'off' || bloomIntensity <= 0 || (bloomMode === 'headlight' && !lightsOn)) {
+        // Lights off or bloom disabled — zero out bloom
         updateSelectiveBloomSelection('off');
         bloomEffect.strength = 0;
         bloomEffect.setAttribute('strength', '0');
-        if (bloomEffect.effects && bloomEffect.effects[0]) bloomEffect.effects[0].intensity = 0;
+        bloomEffect.threshold = 1.0;
+        bloomEffect.setAttribute('threshold', '1.00');
+        if (bloomEffect.effects && bloomEffect.effects[0]) {
+          bloomEffect.effects[0].intensity = 0;
+          bloomEffect.effects[0].disabled = true;
+        }
       } else {
+        // Lights on — activate selective bloom on all light meshes
         updateSelectiveBloomSelection('headlight');
-        bloomEffect.strength = bloomIntensity;
         bloomEffect.setAttribute('strength', bloomIntensity.toFixed(2));
-        bloomEffect.radius = bloomRadius;
         bloomEffect.setAttribute('radius', bloomRadius.toFixed(2));
-        bloomEffect.threshold = bloomThreshold;
         bloomEffect.setAttribute('threshold', bloomThreshold.toFixed(2));
+        bloomEffect.strength = bloomIntensity;
+        bloomEffect.radius = bloomRadius;
+        bloomEffect.threshold = bloomThreshold;
         if (bloomEffect.effects && bloomEffect.effects[0]) {
           bloomEffect.effects[0].disabled = false;
           bloomEffect.effects[0].intensity = bloomIntensity;
+          bloomEffect.effects[0].luminanceThreshold = bloomThreshold;
+          bloomEffect.effects[0].mipmapBlur = true;
         }
       }
     }
@@ -763,14 +792,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. Matrix LED Lights & Volumetric Glow
+  // 3. Matrix LED Lights & Selective Bloom
   function setLightsState(on) {
     lightsOn = on;
     if (toggleLightsBtn) {
       toggleLightsBtn.classList.toggle('active', lightsOn);
       toggleLightsBtn.setAttribute('aria-pressed', lightsOn ? 'true' : 'false');
     }
+    // Step 1: Apply emissive material changes first
+    updateEmissiveMaterials();
+    // Step 2: Apply bloom effect (which checks lightsOn state)
     applyPostFx();
+    // Step 3: Ensure bloom is re-applied after a frame to handle stale model state
+    requestAnimationFrame(() => {
+      updateEmissiveMaterials();
+      applyPostFx();
+    });
+    // Step 4: Final delayed retry in case model-viewer takes time to commit material changes
+    setTimeout(() => {
+      updateEmissiveMaterials();
+      applyPostFx();
+    }, 250);
   }
 
   if (toggleLightsBtn) {
