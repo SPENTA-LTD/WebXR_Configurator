@@ -103,7 +103,7 @@
       <!-- Top Left Vehicle Header Overlay -->
       <div class="studio-top-left-header">
         <h2 class="vehicle-title">BMW X7 M60i</h2>
-        <span class="vehicle-subtitle" id="active-paint-lbl">2026. BROOKLYN GREY METALLIC ($0)</span>
+        <span class="vehicle-subtitle" id="active-paint-lbl">2026. ALPINE WHITE ($0)</span>
       </div>
 
       <!-- Giant Background Watermark Text -->
@@ -205,13 +205,13 @@
           <!-- Tab 1: Lighting & Shadows -->
           <div class="editor-tab-content active" id="tab-lighting">
             <div class="editor-control-group">
-              <label>Scene Light Exposure: <span id="val-exposure">1.35</span></label>
-              <input type="range" id="input-exposure" min="0.5" max="3.0" step="0.05" value="1.35" />
+              <label>Scene Light Exposure: <span id="val-exposure">1.10</span></label>
+              <input type="range" id="input-exposure" min="0.5" max="3.0" step="0.05" value="1.10" />
             </div>
 
             <div class="editor-control-group">
-              <label>Shadow Intensity: <span id="val-shadow-intensity">1.40</span></label>
-              <input type="range" id="input-shadow-intensity" min="0.0" max="3.0" step="0.1" value="1.4" />
+              <label>Shadow Intensity: <span id="val-shadow-intensity">1.50</span></label>
+              <input type="range" id="input-shadow-intensity" min="0.0" max="3.0" step="0.1" value="1.5" />
             </div>
 
             <div class="editor-control-group">
@@ -222,8 +222,8 @@
             <div class="editor-control-group">
               <label>Environment HDRI Map</label>
               <select id="select-hdri" class="editor-select">
-                <option value="./assets/studio_5point.hdr" selected>5-Point Studio Lighting (Key, Fill, Rim, Overhead, Bounce)</option>
-                <option value="./assets/studio.hdr">Standard Automotive Studio</option>
+                <option value="./assets/studio.hdr" selected>Standard Automotive Studio</option>
+                <option value="./assets/studio_5point.hdr">5-Point Studio Lighting (Key, Fill, Rim, Overhead, Bounce)</option>
                 <option value="neutral">Neutral Soft Studio</option>
                 <option value="legacy">High Contrast Ambient</option>
               </select>
@@ -235,8 +235,8 @@
             <div class="editor-control-group">
               <label>Custom Body Paint Color</label>
               <div class="color-picker-row">
-                <input type="color" id="input-paint-color" value="#7E858C" />
-                <span id="val-paint-hex">#7E858C</span>
+                <input type="color" id="input-paint-color" value="#FDFDFD" />
+                <span id="val-paint-hex">#FDFDFD</span>
               </div>
             </div>
 
@@ -263,32 +263,32 @@
           <div class="editor-tab-content" id="tab-postfx">
             <div class="editor-control-group">
               <label>Headlight Bloom Mode</label>
-              <button id="btn-bloom-mode" class="fx-mode-btn">Selective Headlight Bloom Active</button>
+              <button id="btn-bloom-mode" class="fx-mode-btn">Headlight Only Bloom Active</button>
             </div>
 
             <div class="editor-control-group">
-              <label>Headlight Bloom Intensity: <span id="val-bloom-intensity">1.50</span></label>
-              <input type="range" id="input-bloom-intensity" min="0.0" max="10.0" step="0.1" value="1.50" />
+              <label>Bloom Intensity: <span id="val-bloom-intensity">1.00</span></label>
+              <input type="range" id="input-bloom-intensity" min="0.0" max="10.0" step="0.1" value="1.00" />
             </div>
 
             <div class="editor-control-group">
-              <label>Headlight Bloom Radius: <span id="val-bloom-radius">0.40</span></label>
-              <input type="range" id="input-bloom-radius" min="0.0" max="2.0" step="0.05" value="0.40" />
+              <label>Bloom Radius: <span id="val-bloom-radius">0.40</span></label>
+              <input type="range" id="input-bloom-radius" min="0.00" max="1.00" step="0.01" value="0.40" />
             </div>
 
             <div class="editor-control-group">
-              <label>Bloom Threshold: <span id="val-bloom-threshold">0.85</span></label>
-              <input type="range" id="input-bloom-threshold" min="0.50" max="1.00" step="0.02" value="0.85" />
+              <label>Bloom Threshold: <span id="val-bloom-threshold">0.74</span></label>
+              <input type="range" id="input-bloom-threshold" min="0.00" max="1.00" step="0.01" value="0.74" />
             </div>
 
             <div class="editor-control-group">
-              <label>SSAO Shadow Intensity: <span id="val-ssao-intensity">1.40</span></label>
-              <input type="range" id="input-ssao-intensity" min="0.0" max="5.0" step="0.1" value="1.40" />
+              <label>SSAO Shadow Intensity: <span id="val-ssao-intensity">0.00</span></label>
+              <input type="range" id="input-ssao-intensity" min="0.0" max="5.0" step="0.1" value="0.00" />
             </div>
 
             <div class="editor-control-group">
-              <label>SSAO Radius: <span id="val-ssao-radius">0.30</span></label>
-              <input type="range" id="input-ssao-radius" min="0.01" max="1.0" step="0.01" value="0.30" />
+              <label>SSAO Radius: <span id="val-ssao-radius">0.05</span></label>
+              <input type="range" id="input-ssao-radius" min="0.05" max="1.0" step="0.01" value="0.05" />
             </div>
 
             <div class="editor-control-group">
@@ -302,8 +302,8 @@
             </div>
 
             <div class="editor-control-group">
-              <label>Color Brightness Offset: <span id="val-brightness">0.00</span></label>
-              <input type="range" id="input-brightness" min="-0.5" max="0.5" step="0.01" value="0.00" />
+              <label>Color Brightness Offset: <span id="val-brightness">-0.03</span></label>
+              <input type="range" id="input-brightness" min="-0.5" max="0.5" step="0.01" value="-0.03" />
             </div>
 
             <div class="editor-control-group">
@@ -386,7 +386,7 @@
           <!-- Group 1: Official BMW Body Paint Colors -->
           <div class="drawer-swatches-row scrollable-swatches" id="paint-swatches-group">
             
-            <button class="color-card" data-type="paint" data-color="#FDFDFD" data-price="0" data-name="Alpine White">
+            <button class="color-card active" data-type="paint" data-color="#FDFDFD" data-price="0" data-name="Alpine White">
               <span class="card-swatch-box" style="background-color: #FFFFFF; border: 1px solid #ddd;"></span>
               <span class="card-label">Alpine White</span>
               <span class="card-price">$0</span>
@@ -407,7 +407,7 @@
               <span class="card-label">Manhattan Green</span>
               <span class="card-price">$0</span>
             </button>
-            <button class="color-card active" data-type="paint" data-color="#7E858C" data-price="0" data-name="Brooklyn Grey Metallic">
+            <button class="color-card" data-type="paint" data-color="#7E858C" data-price="0" data-name="Brooklyn Grey Metallic">
               <span class="card-swatch-box" style="background-color: #7E858C;"></span>
               <span class="card-label">Brooklyn Grey</span>
               <span class="card-price">$0</span>
@@ -527,7 +527,7 @@
           shadow-intensity="1.5"
           shadow-softness="0.3"
           exposure="1.1"
-          tone-mapping="neutral"
+          tone-mapping="none"
           environment-image="./assets/studio.hdr"
           camera-orbit="45deg 75deg 6m"
           field-of-view="35deg"
@@ -537,9 +537,9 @@
         >
           <!-- Real Post-Processing Effect Composer (@google/model-viewer-effects) -->
           <effect-composer id="effect-composer" render-mode="quality">
-            <ssao-effect id="ssao-effect" strength="1.40" radius="0.30"></ssao-effect>
-            <bloom-effect id="bloom-effect" strength="0.80" radius="0.40" threshold="0.85"></bloom-effect>
-            <color-grade-effect id="color-grade-effect" contrast="0.00" saturation="0.00" brightness="0.00" tonemapping="aces"></color-grade-effect>
+            <ssao-effect id="ssao-effect" strength="0.00" radius="0.05" blend-mode="skip"></ssao-effect>
+            <selective-bloom-effect id="bloom-effect" strength="1.00" radius="0.40" threshold="0.74"></selective-bloom-effect>
+            <color-grade-effect id="color-grade-effect" contrast="0.00" saturation="0.00" brightness="-0.03" tonemapping="aces"></color-grade-effect>
             <smaa-effect></smaa-effect>
           </effect-composer>
 

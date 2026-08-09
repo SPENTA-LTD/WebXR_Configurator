@@ -92,8 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const BASE_PRICE = 108700;
   let currentPaintPrice = 0;
-  let currentPaintHex = '#7E858C';
-  let currentPaintName = 'Brooklyn Grey Metallic';
+  let currentPaintHex = '#FDFDFD';
+  let currentPaintName = 'Alpine White';
   let currentPaintRoughness = 0.12;
   let currentPaintMetallic = 0.08;
   let currentSeatHex = '#8B4513';
@@ -106,15 +106,15 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentHdri = './assets/studio.hdr';
 
   // Live Post-FX State (Bloom, SSAO, Color Adjustments & Tonemapping)
-  let bloomMode = 'headlight'; // 'full' | 'headlight' | 'off'
-  let bloomIntensity = 1.50;
+  let bloomMode = 'headlight';
+  let bloomIntensity = 1.0;
   let bloomRadius = 0.40;
-  let bloomThreshold = 0.85;
-  let ssaoIntensity = 1.40;
-  let ssaoRadius = 0.30;
-  let colorContrast = 0.00;
-  let colorSaturation = 0.00;
-  let colorBrightness = 0.00;
+  let bloomThreshold = 0.74;
+  let ssaoIntensity = 0.0;
+  let ssaoRadius = 0.05;
+  let colorContrast = 0.0;
+  let colorSaturation = 0.0;
+  let colorBrightness = -0.03;
   let colorTonemapping = 'aces';
 
   const totalPriceDisplay = document.getElementById('total-price-display');
@@ -204,38 +204,237 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeArModal = document.getElementById('close-ar-modal');
   const qrCodeImg = document.getElementById('qr-code-img');
 
-  // Apply Live Post-FX (Bloom, SSAO, Color Adjustments & Tonemapping)
+  const LIGHT_MATERIAL_NAMES = new Set([
+    'inmx7m60i_headlight',
+    'inmx7m60i_headlight2',
+    'inmx7m60i_highbeam',
+    'inmx7m60i_running_r',
+    'inmx7m60i_running_l',
+    'inmx7m60i_fog',
+    'inmx7m60i_signall',
+    'inmx7m60i_signalr',
+    'inmx7m60i_taillight',
+    'inmx7m60i_taillight2',
+    'inmx7m60i_taillight3',
+    'inmx7m60i_rearlights',
+    'inmx7m60i_chmsl',
+    'inmx7m60i_licenselight'
+  ]);
+
+  function isActualLightMaterial(matName) {
+    if (!matName) return false;
+    const name = matName.toLowerCase().trim();
+    if (LIGHT_MATERIAL_NAMES.has(name)) return true;
+    return (name.includes('headlight') || name.includes('taillight') || name.includes('highbeam') || name.includes('running_') || name.includes('rearlight')) &&
+           !name.includes('glass') && !name.includes('body') && !name.includes('black') && !name.includes('chrome') && !name.includes('int') && !name.includes('leather');
+  }
+
+  function updateEmissiveMaterials() {
+    if (!modelViewer || !modelViewer.model) return;
+    modelViewer.model.materials.forEach(mat => {
+      const mName = mat.name ? mat.name.toLowerCase() : '';
+      if (isActualLightMaterial(mName)) {
+        if (lightsOn) {
+          const scale = Math.min(2.5, Math.max(0.8, bloomIntensity * 0.5));
+          if (mName.includes('tail') || mName.includes('chmsl') || mName.includes('rearlight')) {
+            mat.setEmissiveFactor([2.5 * scale, 0.1 * scale, 0.1 * scale]);
+          } else if (mName.includes('signal')) {
+            mat.setEmissiveFactor([2.0 * scale, 1.0 * scale, 0.1 * scale]);
+          } else {
+            mat.setEmissiveFactor([2.0 * scale, 2.0 * scale, 2.5 * scale]);
+          }
+        } else {
+          mat.setEmissiveFactor([0, 0, 0]);
+        }
+      } else {
+        // Enforce strict 0 emissive factor on all non-light materials
+        if (typeof mat.setEmissiveFactor === 'function') {
+          mat.setEmissiveFactor([0, 0, 0]);
+        }
+      }
+    });
+  }
+
+  // Locate Three.js Scene Root in Model-Viewer / Effect-Composer
+  function getThreeScene() {
+    if (!modelViewer) return null;
+
+    // 1. Check effectComposer internal scene reference
+    if (effectComposer) {
+      const ecSymbols = Object.getOwnPropertySymbols(effectComposer);
+      for (const sym of ecSymbols) {
+        try {
+          const val = effectComposer[sym];
+          if (val && typeof val === 'object' && (val.isScene || typeof val.traverse === 'function')) {
+            return val;
+          }
+        } catch (e) {}
+      }
+    }
+
+    // 2. Direct property on modelViewer
+    if (modelViewer.scene && typeof modelViewer.scene.traverse === 'function') {
+      return modelViewer.scene;
+    }
+
+    // 3. Symbol property on modelViewer
+    const mvSymbols = Object.getOwnPropertySymbols(modelViewer);
+    for (const sym of mvSymbols) {
+      try {
+        const desc = sym.description || sym.toString();
+        if (desc.includes('scene') || desc.includes('Scene')) {
+          const val = modelViewer[sym];
+          if (val && typeof val === 'object' && typeof val.traverse === 'function') {
+            return val;
+          }
+        }
+      } catch (e) {}
+    }
+
+    // 4. Any Object3D / Scene in modelViewer's symbols
+    for (const sym of mvSymbols) {
+      try {
+        const val = modelViewer[sym];
+        if (val && typeof val === 'object' && (val.isScene || val.isGroup || val.isObject3D) && typeof val.traverse === 'function') {
+          return val;
+        }
+      } catch (e) {}
+    }
+
+    return null;
+  }
+
+  // Find all meshes that use the 14 genuine light materials
+  function getLightMeshes() {
+    const scene = getThreeScene();
+    const lightMeshes = [];
+    if (!scene) return lightMeshes;
+
+    scene.traverse((child) => {
+      if (child && child.isMesh) {
+        let isLight = false;
+        if (child.material) {
+          if (Array.isArray(child.material)) {
+            isLight = child.material.some(m => m && isActualLightMaterial(m.name));
+          } else if (child.material.name) {
+            isLight = isActualLightMaterial(child.material.name);
+          }
+        }
+        if (isLight) {
+          lightMeshes.push(child);
+        }
+      }
+    });
+
+    return lightMeshes;
+  }
+
+  // Target headlight/taillight or full scene meshes for selective-bloom-effect
+  function updateSelectiveBloomSelection(mode = 'headlight') {
+    if (!modelViewer || !bloomEffect) return null;
+
+    if (mode === 'off') {
+      bloomEffect.selection = [];
+      if (bloomEffect.effects && bloomEffect.effects[0] && bloomEffect.effects[0].selection) {
+        bloomEffect.effects[0].selection.clear();
+      }
+      return null;
+    }
+
+    if (mode === 'full') {
+      bloomEffect.selection = [];
+      const scene = getThreeScene();
+      if (scene && bloomEffect.effects && bloomEffect.effects[0] && bloomEffect.effects[0].selection) {
+        bloomEffect.effects[0].selection.clear();
+        scene.traverse((child) => {
+          if (child && child.isMesh) {
+            bloomEffect.effects[0].selection.add(child);
+          }
+        });
+      }
+      return null;
+    }
+
+    if (mode === 'headlight') {
+      const lightMeshes = getLightMeshes();
+
+      // Set selection Array on Lit element
+      bloomEffect.selection = [...lightMeshes];
+
+      // Ensure internal postprocessing Selection Set is populated directly
+      if (bloomEffect.effects && bloomEffect.effects[0] && bloomEffect.effects[0].selection) {
+        bloomEffect.effects[0].selection.clear();
+        lightMeshes.forEach(mesh => {
+          bloomEffect.effects[0].selection.add(mesh);
+        });
+      }
+
+      return lightMeshes;
+    }
+
+    return null;
+  }
+
+  // Apply Live Post-FX (Selective Bloom, SSAO, Color Adjustments & Tonemapping)
   function applyPostFx() {
     if (!modelViewer) return;
 
-    // Layer 1: Native Model Viewer Attributes
-    modelViewer.shadowIntensity = ssaoIntensity;
-    modelViewer.setAttribute('shadow-intensity', ssaoIntensity.toFixed(2));
-    modelViewer.shadowSoftness = ssaoRadius;
-    modelViewer.setAttribute('shadow-softness', ssaoRadius.toFixed(2));
-
-    const mvTone = colorTonemapping || 'aces';
-    modelViewer.toneMapping = mvTone;
-    modelViewer.setAttribute('tone-mapping', mvTone);
+    // Layer 1: Native Model Viewer Attributes (Pass raw linear colors to effect-composer)
+    modelViewer.toneMapping = 'none';
+    modelViewer.setAttribute('tone-mapping', 'none');
 
     // Layer 2: Official @google/model-viewer-effects Web Components
     if (bloomEffect) {
-      if (bloomMode === 'off' || bloomIntensity <= 0) {
-        bloomEffect.blendMode = 'skip';
-        bloomEffect.setAttribute('blend-mode', 'skip');
+      if (bloomMode === 'off' || bloomIntensity <= 0 || (bloomMode === 'headlight' && !lightsOn)) {
+        updateSelectiveBloomSelection('off');
+        bloomEffect.blendMode = 'DEFAULT';
+        bloomEffect.removeAttribute('blend-mode');
         bloomEffect.strength = 0;
         bloomEffect.setAttribute('strength', '0');
-      } else {
-        bloomEffect.blendMode = 'normal';
+        if (bloomEffect.effects && bloomEffect.effects[0]) {
+          bloomEffect.effects[0].disabled = false;
+          bloomEffect.effects[0].intensity = 0;
+        }
+      } else if (bloomMode === 'headlight') {
+        updateSelectiveBloomSelection('headlight');
+        bloomEffect.blendMode = 'DEFAULT';
         bloomEffect.removeAttribute('blend-mode');
-        const scaledStrength = Math.min(2.0, bloomIntensity * 0.4);
-        bloomEffect.strength = scaledStrength;
-        bloomEffect.setAttribute('strength', scaledStrength.toFixed(2));
+        bloomEffect.strength = bloomIntensity;
+        bloomEffect.setAttribute('strength', bloomIntensity.toFixed(2));
         bloomEffect.radius = bloomRadius;
         bloomEffect.setAttribute('radius', bloomRadius.toFixed(2));
-        const safeThreshold = Math.max(0.50, bloomThreshold);
-        bloomEffect.threshold = safeThreshold;
-        bloomEffect.setAttribute('threshold', safeThreshold.toFixed(2));
+        bloomEffect.threshold = bloomThreshold;
+        bloomEffect.setAttribute('threshold', bloomThreshold.toFixed(2));
+        if (bloomEffect.effects && bloomEffect.effects[0]) {
+          bloomEffect.effects[0].disabled = false;
+          bloomEffect.effects[0].intensity = bloomIntensity;
+          if (bloomEffect.effects[0].luminanceMaterial) {
+            bloomEffect.effects[0].luminanceMaterial.threshold = bloomThreshold;
+          }
+          if (bloomEffect.effects[0].mipmapBlurPass) {
+            bloomEffect.effects[0].mipmapBlurPass.radius = bloomRadius;
+          }
+        }
+      } else if (bloomMode === 'full') {
+        updateSelectiveBloomSelection('full');
+        bloomEffect.blendMode = 'DEFAULT';
+        bloomEffect.removeAttribute('blend-mode');
+        bloomEffect.strength = bloomIntensity;
+        bloomEffect.setAttribute('strength', bloomIntensity.toFixed(2));
+        bloomEffect.radius = bloomRadius;
+        bloomEffect.setAttribute('radius', bloomRadius.toFixed(2));
+        bloomEffect.threshold = bloomThreshold;
+        bloomEffect.setAttribute('threshold', bloomThreshold.toFixed(2));
+        if (bloomEffect.effects && bloomEffect.effects[0]) {
+          bloomEffect.effects[0].disabled = false;
+          bloomEffect.effects[0].intensity = bloomIntensity;
+          if (bloomEffect.effects[0].luminanceMaterial) {
+            bloomEffect.effects[0].luminanceMaterial.threshold = bloomThreshold;
+          }
+          if (bloomEffect.effects[0].mipmapBlurPass) {
+            bloomEffect.effects[0].mipmapBlurPass.radius = bloomRadius;
+          }
+        }
       }
     }
 
@@ -260,8 +459,9 @@ document.addEventListener('DOMContentLoaded', () => {
       colorGradeEffect.setAttribute('saturation', colorSaturation.toFixed(2));
       colorGradeEffect.brightness = colorBrightness;
       colorGradeEffect.setAttribute('brightness', colorBrightness.toFixed(2));
-      colorGradeEffect.tonemapping = colorTonemapping;
-      colorGradeEffect.setAttribute('tonemapping', colorTonemapping);
+      const targetTone = colorTonemapping || 'aces';
+      colorGradeEffect.tonemapping = targetTone;
+      colorGradeEffect.setAttribute('tonemapping', targetTone);
     }
 
     if (effectComposer) {
@@ -277,60 +477,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Layer 3: PBR Material Emissive Factor Modulation for Headlight Glow
-    if (modelViewer.model) {
-      modelViewer.model.materials.forEach(mat => {
-        const mName = mat.name.toLowerCase();
-        const isActualLightBulb = (mName.includes('headlight') || mName.includes('taillight')) &&
-                                  !mName.includes('glass') && !mName.includes('body') && !mName.includes('chrome');
-        if (isActualLightBulb) {
-          if (lightsOn || (bloomMode !== 'off' && bloomIntensity > 0)) {
-            const emissiveScale = Math.min(3.5, Math.max(0.5, bloomIntensity * 0.4));
-            mat.setEmissiveFactor([1.5 * emissiveScale, 1.5 * emissiveScale, 2.0 * emissiveScale]);
-          } else {
-            mat.setEmissiveFactor([0, 0, 0]);
-          }
-        }
-      });
-    }
+    updateEmissiveMaterials();
 
-    // Layer 4: Real-time WebGL Canvas Filter Hardware Overlay & SVG Bloom
+    // Layer 4: Real-time WebGL Canvas Filter Hardware Overlay
     const contrastPercent = (1.0 + colorContrast) * 100;
     const saturationPercent = (1.0 + colorSaturation) * 100;
     const brightnessPercent = (1.0 + colorBrightness) * 100;
 
-    // Crisp hardware filter string (without container blur)
-    let filterStr = `contrast(${contrastPercent.toFixed(1)}%) saturate(${saturationPercent.toFixed(1)}%) brightness(${brightnessPercent.toFixed(1)}%)`;
-
-    const svgBloomBlur = document.getElementById('svg-bloom-blur');
-    if (svgBloomBlur) {
-      svgBloomBlur.setAttribute('stdDeviation', (bloomRadius * 8).toFixed(1));
-    }
+    const hasCssFilters = (colorContrast !== 0 || colorSaturation !== 0 || colorBrightness !== 0);
+    let filterStr = hasCssFilters 
+      ? `contrast(${contrastPercent.toFixed(1)}%) saturate(${saturationPercent.toFixed(1)}%) brightness(${brightnessPercent.toFixed(1)}%)`
+      : 'none';
 
     const wrapper = document.getElementById('model-viewer-wrapper');
     if (wrapper) {
-      wrapper.style.willChange = 'filter';
-      wrapper.style.transform = 'translateZ(0)';
       wrapper.style.filter = filterStr;
     }
-
-    modelViewer.style.willChange = 'filter';
-    modelViewer.style.transform = 'translateZ(0)';
     modelViewer.style.filter = filterStr;
 
     if (modelViewer.shadowRoot) {
       const shadowCanvas = modelViewer.shadowRoot.querySelector('canvas');
       if (shadowCanvas) {
-        shadowCanvas.style.willChange = 'filter';
-        shadowCanvas.style.transform = 'translateZ(0)';
         shadowCanvas.style.filter = filterStr;
       }
     }
 
     const fogWrapper = document.getElementById('volumetric-fog-container');
     if (fogWrapper) {
-      if (bloomMode !== 'off' && (lightsOn || bloomMode === 'headlight' || bloomMode === 'full')) {
+      if (lightsOn && bloomMode !== 'off') {
         fogWrapper.classList.add('active');
-        fogWrapper.style.opacity = Math.min(1.0, bloomIntensity * 0.3).toFixed(2);
+        fogWrapper.style.opacity = Math.min(0.4, bloomIntensity * 0.15).toFixed(2);
       } else {
         fogWrapper.classList.remove('active');
         fogWrapper.style.opacity = '0';
@@ -350,31 +526,19 @@ document.addEventListener('DOMContentLoaded', () => {
     materials.forEach(mat => {
       const mName = mat.name.toLowerCase();
       
-      // 1. Body Paint Color - STRICTLY body paint materials (inmx7m60i_body, bodyshell, f_bump)
-      if (mName === 'inmx7m60i_body' || mName.startsWith('inmx7m60i_body.') || mName.startsWith('bodyshell') || mName.startsWith('f_bump')) {
+      // 1. Body Paint Color - STRICTLY target inmx7m60i_body per Rule 1
+      if (mName === 'inmx7m60i_body' || mName.startsWith('inmx7m60i_body.')) {
         mat.pbrMetallicRoughness.setBaseColorFactor(paintRgb);
         mat.pbrMetallicRoughness.setRoughnessFactor(currentPaintRoughness);
         mat.pbrMetallicRoughness.setMetallicFactor(currentPaintMetallic);
       }
 
-      // 2. Seat Interior Color
-      if (mName.includes('chassis') || mName.includes('dash') || mName.includes('seat') || mName.includes('interior') || mName.includes('11.003')) {
+      // 2. Seat Interior Color - STRICTLY target seat/leather materials
+      if (mName === 'inmx7m60i_leather1' || mName.includes('seat')) {
         mat.pbrMetallicRoughness.setBaseColorFactor(seatRgb);
       }
 
-      // 3. Headlights & Taillights Emissive State
-      const isActualLightBulb = (mName.includes('headlight') || mName.includes('taillight')) &&
-                                !mName.includes('glass') && !mName.includes('body') && !mName.includes('chrome');
-      if (isActualLightBulb) {
-        if (lightsOn || (bloomMode !== 'off' && bloomIntensity > 0)) {
-          const emissiveScale = Math.min(3.5, Math.max(0.5, bloomIntensity * 0.4));
-          mat.setEmissiveFactor([1.5 * emissiveScale, 1.5 * emissiveScale, 2.0 * emissiveScale]);
-        } else {
-          mat.setEmissiveFactor([0, 0, 0]);
-        }
-      }
-
-      // 4. Windows State (Exclude body clearcoat & headlight glass)
+      // 3. Windows State (Exclude body clearcoat & headlight glass)
       const isWindowGlass = (mName.includes('windscreen') || mName.includes('window') || mName === 'inmx7m60i_glass') &&
                             !mName.includes('body') && !mName.includes('headlight') && !mName.includes('taillight');
       if (isWindowGlass) {
@@ -387,6 +551,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     });
+
+    // 4. Update Emissive State exclusively on light bulb materials
+    updateEmissiveMaterials();
 
     applyPostFx();
   }
@@ -446,6 +613,7 @@ document.addEventListener('DOMContentLoaded', () => {
         viewerLoader.classList.add('hide');
         viewerLoader.style.display = 'none';
       }
+      syncPostFxUi();
       applyActiveCustomizations();
       applyPostFx();
     });
@@ -645,7 +813,13 @@ document.addEventListener('DOMContentLoaded', () => {
     elem.addEventListener('change', handler);
   };
 
-  bindFxRange(inputBloomIntensity, valBloomIntensity, (v) => { bloomIntensity = v; });
+  bindFxRange(inputBloomIntensity, valBloomIntensity, (v) => {
+    bloomIntensity = v;
+    if (v > 0 && bloomMode === 'off') {
+      bloomMode = 'headlight';
+      if (btnBloomMode) btnBloomMode.textContent = 'Headlight Only Bloom Active';
+    }
+  });
   bindFxRange(inputBloomRadius, valBloomRadius, (v) => { bloomRadius = v; });
   bindFxRange(inputBloomThreshold, valBloomThreshold, (v) => { bloomThreshold = v; });
   bindFxRange(inputSsaoIntensity, valSsaoIntensity, (v) => { ssaoIntensity = v; });
@@ -929,16 +1103,62 @@ document.addEventListener('DOMContentLoaded', () => {
   let lightsOn = false;
   const volumetricFogContainer = document.getElementById('volumetric-fog-container');
 
+  function syncPostFxUi() {
+    if (btnBloomMode) {
+      if (bloomMode === 'full') btnBloomMode.textContent = 'Full Scene Bloom Active';
+      else if (bloomMode === 'headlight') btnBloomMode.textContent = lightsOn ? 'Headlight Only Bloom Active' : 'Headlight Bloom (Lights Off)';
+      else btnBloomMode.textContent = 'Bloom Disabled';
+    }
+    if (inputBloomIntensity) inputBloomIntensity.value = bloomIntensity;
+    if (valBloomIntensity) valBloomIntensity.textContent = bloomIntensity.toFixed(2);
+
+    if (inputBloomRadius) inputBloomRadius.value = bloomRadius;
+    if (valBloomRadius) valBloomRadius.textContent = bloomRadius.toFixed(2);
+
+    if (inputBloomThreshold) inputBloomThreshold.value = bloomThreshold;
+    if (valBloomThreshold) valBloomThreshold.textContent = bloomThreshold.toFixed(2);
+
+    if (inputSsaoIntensity) inputSsaoIntensity.value = ssaoIntensity;
+    if (valSsaoIntensity) valSsaoIntensity.textContent = ssaoIntensity.toFixed(2);
+
+    if (inputSsaoRadius) inputSsaoRadius.value = ssaoRadius;
+    if (valSsaoRadius) valSsaoRadius.textContent = ssaoRadius.toFixed(2);
+
+    if (inputContrast) inputContrast.value = colorContrast;
+    if (valContrast) valContrast.textContent = colorContrast.toFixed(2);
+
+    if (inputSaturation) inputSaturation.value = colorSaturation;
+    if (valSaturation) valSaturation.textContent = colorSaturation.toFixed(2);
+
+    if (inputBrightness) inputBrightness.value = colorBrightness;
+    if (valBrightness) valBrightness.textContent = colorBrightness.toFixed(2);
+
+    if (selectTonemapping) selectTonemapping.value = colorTonemapping || 'aces';
+  }
+
   function setLightsState(state) {
     lightsOn = state;
     if (lightsOn) {
+      bloomMode = 'headlight';
+      bloomIntensity = 1.00;
+      bloomRadius = 0.40;
+      bloomThreshold = 0.74;
+      ssaoIntensity = 0.00;
+      ssaoRadius = 0.05;
+      colorContrast = 0.00;
+      colorSaturation = 0.00;
+      colorBrightness = -0.03;
+      colorTonemapping = 'aces';
+
       if (dockLightsBtn) dockLightsBtn.classList.add('active');
       if (volumetricFogContainer) volumetricFogContainer.classList.add('active');
     } else {
       if (dockLightsBtn) dockLightsBtn.classList.remove('active');
       if (volumetricFogContainer) volumetricFogContainer.classList.remove('active');
     }
-    applyActiveCustomizations();
+    syncPostFxUi();
+    updateEmissiveMaterials();
+    applyPostFx();
   }
 
   if (dockLightsBtn) {
@@ -1117,4 +1337,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target === arModal) arModal.classList.remove('active');
     });
   }
+
+  // Initialize Post-FX UI and configuration JSON on load
+  syncPostFxUi();
+  updateExportJson();
 });

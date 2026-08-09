@@ -17,3 +17,13 @@ desktop.ini
 .vscode/
 .idea/
 *.swp
+
+# Archives & Large Asset Backups
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.blend
+*.blend1
+

@@ -45,6 +45,27 @@ This repository contains the interactive 3D Studio Configurator and WebXR Augmen
    - Wheel Switcher: Seamless GLB swap preserving active paint state.
    - Non-looping Door Animation: Plays forward once (open) or reverses to frame 0 (closed).
 
+6. **Post-FX Bloom & Light Material Architecture (`@google/model-viewer-effects`):**
+   - **Additive Blend Mode**: Always use `DEFAULT` additive blending (`BlendFunction.ADD`). Never use `normal` blend mode for bloom, as `NORMAL` replaces rendered pixels with bloom textures instead of adding light glow.
+   - **Shader Value Ranges & Conversions**:
+     - **Threshold (`threshold`)**: Operates on a normalized `0.00` to `1.00` scale. Values `> 1.00` completely disable bloom in WebGL shaders. Keep threshold between `0.00` and `1.00`.
+     - **Radius (`radius`)**: Operates on a normalized `0.00` to `1.00` mipmap blur scale.
+     - **Intensity (`strength`)**: Direct float intensity (`0.0` to `10.0`).
+   - **Strict Light Material Isolation**:
+     - Emissive factors are applied **EXCLUSIVELY to the 14 genuine light materials**:
+       - Headlights & DRLs: `inmx7m60i_headlight`, `inmx7m60i_headlight2`, `inmx7m60i_highbeam`, `inmx7m60i_running_r`, `inmx7m60i_running_l`, `inmx7m60i_fog`.
+       - Taillights & Rear: `inmx7m60i_taillight`, `inmx7m60i_taillight2`, `inmx7m60i_taillight3`, `inmx7m60i_rearlights`, `inmx7m60i_chmsl`.
+       - Signals & License: `inmx7m60i_signalL`, `inmx7m60i_signalR`, `inmx7m60i_licenselight`.
+     - All remaining 24 non-light materials (`inmx7m60i_body`, `inmx7m60i_black`, `inmx7m60i_int`, `inmx7m60i_leather1`, `inmx7m60i_glass`, etc.) MUST be explicitly enforced to `setEmissiveFactor([0, 0, 0])`.
+   - **Selective Bloom Filtering**: Filter selective bloom strictly by `isActualLightMaterial(child.material.name)`. Never filter by mesh node name (`inmx7m60i_headlights1`) as GLB nodes contain non-light housing and trim sub-geometries.
+   - **Lights Button & Default Emissive State**:
+     - Default state: `lightsOn = false` (all material emissives `[0, 0, 0]`).
+     - Right Dock **LIGHTS** button toggles `lightsOn`. Emissives turn ON only when `lightsOn === true` and turn OFF (`[0, 0, 0]`) when `lightsOn === false`.
+   - **Default Post-FX Preset**:
+     - Default paint: **Alpine White** (`#FDFDFD`).
+     - Default bloom mode: `"headlight"` (Bloom is ON by default).
+     - Default Post-FX: `bloomMode: "headlight"`, `bloomIntensity: 1.0`, `bloomRadius: 0.0`, `bloomThreshold: 1.0`, `ssaoIntensity: 0.0`, `ssaoRadius: 0.05`, `colorContrast: 0.0`, `colorSaturation: 0.0`, `colorBrightnessOffset: -0.03`, `tonemapping: "aces"`.
+
 ---
 
 ## ⚙️ Operational Rules for AI Agents
@@ -52,3 +73,4 @@ This repository contains the interactive 3D Studio Configurator and WebXR Augmen
 - **Path Rules:** Always use relative paths (`./src/style.css`, `./src/main.js`, `./assets/...`) in `index.html` to guarantee compatibility across static hosting environments.
 - **Testing:** Verify changes locally by running `python server.py` and testing in a modern browser.
 - **Git Hygiene:** Ensure commit messages are descriptive and working directory status is clean before concluding tasks.
+
