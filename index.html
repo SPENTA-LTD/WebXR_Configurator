@@ -26,7 +26,24 @@
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer-module.min.js"></script>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer-effects@1.2.0/dist/model-viewer-effects.min.js"></script>
 
-  <link rel="stylesheet" href="./src/style.css?v=5.2.0" />
+  <style>
+    /* Critical Loader Dismissal Override */
+    #viewer-loader.hidden,
+    #viewer-loader.hide,
+    .viewer-loader.hidden,
+    .viewer-loader.hide,
+    .viewer-loader[aria-hidden="true"],
+    model-viewer.model-ready .viewer-loader,
+    model-viewer.loaded .viewer-loader,
+    model-viewer[model-ready] .viewer-loader {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  </style>
+
+  <link rel="stylesheet" href="./src/style.css?v=5.3.0" />
 </head>
 <body class="m3-theme-dark">
 
@@ -151,7 +168,7 @@
           </effect-composer>
 
           <!-- Loading Progress Slot -->
-          <div slot="progress-bar" class="viewer-loader">
+          <div id="viewer-loader" slot="progress-bar" class="viewer-loader">
             <div class="m3-spinner"></div>
             <span>Loading 3D Studio Model...</span>
           </div>
@@ -197,6 +214,41 @@
           <!-- Native AR Button Slot -->
           <button slot="ar-button" id="ar-trigger" style="display: none;">View in AR</button>
         </model-viewer>
+
+        <!-- Synchronous Model-Viewer Loader Controller -->
+        <script>
+          (function() {
+            var mv = document.getElementById('bmw-viewer');
+            var loader = document.getElementById('viewer-loader');
+            function dismissLoader() {
+              if (loader) {
+                loader.classList.add('hidden', 'hide');
+                loader.setAttribute('aria-hidden', 'true');
+                loader.style.setProperty('display', 'none', 'important');
+                loader.style.setProperty('opacity', '0', 'important');
+                loader.style.setProperty('visibility', 'hidden', 'important');
+                loader.style.setProperty('pointer-events', 'none', 'important');
+              }
+              if (mv) {
+                mv.classList.add('model-ready', 'loaded');
+                mv.setAttribute('model-ready', '');
+              }
+            }
+            if (mv) {
+              mv.addEventListener('load', dismissLoader);
+              mv.addEventListener('progress', function(e) { if (e.detail && e.detail.totalProgress >= 1.0) dismissLoader(); });
+              mv.addEventListener('model-visibility', function(e) { if (e.detail && e.detail.visible) dismissLoader(); });
+              mv.addEventListener('poster-dismissed', dismissLoader);
+            }
+            var poll = setInterval(function() {
+              if (mv && (mv.loaded || mv.model)) {
+                dismissLoader();
+                clearInterval(poll);
+              }
+            }, 150);
+            setTimeout(function() { clearInterval(poll); dismissLoader(); }, 3500);
+          })();
+        </script>
       </div>
 
       <!-- ==========================================================================
@@ -1170,6 +1222,6 @@
     </div>
   </div>
 
-  <script type="module" src="./src/main.js?v=5.2.0"></script>
+  <script type="module" src="./src/main.js?v=5.3.0"></script>
 </body>
 </html>
