@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BMW X7 | Interactive 3D Configurator & AR Experience</title>
+  <title>BMW X7 M60i | Apple/VisionOS Liquid Glass 3D Configurator & WebXR</title>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Outfit (Display & Headlines) + Inter (Body & UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -26,42 +26,47 @@
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer-module.min.js"></script>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer-effects@1.5.0/dist/model-viewer-effects.min.js"></script>
 
-  <link rel="stylesheet" href="./src/style.css?v=1.0.2" />
+  <link rel="stylesheet" href="./src/style.css?v=5.2.0" />
 </head>
-<body>
+<body class="m3-theme-dark">
 
-  <!-- Navigation Header (BMW USA Style) -->
-  <header class="navbar">
-    <div class="nav-container">
-      <div class="brand">
-        <svg class="bmw-logo" viewBox="0 0 100 100" width="38" height="38">
-          <circle cx="50" cy="50" r="48" fill="#000000" stroke="#FFFFFF" stroke-width="3"/>
-          <circle cx="50" cy="50" r="45" fill="none" stroke="#A6B0B7" stroke-width="1.5"/>
+  <!-- Apple/VisionOS Liquid Glass Top App Bar -->
+  <header class="m3-top-bar liquid-glass-sheen">
+    <div class="m3-top-bar-container">
+      <!-- Brand & Series -->
+      <div class="m3-brand">
+        <svg class="bmw-logo" viewBox="0 0 100 100" width="34" height="34" aria-label="BMW Logo">
+          <circle cx="50" cy="50" r="48" fill="#000000" stroke="#FFFFFF" stroke-width="2.5"/>
+          <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.2"/>
           <path d="M50,5 A45,45 0 0,1 95,50 L50,50 Z" fill="#FFFFFF"/>
           <path d="M95,50 A45,45 0 0,1 50,95 L50,50 Z" fill="#0066B1"/>
           <path d="M50,95 A45,45 0 0,1 5,50 L50,50 Z" fill="#FFFFFF"/>
           <path d="M5,50 A45,45 0 0,1 50,5 L50,50 Z" fill="#0066B1"/>
-          <circle cx="50" cy="50" r="23" fill="none" stroke="#FFFFFF" stroke-width="2"/>
+          <circle cx="50" cy="50" r="23" fill="none" stroke="#FFFFFF" stroke-width="1.8"/>
         </svg>
-        <div class="brand-text">
-          <span class="series">THE X7</span>
-          <span class="sub-series">M60i xDrive</span>
+        <div class="m3-brand-text">
+          <span class="m3-model-title">BMW X7</span>
+          <span class="m3-model-badge">M60i xDrive</span>
         </div>
       </div>
 
-      <nav class="nav-links">
-        <a href="#hero">Overview</a>
-        <a href="#configurator-studio" class="active">3D Studio</a>
-        <a href="#features">Highlights</a>
-        <a href="#specs">Specifications</a>
-      </nav>
+      <!-- Center Status / Active Config Chip -->
+      <div class="m3-center-chip liquid-glass-sheen" id="m3-top-status-chip">
+        <span class="status-pulse-dot"></span>
+        <span class="chip-title" id="active-paint-lbl">2026. ALPINE WHITE ($0)</span>
+      </div>
 
-      <div class="nav-actions">
-        <button id="nav-ar-trigger" class="btn btn-secondary nav-ar-btn">
+      <!-- Navigation & Actions -->
+      <div class="m3-top-actions">
+        <div class="m3-price-chip liquid-glass-sheen" id="m3-top-price-chip">
+          <span class="price-chip-lbl">MSRP</span>
+          <span class="price-chip-val" id="top-price-display">$108,700</span>
+        </div>
+
+        <button id="nav-ar-trigger" class="m3-fab-extended liquid-glass-sheen">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-          AR Experience
+          <span>WebXR Studio</span>
         </button>
-        <a href="#configurator-studio" class="btn btn-primary">Build Yours</a>
       </div>
     </div>
   </header>
@@ -74,444 +79,43 @@
     </div>
 
     <div class="hero-content">
-      <span class="hero-tag">THE 2026 BMW X7 M60i</span>
+      <div class="hero-badge-row">
+        <span class="hero-m3-badge liquid-glass-sheen">2026 FLAGSHIP SAV</span>
+        <span class="hero-m3-badge m3-badge-accent liquid-glass-sheen">M TWINPOWER TURBO V8</span>
+      </div>
       <h1 class="hero-title">FORWARDISM UNLEASHED</h1>
-      <p class="hero-subtitle">Interactive 3D Configurator Studio with dynamic camera view selection & WebXR AR placement.</p>
+      <p class="hero-subtitle">Interactive Apple/VisionOS Liquid Glass 3D Configurator with physical refraction optics, PBR material inspector & WebXR spatial placement.</p>
 
       <div class="hero-specs-row">
-        <div class="hero-spec">
+        <div class="hero-spec-card liquid-glass-sheen">
           <span class="spec-num">$108,700</span>
           <span class="spec-label">STARTING MSRP</span>
         </div>
-        <div class="hero-spec">
+        <div class="hero-spec-card liquid-glass-sheen">
           <span class="spec-num">523 <small>HP</small></span>
-          <span class="spec-label">M TWINPOWER TURBO V8</span>
+          <span class="spec-label">4.4L TWINPOWER V8</span>
         </div>
-        <div class="hero-spec">
+        <div class="hero-spec-card liquid-glass-sheen">
           <span class="spec-num">4.5 <small>SEC</small></span>
-          <span class="spec-label">0-60 MPH ACCELERATION</span>
+          <span class="spec-label">0-60 MPH SPRINT</span>
+        </div>
+        <div class="hero-spec-card liquid-glass-sheen">
+          <span class="spec-num">xDrive</span>
+          <span class="spec-label">INTELLIGENT AWD</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 3D Studio Configurator Section -->
+  <!-- 3D Studio Configurator Section (Rounded Spatial Canvas) -->
   <section id="configurator-studio" class="studio-section">
     
-    <div class="studio-viewport-container">
+    <div class="studio-viewport-container liquid-glass-sheen" id="studio-container">
       
-      <!-- Top Left Vehicle Header Overlay -->
-      <div class="studio-top-left-header">
-        <h2 class="vehicle-title">BMW X7 M60i</h2>
-        <span class="vehicle-subtitle" id="active-paint-lbl">2026. ALPINE WHITE ($0)</span>
-      </div>
+      <!-- Background Cinematic Watermark View Tag (Strictly Behind 3D Car Model) -->
+      <div id="studio-watermark" class="m3-spatial-watermark" aria-hidden="true">EXTERIOR</div>
 
-      <!-- Giant Background Watermark Text -->
-      <div id="studio-watermark" class="studio-watermark">OVERVIEW</div>
-
-      <!-- Left Radio Menu Navigation -->
-      <div class="studio-radio-menu">
-        <label class="radio-nav-item active" data-view="overview">
-          <input type="radio" name="studio-view" value="overview" checked />
-          <span class="radio-circle"></span>
-          <span class="radio-text">OVERVIEW</span>
-        </label>
-
-        <label class="radio-nav-item" data-view="specifications">
-          <input type="radio" name="studio-view" value="specifications" />
-          <span class="radio-circle"></span>
-          <span class="radio-text">SPECIFICATIONS</span>
-        </label>
-
-        <label class="radio-nav-item" data-view="interior">
-          <input type="radio" name="studio-view" value="interior" />
-          <span class="radio-circle"></span>
-          <span class="radio-text">INTERIOR</span>
-        </label>
-
-        <label class="radio-nav-item" data-view="wheels">
-          <input type="radio" name="studio-view" value="wheels" />
-          <span class="radio-circle"></span>
-          <span class="radio-text">WHEELS</span>
-        </label>
-
-        <label class="radio-nav-item" data-view="lights">
-          <input type="radio" name="studio-view" value="lights" />
-          <span class="radio-circle"></span>
-          <span class="radio-text">LIGHTS</span>
-        </label>
-
-        <label class="radio-nav-item" data-view="doors">
-          <input type="radio" name="studio-view" value="doors" />
-          <span class="radio-circle"></span>
-          <span class="radio-text">DOORS</span>
-        </label>
-      </div>
-
-      <!-- Specifications Side Overlay Card -->
-      <div id="spec-overlay-card" class="spec-overlay-card">
-        <h3 class="spec-card-title">SPECIFICATIONS</h3>
-        <div class="spec-grid-compact">
-          <div class="spec-box">
-            <span class="box-lbl">Year</span>
-            <span class="box-val">2026</span>
-          </div>
-          <div class="spec-box">
-            <span class="box-lbl">Doors</span>
-            <span class="box-val">5 Doors</span>
-          </div>
-          <div class="spec-box">
-            <span class="box-lbl">Engine</span>
-            <span class="box-val">4.4L V8</span>
-          </div>
-          <div class="spec-box">
-            <span class="box-lbl">Drivetrain</span>
-            <span class="box-val">xDrive AWD</span>
-          </div>
-          <div class="spec-box">
-            <span class="box-lbl">Power</span>
-            <span class="box-val">523 hp</span>
-          </div>
-          <div class="spec-box">
-            <span class="box-lbl">Torque</span>
-            <span class="box-val">553 lb-ft</span>
-          </div>
-          <div class="spec-box">
-            <span class="box-lbl">Top Speed</span>
-            <span class="box-val">155 mph</span>
-          </div>
-          <div class="spec-box">
-            <span class="box-lbl">0-60 mph</span>
-            <span class="box-val">4.5 sec</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3D Viewer Backend Lighting & Color Editor Floating Panel (USER REQUESTED!) -->
-      <div id="editor-panel" class="editor-panel">
-        <div class="editor-panel-header">
-          <h3>⚙️ 3D Studio Editor</h3>
-          <button id="close-editor-btn" class="editor-close-btn">&times;</button>
-        </div>
-
-        <div class="editor-tabs-nav">
-          <button class="editor-tab-btn active" data-tab="lighting">💡 Lighting</button>
-          <button class="editor-tab-btn" data-tab="materials">🎨 Materials</button>
-          <button class="editor-tab-btn" data-tab="postfx">✨ Post-FX</button>
-          <button class="editor-tab-btn" data-tab="export">💾 Export</button>
-        </div>
-
-        <div class="editor-panel-body">
-          <!-- Tab 1: Lighting & Shadows -->
-          <div class="editor-tab-content active" id="tab-lighting">
-            <div class="editor-control-group">
-              <label>Scene Light Exposure: <span id="val-exposure">1.10</span></label>
-              <input type="range" id="input-exposure" min="0.5" max="3.0" step="0.05" value="1.10" />
-            </div>
-
-            <div class="editor-control-group">
-              <label>Shadow Intensity: <span id="val-shadow-intensity">1.50</span></label>
-              <input type="range" id="input-shadow-intensity" min="0.0" max="3.0" step="0.1" value="1.5" />
-            </div>
-
-            <div class="editor-control-group">
-              <label>Shadow Softness: <span id="val-shadow-softness">0.30</span></label>
-              <input type="range" id="input-shadow-softness" min="0.0" max="1.0" step="0.05" value="0.3" />
-            </div>
-
-            <div class="editor-control-group">
-              <label>Environment HDRI Map</label>
-              <select id="select-hdri" class="editor-select">
-                <option value="./assets/studio.hdr" selected>Standard Automotive Studio</option>
-                <option value="./assets/studio_5point.hdr">5-Point Studio Lighting (Key, Fill, Rim, Overhead, Bounce)</option>
-                <option value="neutral">Neutral Soft Studio</option>
-                <option value="legacy">High Contrast Ambient</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Tab 2: Custom Materials & Live Color Picker -->
-          <div class="editor-tab-content" id="tab-materials">
-            <div class="editor-control-group">
-              <label>Custom Body Paint Color</label>
-              <div class="color-picker-row">
-                <input type="color" id="input-paint-color" value="#FDFDFD" />
-                <span id="val-paint-hex">#FDFDFD</span>
-              </div>
-            </div>
-
-            <div class="editor-control-group">
-              <label>Paint Roughness: <span id="val-roughness">0.12</span></label>
-              <input type="range" id="input-roughness" min="0.0" max="1.0" step="0.02" value="0.12" />
-            </div>
-
-            <div class="editor-control-group">
-              <label>Paint Metallic Sheen: <span id="val-metallic">0.08</span></label>
-              <input type="range" id="input-metallic" min="0.0" max="1.0" step="0.02" value="0.08" />
-            </div>
-
-            <div class="editor-control-group">
-              <label>Custom Seat Interior Color</label>
-              <div class="color-picker-row">
-                <input type="color" id="input-seat-color" value="#8B4513" />
-                <span id="val-seat-hex">#8B4513</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Tab 3: Post-FX (Bloom, SSAO, Color Adjustments & Tonemapping) -->
-          <div class="editor-tab-content" id="tab-postfx">
-            <div class="editor-control-group">
-              <label>Headlight Bloom Mode</label>
-              <button id="btn-bloom-mode" class="fx-mode-btn">Headlight Only Bloom Active</button>
-            </div>
-
-            <div class="editor-control-group">
-              <label>Bloom Intensity: <span id="val-bloom-intensity">1.00</span></label>
-              <input type="range" id="input-bloom-intensity" min="0.0" max="10.0" step="0.1" value="1.00" />
-            </div>
-
-            <div class="editor-control-group">
-              <label>Bloom Radius: <span id="val-bloom-radius">0.40</span></label>
-              <input type="range" id="input-bloom-radius" min="0.00" max="1.00" step="0.01" value="0.40" />
-            </div>
-
-            <div class="editor-control-group">
-              <label>Bloom Threshold: <span id="val-bloom-threshold">0.74</span></label>
-              <input type="range" id="input-bloom-threshold" min="0.00" max="1.00" step="0.01" value="0.74" />
-            </div>
-
-            <div class="editor-control-group">
-              <label>SSAO Shadow Intensity: <span id="val-ssao-intensity">0.00</span></label>
-              <input type="range" id="input-ssao-intensity" min="0.0" max="5.0" step="0.1" value="0.00" />
-            </div>
-
-            <div class="editor-control-group">
-              <label>SSAO Radius: <span id="val-ssao-radius">0.05</span></label>
-              <input type="range" id="input-ssao-radius" min="0.05" max="1.0" step="0.01" value="0.05" />
-            </div>
-
-            <div class="editor-control-group">
-              <label>Color Contrast: <span id="val-contrast">0.00</span></label>
-              <input type="range" id="input-contrast" min="-0.5" max="1.0" step="0.01" value="0.00" />
-            </div>
-
-            <div class="editor-control-group">
-              <label>Color Saturation: <span id="val-saturation">0.00</span></label>
-              <input type="range" id="input-saturation" min="-1.0" max="1.0" step="0.01" value="0.00" />
-            </div>
-
-            <div class="editor-control-group">
-              <label>Color Brightness Offset: <span id="val-brightness">-0.03</span></label>
-              <input type="range" id="input-brightness" min="-0.5" max="0.5" step="0.01" value="-0.03" />
-            </div>
-
-            <div class="editor-control-group">
-              <label>Color Grading Tonemapping</label>
-              <select id="select-tonemapping" class="editor-select">
-                <option value="aces" selected>ACES Filmic</option>
-                <option value="commerce">Reinhard (Commerce)</option>
-                <option value="agx">AgX (Filmic 2)</option>
-                <option value="neutral">Neutral Studio</option>
-                <option value="linear">Linear / None</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Tab 4: Export Configuration -->
-          <div class="editor-tab-content" id="tab-export">
-            <p class="export-desc">Copy your live studio lighting & color settings as a JSON preset:</p>
-            <textarea id="export-json-text" class="export-textarea" readonly></textarea>
-            <button id="copy-json-btn" class="btn btn-primary btn-sm" style="width: 100%; margin-top: 10px;">📋 Copy Config JSON</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Vertical Tool Dock (VisionOS Liquid Glass Circular Disks) -->
-      <div class="studio-right-dock">
-        <!-- 1. Paint Color -->
-        <button id="dock-paint-btn" class="dock-btn" title="Paint Color">
-          <span class="dock-circle-disk">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6"></path><path d="m4.93 10.93 4.24 4.24"></path><path d="M2 18h6"></path><path d="M14.5 19.5 20 14l-4.5-4.5L10 15l4.5 4.5z"></path></svg>
-          </span>
-          <span class="dock-label">PAINT</span>
-        </button>
-
-        <!-- 2. Interior Color -->
-        <button id="dock-seat-btn" class="dock-btn" title="Interior Color">
-          <span class="dock-circle-disk">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13v-3a3 3 0 0 1 6 0v3"></path><path d="M5 13h14a2 2 0 0 1 2 2v3H3v-3a2 2 0 0 1 2-2z"></path><path d="M6 18v3"></path><path d="M18 18v3"></path></svg>
-          </span>
-          <span class="dock-label">INTERIOR</span>
-        </button>
-
-        <!-- 3. Wheel Options -->
-        <button id="dock-wheel-btn" class="dock-btn" title="Wheel Option">
-          <span class="dock-circle-disk">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle><line x1="12" y1="2" x2="12" y2="9"></line><line x1="12" y1="15" x2="12" y2="22"></line><line x1="2" y1="12" x2="9" y2="12"></line><line x1="15" y1="12" x2="22" y2="12"></line></svg>
-          </span>
-          <span class="dock-label">WHEELS</span>
-        </button>
-
-        <!-- 4. Doors Open -->
-        <button id="dock-door-btn" class="dock-btn" title="Door Open">
-          <span class="dock-circle-disk">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><circle cx="14" cy="12" r="1"></circle></svg>
-          </span>
-          <span class="dock-label">DOORS</span>
-        </button>
-
-        <!-- 5. Sliding Windows -->
-        <button id="dock-window-btn" class="dock-btn" title="Sliding Windows">
-          <span class="dock-circle-disk">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><line x1="4" y1="12" x2="20" y2="12"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
-          </span>
-          <span class="dock-label">WINDOWS</span>
-        </button>
-
-        <!-- 6. Lights On -->
-        <button id="dock-lights-btn" class="dock-btn" title="Lights On">
-          <span class="dock-circle-disk">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line></svg>
-          </span>
-          <span class="dock-label">LIGHTS</span>
-        </button>
-      </div>
-
-      <!-- Bottom Center Customizer Color Drawer -->
-      <div id="bottom-color-drawer" class="bottom-color-drawer">
-        <button id="close-drawer-btn" class="drawer-close-btn">&times;</button>
-
-        <div class="drawer-content-box">
-          <!-- Group 1: Official BMW Body Paint Colors -->
-          <div class="drawer-swatches-row scrollable-swatches" id="paint-swatches-group">
-            
-            <button class="color-card active" data-type="paint" data-color="#FDFDFD" data-price="0" data-name="Alpine White">
-              <span class="card-swatch-box" style="background-color: #FFFFFF; border: 1px solid #ddd;"></span>
-              <span class="card-label">Alpine White</span>
-              <span class="card-price">$0</span>
-            </button>
-
-            <button class="color-card" data-type="paint" data-color="#ECEEEF" data-price="0" data-name="Mineral White Metallic">
-              <span class="card-swatch-box" style="background-color: #ECEEEF; border: 1px solid #ddd;"></span>
-              <span class="card-label">Mineral White</span>
-              <span class="card-price">$0</span>
-            </button>
-            <button class="color-card" data-type="paint" data-color="#003B8C" data-price="0" data-name="Marina Bay Blue Metallic">
-              <span class="card-swatch-box" style="background-color: #003B8C;"></span>
-              <span class="card-label">Marina Bay Blue</span>
-              <span class="card-price">$0</span>
-            </button>
-            <button class="color-card" data-type="paint" data-color="#3B4E43" data-price="0" data-name="Manhattan Green Metallic">
-              <span class="card-swatch-box" style="background-color: #3B4E43;"></span>
-              <span class="card-label">Manhattan Green</span>
-              <span class="card-price">$0</span>
-            </button>
-            <button class="color-card" data-type="paint" data-color="#7E858C" data-price="0" data-name="Brooklyn Grey Metallic">
-              <span class="card-swatch-box" style="background-color: #7E858C;"></span>
-              <span class="card-label">Brooklyn Grey</span>
-              <span class="card-price">$0</span>
-            </button>
-            <button class="color-card" data-type="paint" data-color="#5A6065" data-price="0" data-name="Skyscraper Grey Metallic">
-              <span class="card-swatch-box" style="background-color: #5A6065;"></span>
-              <span class="card-label">Skyscraper Grey</span>
-              <span class="card-price">$0</span>
-            </button>
-            <button class="color-card" data-type="paint" data-color="#111722" data-price="0" data-name="Carbon Black Metallic">
-              <span class="card-swatch-box" style="background-color: #111722;"></span>
-              <span class="card-label">Carbon Black</span>
-              <span class="card-price">$0</span>
-            </button>
-            <button class="color-card" data-type="paint" data-color="#16181B" data-price="0" data-name="Black Sapphire Metallic">
-              <span class="card-swatch-box" style="background-color: #16181B;"></span>
-              <span class="card-label">Black Sapphire</span>
-              <span class="card-price">$0</span>
-            </button>
-
-            <button class="color-card" data-type="paint" data-color="#0F243E" data-price="1950" data-name="Tanzanite Blue II Metallic">
-              <span class="card-swatch-box" style="background-color: #0F243E;"></span>
-              <span class="card-label">Tanzanite Blue II</span>
-              <span class="card-price">+$1,950</span>
-            </button>
-            <button class="color-card" data-type="paint" data-color="#55585A" data-price="1950" data-name="Dravit Grey Metallic">
-              <span class="card-swatch-box" style="background-color: #55585A;"></span>
-              <span class="card-label">Dravit Grey</span>
-              <span class="card-price">+$1,950</span>
-            </button>
-            <button class="color-card" data-type="paint" data-color="#686C70" data-price="5000" data-name="Frozen Pure Grey Metallic">
-              <span class="card-swatch-box" style="background-color: #686C70;"></span>
-              <span class="card-label">Frozen Pure Grey</span>
-              <span class="card-price">+$5,000</span>
-            </button>
-            <button class="color-card" data-type="paint" data-color="#6C7075" data-price="5500" data-name="Nardo Grey">
-              <span class="card-swatch-box" style="background-color: #6C7075;"></span>
-              <span class="card-label">Nardo Grey</span>
-              <span class="card-price">+$5,500</span>
-            </button>
-
-            <button class="color-card" data-type="paint" data-color="#4D5257" data-price="5500" data-name="Grigio Telesto Pearl Metallic">
-              <span class="card-swatch-box" style="background-color: #4D5257;"></span>
-              <span class="card-label">Grigio Telesto</span>
-              <span class="card-price">+$5,500</span>
-            </button>
-            <button class="color-card" data-type="paint" data-color="#1B382B" data-price="5500" data-name="Oxford Green II Metallic">
-              <span class="card-swatch-box" style="background-color: #1B382B;"></span>
-              <span class="card-label">Oxford Green II</span>
-              <span class="card-price">+$5,500</span>
-            </button>
-            <button class="color-card" data-type="paint" data-color="#121315" data-price="5500" data-name="Frozen Black Metallic">
-              <span class="card-swatch-box" style="background-color: #121315;"></span>
-              <span class="card-label">Frozen Black</span>
-              <span class="card-price">+$5,500</span>
-            </button>
-            <button class="color-card" data-type="paint" data-color="#004225" data-price="5500" data-name="British Racing Green">
-              <span class="card-swatch-box" style="background-color: #004225;"></span>
-              <span class="card-label">British Racing</span>
-              <span class="card-price">+$5,500</span>
-            </button>
-
-          </div>
-
-          <!-- Group 2: Seat Interior Colors -->
-          <div class="drawer-swatches-row hide" id="seat-swatches-group">
-            <button class="color-card active" data-type="seat" data-color="#8B4513" data-name="Cognac Brown Leather">
-              <span class="card-swatch-box" style="background-color: #8B4513;"></span>
-              <span class="card-label">Brown Leather</span>
-            </button>
-            <button class="color-card" data-type="seat" data-color="#C5A059" data-name="Sensafin Beige Leather">
-              <span class="card-swatch-box" style="background-color: #C5A059;"></span>
-              <span class="card-label">Beige Leather</span>
-            </button>
-            <button class="color-card" data-type="seat" data-color="#1F2421" data-name="Black M Leather">
-              <span class="card-swatch-box" style="background-color: #1F2421;"></span>
-              <span class="card-label">Black Leather</span>
-            </button>
-            <button class="color-card" data-type="seat" data-color="#EAEAEA" data-name="Ivory White Sensafin">
-              <span class="card-swatch-box" style="background-color: #EAEAEA;"></span>
-              <span class="card-label">White Leather</span>
-            </button>
-          </div>
-
-          <!-- Group 3: Wheel Model Options -->
-          <div class="drawer-swatches-row hide" id="wheel-swatches-group">
-            <button class="color-card active" data-type="wheel" data-wheel="set1" data-name="BMW_inmx7m60i_Wheel_1">
-              <span class="card-swatch-box wheel-icon-preview">⚙️</span>
-              <span class="card-label">Option 1: M Double-Spoke</span>
-            </button>
-            <button class="color-card" data-type="wheel" data-wheel="set2" data-name="BMW_inmx7m60i_Wheel_2">
-              <span class="card-swatch-box wheel-icon-preview black-rim">☸️</span>
-              <span class="card-label">Option 2: V-Spoke Black</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="drawer-header-text">
-          <span class="dh-title" id="drawer-header-title">PAINT</span>
-          <span class="dh-subtitle" id="drawer-header-subtitle">COLOR</span>
-        </div>
-      </div>
-
-      <!-- Center Interactive 3D Model Viewer Wrapper -->
+      <!-- Interactive 3D Model Viewer Canvas -->
       <div id="model-viewer-wrapper" class="model-viewer-wrapper">
         <model-viewer
           id="bmw-viewer"
@@ -531,9 +135,9 @@
           environment-image="./assets/studio.hdr"
           camera-orbit="45deg 75deg 6m"
           field-of-view="35deg"
-          min-camera-orbit="auto auto 2.5m"
-          max-camera-orbit="auto auto 10m"
-          interaction-prompt="auto"
+          min-camera-orbit="auto auto 2.0m"
+          max-camera-orbit="auto auto 12m"
+          interaction-prompt="none"
         >
           <!-- Real Post-Processing Effect Composer (@google/model-viewer-effects) -->
           <effect-composer id="effect-composer" render-mode="quality">
@@ -545,7 +149,7 @@
 
           <!-- Loading Progress Slot -->
           <div slot="progress-bar" class="viewer-loader">
-            <div class="loader-spinner"></div>
+            <div class="m3-spinner"></div>
             <span>Loading 3D Studio Model...</span>
           </div>
 
@@ -555,56 +159,835 @@
             <div class="volumetric-beam beam-right"></div>
           </div>
 
-          <!-- Hotspot Pins -->
-          <button class="hotspot" slot="hotspot-grille" data-position="0m 0.7m 2.3m" data-normal="0m 0m 1m">
-            <div class="hotspot-pin"></div>
-            <div class="hotspot-card">
-              <h4>Illuminated Kidney Grille</h4>
-              <p>Cascade LED ambient lighting.</p>
+          <!-- Interactive 3D Hotspots -->
+          <button class="m3-hotspot liquid-glass-sheen" slot="hotspot-grille" data-position="0m 0.7m 2.3m" data-normal="0m 0m 1m">
+            <div class="hotspot-pulse"></div>
+            <div class="hotspot-popover liquid-glass-sheen">
+              <span class="popover-tag">ILLUMINATED GRILLE</span>
+              <h4>Cascade LED Iconic Glow</h4>
+              <p>Contour lighting integrated into the double kidney frame.</p>
             </div>
           </button>
 
-          <button class="hotspot" slot="hotspot-wheel" data-position="0.9m 0.45m 1.4m" data-normal="1m 0m 0m">
-            <div class="hotspot-pin"></div>
-            <div class="hotspot-card">
-              <h4>22" M Double-Spoke Wheels</h4>
-              <p>M Sport blue brake calipers.</p>
+          <button class="m3-hotspot liquid-glass-sheen" slot="hotspot-wheel" data-position="0.9m 0.45m 1.4m" data-normal="1m 0m 0m">
+            <div class="hotspot-pulse"></div>
+            <div class="hotspot-popover liquid-glass-sheen">
+              <span class="popover-tag">M PERFORMANCE</span>
+              <h4>22" M V-Spoke Jet Black</h4>
+              <p>Forged light alloy with M Sport braking system.</p>
             </div>
           </button>
 
-          <!-- AR Overlay Button -->
-          <button slot="ar-button" id="ar-trigger" class="ar-overlay-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-            <span>View in AR / Your Space</span>
-          </button>
+          <!-- Native AR Prompt Slot (Google Model Viewer Ground Floor Scanning Standard) -->
+          <div id="ar-prompt" slot="ar-prompt">
+            <div class="ar-prompt-card liquid-glass-sheen">
+              <div class="ar-hand-scan-animation">
+                <img src="https://modelviewer.dev/shared-assets/icons/hand.png" alt="Scan Ground Plane" class="ar-hand-icon" />
+              </div>
+              <div class="ar-prompt-text-group">
+                <span class="ar-prompt-badge">SCAN GROUND PLANE</span>
+                <p>Move your camera slowly across the floor to detect the ground surface, then tap to place BMW X7.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Native AR Button Slot -->
+          <button slot="ar-button" id="ar-trigger" style="display: none;">View in AR</button>
         </model-viewer>
       </div>
 
-      <!-- Bottom Studio Toolbar -->
-      <div class="studio-bottom-bar">
-        <div class="bottom-tools-left">
-          <button id="theme-toggle-btn" class="tool-circle-btn" title="Toggle Studio Background Theme">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+      <!-- ==========================================================================
+           Expandable Liquid Glass Spatial Canvas (Side-Sheet / Floating XR Spatial Card)
+           ========================================================================== -->
+      <aside id="m3-spatial-canvas" class="m3-spatial-canvas liquid-glass-sheen closed" aria-label="3D Configurator Canvas">
+        <div class="m3-canvas-drag-handle"></div>
+
+        <!-- Canvas Header -->
+        <div class="m3-canvas-header">
+          <div class="m3-canvas-title-group">
+            <span class="m3-canvas-badge" id="canvas-badge-text">EXTERIOR PAINTS</span>
+            <h3 class="m3-canvas-title" id="canvas-title-text">Paint & Finishes</h3>
+          </div>
+          <button id="close-spatial-canvas-btn" class="m3-icon-button liquid-glass-sheen" title="Close Canvas" aria-label="Close Canvas">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
-          <button id="toggle-autorotate-btn" class="tool-circle-btn" title="Toggle Auto Rotation">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
-          </button>
-          <!-- 3D Studio Editor Toggle Button -->
-          <button id="toggle-editor-btn" class="tool-circle-btn" title="Open 3D Studio Lighting & Material Editor">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-          </button>
-          <button id="toggle-fullscreen-btn" class="tool-circle-btn" title="Toggle Fullscreen View">⛶</button>
         </div>
 
-        <!-- Center VR/AR Pill Button -->
-        <button id="vr-ar-pill-btn" class="vr-pill-btn">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-          <span>WebXR / AR Studio</span>
-        </button>
+        <!-- Canvas Scrollable Body -->
+        <div class="m3-canvas-body">
 
-        <div class="bottom-tools-right">
-          <span class="studio-credit">BMW X7 3D Studio</span>
+          <!-- TAB 1: EXTERIOR PAINTS & FINISHES -->
+          <div class="m3-tab-panel" id="panel-exterior">
+            <!-- Filter Chips -->
+            <div class="m3-chip-scroll-row">
+              <button class="m3-filter-chip liquid-glass-sheen active" data-filter="all">All (16)</button>
+              <button class="m3-filter-chip liquid-glass-sheen" data-filter="non-metallic">Non-Metallic (2)</button>
+              <button class="m3-filter-chip liquid-glass-sheen" data-filter="metallic">Metallic (6)</button>
+              <button class="m3-filter-chip liquid-glass-sheen" data-filter="individual">BMW Individual (3)</button>
+              <button class="m3-filter-chip liquid-glass-sheen" data-filter="special">Special Order (5)</button>
+            </div>
+
+            <!-- Active Paint Banner -->
+            <div class="m3-selection-card liquid-glass-sheen">
+              <div class="m3-selection-info">
+                <span class="m3-selection-sub">SELECTED FINISH</span>
+                <h4 class="m3-selection-name" id="active-finish-title">Alpine White</h4>
+              </div>
+              <span class="m3-selection-price" id="active-finish-price">$0</span>
+            </div>
+
+            <!-- 16 Official Paint Swatch Cards -->
+            <div class="m3-swatches-grid" id="paint-swatches-grid">
+              
+              <!-- 1. Alpine White ($0) -->
+              <button class="m3-swatch-card liquid-glass-sheen active" data-type="paint" data-color="#FDFDFD" data-price="0" data-category="non-metallic" data-name="Alpine White">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #FFFFFF 0%, #E8EBF0 60%, #C0C5D0 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Alpine White</span>
+                  <span class="swatch-meta">Non-Metallic • $0</span>
+                </div>
+              </button>
+
+              <!-- 2. Mineral White Metallic ($0) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#ECEEEF" data-price="0" data-category="metallic" data-name="Mineral White Metallic">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #FFFFFF 0%, #DCE1E8 60%, #A4ABB8 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Mineral White</span>
+                  <span class="swatch-meta">Metallic • $0</span>
+                </div>
+              </button>
+
+              <!-- 3. Marina Bay Blue Metallic ($0) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#003B8C" data-price="0" data-category="metallic" data-name="Marina Bay Blue Metallic">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #3B72E8 0%, #003B8C 60%, #081D4D 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Marina Bay Blue</span>
+                  <span class="swatch-meta">Metallic • $0</span>
+                </div>
+              </button>
+
+              <!-- 4. Manhattan Green Metallic ($0) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#3B4E43" data-price="0" data-category="metallic" data-name="Manhattan Green Metallic">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #6A8272 0%, #3B4E43 60%, #1E2B24 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Manhattan Green</span>
+                  <span class="swatch-meta">Metallic • $0</span>
+                </div>
+              </button>
+
+              <!-- 5. Brooklyn Grey Metallic ($0) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#7E858C" data-price="0" data-category="metallic" data-name="Brooklyn Grey Metallic">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #B4BAC2 0%, #7E858C 60%, #4D5258 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Brooklyn Grey</span>
+                  <span class="swatch-meta">Metallic • $0</span>
+                </div>
+              </button>
+
+              <!-- 6. Skyscraper Grey Metallic ($0) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#5A6065" data-price="0" data-category="metallic" data-name="Skyscraper Grey Metallic">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #8B939B 0%, #5A6065 60%, #33383C 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Skyscraper Grey</span>
+                  <span class="swatch-meta">Metallic • $0</span>
+                </div>
+              </button>
+
+              <!-- 7. Carbon Black Metallic ($0) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#111722" data-price="0" data-category="metallic" data-name="Carbon Black Metallic">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #2A3852 0%, #111722 60%, #06090E 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Carbon Black</span>
+                  <span class="swatch-meta">Metallic • $0</span>
+                </div>
+              </button>
+
+              <!-- 8. Black Sapphire Metallic ($0) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#16181B" data-price="0" data-category="metallic" data-name="Black Sapphire Metallic">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #353A40 0%, #16181B 60%, #08090A 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Black Sapphire</span>
+                  <span class="swatch-meta">Metallic • $0</span>
+                </div>
+              </button>
+
+              <!-- 9. Tanzanite Blue II Metallic (+$1,950) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#0F243E" data-price="1950" data-category="individual" data-name="Tanzanite Blue II Metallic">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #234E82 0%, #0F243E 60%, #050E1A 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Tanzanite Blue II</span>
+                  <span class="swatch-meta">Individual • +$1,950</span>
+                </div>
+              </button>
+
+              <!-- 10. Dravit Grey Metallic (+$1,950) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#55585A" data-price="1950" data-category="individual" data-name="Dravit Grey Metallic">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #918C7E 0%, #55585A 60%, #292A2B 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Dravit Grey</span>
+                  <span class="swatch-meta">Individual • +$1,950</span>
+                </div>
+              </button>
+
+              <!-- 11. Frozen Pure Grey Metallic (+$5,000) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#686C70" data-price="5000" data-category="individual" data-name="Frozen Pure Grey Metallic">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #9CA2A8 0%, #686C70 60%, #414447 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Frozen Pure Grey</span>
+                  <span class="swatch-meta">Matte • +$5,000</span>
+                </div>
+              </button>
+
+              <!-- 12. Nardo Grey (+$5,500) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#6C7075" data-price="5500" data-category="special" data-name="Nardo Grey">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #9DA3AA 0%, #6C7075 60%, #464A4E 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Nardo Grey</span>
+                  <span class="swatch-meta">Special • +$5,500</span>
+                </div>
+              </button>
+
+              <!-- 13. Grigio Telesto (+$5,500) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#4D5257" data-price="5500" data-category="special" data-name="Grigio Telesto Pearl Metallic">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #7C838A 0%, #4D5257 60%, #2A2C2E 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Grigio Telesto</span>
+                  <span class="swatch-meta">Special • +$5,500</span>
+                </div>
+              </button>
+
+              <!-- 14. Oxford Green II (+$5,500) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#1B382B" data-price="5500" data-category="special" data-name="Oxford Green II Metallic">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #386953 0%, #1B382B 60%, #0B1912 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Oxford Green II</span>
+                  <span class="swatch-meta">Special • +$5,500</span>
+                </div>
+              </button>
+
+              <!-- 15. Frozen Black Metallic (+$5,500) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#121315" data-price="5500" data-category="special" data-name="Frozen Black Metallic">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #2D3035 0%, #121315 60%, #060707 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">Frozen Black</span>
+                  <span class="swatch-meta">Matte • +$5,500</span>
+                </div>
+              </button>
+
+              <!-- 16. British Racing Green (+$5,500) -->
+              <button class="m3-swatch-card liquid-glass-sheen" data-type="paint" data-color="#004225" data-price="5500" data-category="special" data-name="British Racing Green">
+                <span class="m3-swatch-orb" style="background: radial-gradient(circle at 35% 35%, #0A7343 0%, #004225 60%, #001F11 100%);"></span>
+                <div class="m3-swatch-details">
+                  <span class="swatch-name">British Racing</span>
+                  <span class="swatch-meta">Special • +$5,500</span>
+                </div>
+              </button>
+
+            </div>
+          </div>
+
+          <!-- TAB 2: WHEELS & RIMS -->
+          <div class="m3-tab-panel" id="panel-wheels">
+            <div class="m3-selection-card liquid-glass-sheen">
+              <div class="m3-selection-info">
+                <span class="m3-selection-sub">SELECTED WHEEL OPTION</span>
+                <h4 class="m3-selection-name" id="active-wheel-title">19" Tempest Wheels - Silver</h4>
+              </div>
+              <span class="m3-selection-price">Standard</span>
+            </div>
+
+            <div class="m3-visual-cards-grid">
+              <!-- Wheel 1: Tempest Silver (Default Active) -->
+              <button class="m3-visual-card liquid-glass-sheen active" data-type="wheel" data-wheel="set1" data-name="19&quot; Tempest Wheels - Silver">
+                <div class="m3-card-media">
+                  <svg class="m3-wheel-svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" fill="#1e2229" stroke="#5a6373" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="41" fill="#2a303a" stroke="#9aa3b3" stroke-width="1.5"/>
+                    <path d="M 50 14 L 50 86 M 14 50 L 86 50 M 24 24 L 76 76 M 24 76 L 76 24 M 32 17 L 68 83 M 17 32 L 83 68 M 68 17 L 32 83 M 83 32 L 17 68" stroke="#e1e6f0" stroke-width="3.2" stroke-linecap="round"/>
+                    <circle cx="50" cy="50" r="14" fill="#252b36" stroke="#ffffff" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="7" fill="#8d97a8"/>
+                  </svg>
+                </div>
+                <div class="m3-card-info">
+                  <span class="m3-card-title">19" Tempest Wheels</span>
+                  <span class="m3-card-desc">Silver Precision Machined</span>
+                </div>
+              </button>
+
+              <!-- Wheel 2: Tempest Black -->
+              <button class="m3-visual-card liquid-glass-sheen" data-type="wheel" data-wheel="set2" data-name="19&quot; Tempest Wheels - Black">
+                <div class="m3-card-media">
+                  <svg class="m3-wheel-svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" fill="#15171a" stroke="#2c3038" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="41" fill="#1b1e23" stroke="#3d434e" stroke-width="1.5"/>
+                    <circle cx="50" cy="50" r="30" fill="none" stroke="#252930" stroke-width="4"/>
+                    <path d="M 50 14 L 50 86 M 14 50 L 86 50 M 24 24 L 76 76 M 24 76 L 76 24 M 32 17 L 68 83 M 17 32 L 83 68 M 68 17 L 32 83 M 83 32 L 17 68" stroke="#353b45" stroke-width="3.5" stroke-linecap="round"/>
+                    <circle cx="50" cy="50" r="12" fill="#0f1114" stroke="#484f5c" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="6" fill="#20242b"/>
+                  </svg>
+                </div>
+                <div class="m3-card-info">
+                  <span class="m3-card-title">19" Tempest Wheels</span>
+                  <span class="m3-card-desc">Jet Black Satin Performance</span>
+                </div>
+              </button>
+
+              <!-- Wheel 3: Arachnid Black -->
+              <button class="m3-visual-card liquid-glass-sheen" data-type="wheel" data-wheel="set2" data-name="22&quot; M V-Spoke Arachnid - Black">
+                <div class="m3-card-media">
+                  <svg class="m3-wheel-svg" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="46" fill="#101215" stroke="#252932" stroke-width="3"/>
+                    <circle cx="50" cy="50" r="41" fill="#181b20" stroke="#363c47" stroke-width="1.5"/>
+                    <path d="M 50 15 L 50 35 M 50 65 L 50 85 M 15 50 L 35 50 M 65 50 L 85 50 M 26 26 L 40 40 M 60 60 L 74 74 M 26 74 L 40 60 M 60 40 L 74 26" stroke="#4a5260" stroke-width="4.5" stroke-linecap="round"/>
+                    <path d="M 40 40 L 50 50 M 60 60 L 50 50 M 40 60 L 50 50 M 60 40 L 50 50" stroke="#60697a" stroke-width="3" stroke-linecap="round"/>
+                    <circle cx="50" cy="50" r="13" fill="#0d0e11" stroke="#3d4450" stroke-width="2"/>
+                    <circle cx="50" cy="50" r="6" fill="#1f232a"/>
+                  </svg>
+                </div>
+                <div class="m3-card-info">
+                  <span class="m3-card-title">22" M V-Spoke Wheels</span>
+                  <span class="m3-card-desc">High Gloss Carbon Black</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB 3: INTERIOR CABIN & UPHOLSTERY -->
+          <div class="m3-tab-panel" id="panel-interior">
+            <div class="m3-selection-card liquid-glass-sheen">
+              <div class="m3-selection-info">
+                <span class="m3-selection-sub">SELECTED UPHOLSTERY</span>
+                <h4 class="m3-selection-name" id="active-interior-title">Cognac Brown Leather</h4>
+              </div>
+              <span class="m3-selection-price">Included</span>
+            </div>
+
+            <div class="m3-visual-cards-grid">
+              <!-- Seat 1: Cognac Brown (Default Active) -->
+              <button class="m3-visual-card liquid-glass-sheen active" data-type="seat" data-color="#8B4513" data-name="Cognac Brown Leather">
+                <div class="m3-card-media">
+                  <svg class="m3-seat-svg" viewBox="0 0 100 130">
+                    <path d="M28 85 C22 88, 18 100, 22 110 C26 118, 74 118, 78 110 C82 100, 78 88, 72 85 Z" fill="#8B4513" stroke="#A65B20" stroke-width="2.5"/>
+                    <rect x="22" y="102" width="56" height="12" rx="4" fill="#2a1a10" stroke="#4a2a16" stroke-width="1.5"/>
+                    <path d="M30 84 C26 70, 24 45, 34 26 C38 18, 62 18, 66 26 C76 45, 74 70, 70 84 Z" fill="#9C521C" stroke="#B86629" stroke-width="2.5"/>
+                    <path d="M37 78 C35 62, 36 40, 42 30 C45 25, 55 25, 58 30 C64 40, 65 62, 63 78 Z" fill="#8B4513" stroke="#70360D" stroke-width="1.5"/>
+                    <path d="M40 22 C38 14, 40 8, 50 8 C60 8, 62 14, 60 22 Z" fill="#9C521C" stroke="#B86629" stroke-width="2"/>
+                  </svg>
+                </div>
+                <div class="m3-card-info">
+                  <span class="m3-card-title">Cognac Brown</span>
+                  <span class="m3-card-desc">Extended Merino Leather</span>
+                </div>
+              </button>
+
+              <!-- Seat 2: Sensafin Beige -->
+              <button class="m3-visual-card liquid-glass-sheen" data-type="seat" data-color="#C5A059" data-name="Sensafin Beige Leather">
+                <div class="m3-card-media">
+                  <svg class="m3-seat-svg" viewBox="0 0 100 130">
+                    <path d="M28 85 C22 88, 18 100, 22 110 C26 118, 74 118, 78 110 C82 100, 78 88, 72 85 Z" fill="#E8D5B7" stroke="#C7B293" stroke-width="2.5"/>
+                    <rect x="22" y="102" width="56" height="12" rx="4" fill="#2a2520" stroke="#423b33" stroke-width="1.5"/>
+                    <path d="M30 84 C26 70, 24 45, 34 26 C38 18, 62 18, 66 26 C76 45, 74 70, 70 84 Z" fill="#F2E3CA" stroke="#D1BEA1" stroke-width="2.5"/>
+                    <path d="M37 78 C35 62, 36 40, 42 30 C45 25, 55 25, 58 30 C64 40, 65 62, 63 78 Z" fill="#E2CFB0" stroke="#BDAB8C" stroke-width="1.5"/>
+                    <path d="M40 22 C38 14, 40 8, 50 8 C60 8, 62 14, 60 22 Z" fill="#EFE0C6" stroke="#CCA788" stroke-width="2"/>
+                  </svg>
+                </div>
+                <div class="m3-card-info">
+                  <span class="m3-card-title">Sensafin Beige</span>
+                  <span class="m3-card-desc">Luxury Executive Perforated</span>
+                </div>
+              </button>
+
+              <!-- Seat 3: Black M Leather -->
+              <button class="m3-visual-card liquid-glass-sheen" data-type="seat" data-color="#1F2421" data-name="Black M Leather">
+                <div class="m3-card-media">
+                  <svg class="m3-seat-svg" viewBox="0 0 100 130">
+                    <path d="M28 85 C22 88, 18 100, 22 110 C26 118, 74 118, 78 110 C82 100, 78 88, 72 85 Z" fill="#181a1d" stroke="#353b45" stroke-width="2.5"/>
+                    <rect x="22" y="102" width="56" height="12" rx="4" fill="#0f1114" stroke="#252932" stroke-width="1.5"/>
+                    <path d="M30 84 C26 70, 24 45, 34 26 C38 18, 62 18, 66 26 C76 45, 74 70, 70 84 Z" fill="#22262c" stroke="#3d4452" stroke-width="2.5"/>
+                    <path d="M37 78 C35 62, 36 40, 42 30 C45 25, 55 25, 58 30 C64 40, 65 62, 63 78 Z" fill="#181a1d" stroke="#2d333e" stroke-width="1.5"/>
+                    <path d="M40 22 C38 14, 40 8, 50 8 C60 8, 62 14, 60 22 Z" fill="#1a1d22" stroke="#3f4756" stroke-width="2"/>
+                  </svg>
+                </div>
+                <div class="m3-card-info">
+                  <span class="m3-card-title">Black M Sport</span>
+                  <span class="m3-card-desc">Individual Extended Merino</span>
+                </div>
+              </button>
+
+              <!-- Seat 4: Ivory White Sensafin -->
+              <button class="m3-visual-card liquid-glass-sheen" data-type="seat" data-color="#EAEAEA" data-name="Ivory White Sensafin">
+                <div class="m3-card-media">
+                  <svg class="m3-seat-svg" viewBox="0 0 100 130">
+                    <path d="M28 85 C22 88, 18 100, 22 110 C26 118, 74 118, 78 110 C82 100, 78 88, 72 85 Z" fill="#F0F2F5" stroke="#C5CDD9" stroke-width="2.5"/>
+                    <rect x="22" y="102" width="56" height="12" rx="4" fill="#1c2026" stroke="#333842" stroke-width="1.5"/>
+                    <path d="M30 84 C26 70, 24 45, 34 26 C38 18, 62 18, 66 26 C76 45, 74 70, 70 84 Z" fill="#FFFFFF" stroke="#CCD4E0" stroke-width="2.5"/>
+                    <path d="M37 78 C35 62, 36 40, 42 30 C45 25, 55 25, 58 30 C64 40, 65 62, 63 78 Z" fill="#E8ECF2" stroke="#B8C2D1" stroke-width="1.5"/>
+                    <path d="M40 22 C38 14, 40 8, 50 8 C60 8, 62 14, 60 22 Z" fill="#F5F7FA" stroke="#C8D0DC" stroke-width="2"/>
+                  </svg>
+                </div>
+                <div class="m3-card-info">
+                  <span class="m3-card-title">Ivory White</span>
+                  <span class="m3-card-desc">Sky Lounge Luxury Trim</span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB 4: INTERACTIVE MECHANICS & SPECS HUD -->
+          <div class="m3-tab-panel" id="panel-mechanics">
+            <span class="m3-section-label">INTERACTIVE MECHANICS</span>
+            
+            <div class="m3-action-switch-list">
+              <!-- Doors Toggle -->
+              <div class="m3-switch-card liquid-glass-sheen">
+                <div class="m3-switch-icon-box">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><circle cx="14" cy="12" r="1"></circle></svg>
+                </div>
+                <div class="m3-switch-text">
+                  <span class="switch-title">Vehicle Doors</span>
+                  <span class="switch-desc">Smooth opening kinematic animation</span>
+                </div>
+                <button id="toggle-doors-btn" class="m3-toggle-button liquid-glass-sheen" aria-pressed="false">
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </button>
+              </div>
+
+              <!-- Power Windows Toggle -->
+              <div class="m3-switch-card liquid-glass-sheen">
+                <div class="m3-switch-icon-box">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><line x1="4" y1="12" x2="20" y2="12"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+                </div>
+                <div class="m3-switch-text">
+                  <span class="switch-title">Power Windows</span>
+                  <span class="switch-desc">Roll front & rear window glass</span>
+                </div>
+                <button id="toggle-windows-btn" class="m3-toggle-button liquid-glass-sheen" aria-pressed="false">
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </button>
+              </div>
+
+              <!-- Lights & Glow Toggle -->
+              <div class="m3-switch-card liquid-glass-sheen">
+                <div class="m3-switch-icon-box">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line></svg>
+                </div>
+                <div class="m3-switch-text">
+                  <span class="switch-title">Matrix LED Lights</span>
+                  <span class="switch-desc">Emissive glow & volumetric beams</span>
+                </div>
+                <button id="toggle-lights-btn" class="m3-toggle-button liquid-glass-sheen" aria-pressed="false">
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Performance Specs HUD Grid -->
+            <span class="m3-section-label" style="margin-top: 24px;">TECHNICAL SPECIFICATIONS</span>
+            <div class="m3-specs-grid">
+              <div class="m3-spec-tile liquid-glass-sheen">
+                <span class="spec-tile-num">523 <small>HP</small></span>
+                <span class="spec-tile-lbl">HORSEPOWER</span>
+              </div>
+              <div class="m3-spec-tile liquid-glass-sheen">
+                <span class="spec-tile-num">553 <small>LB-FT</small></span>
+                <span class="spec-tile-lbl">TORQUE</span>
+              </div>
+              <div class="m3-spec-tile liquid-glass-sheen">
+                <span class="spec-tile-num">4.5 <small>SEC</small></span>
+                <span class="spec-tile-lbl">0-60 MPH</span>
+              </div>
+              <div class="m3-spec-tile liquid-glass-sheen">
+                <span class="spec-tile-num">155 <small>MPH</small></span>
+                <span class="spec-tile-lbl">TOP SPEED</span>
+              </div>
+              <div class="m3-spec-tile liquid-glass-sheen">
+                <span class="spec-tile-num">4.4L <small>V8</small></span>
+                <span class="spec-tile-lbl">TWINPOWER TURBO</span>
+              </div>
+              <div class="m3-spec-tile liquid-glass-sheen">
+                <span class="spec-tile-num">7 <small>SEATS</small></span>
+                <span class="spec-tile-lbl">CAPACITY</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 5: 3D STUDIO PRO LAB (PBR & POST-FX) -->
+          <div class="m3-tab-panel" id="panel-studio">
+            <!-- Studio Sub-Navigation -->
+            <div class="m3-subtabs-row liquid-glass-sheen">
+              <button class="m3-subtab-btn active" data-subtab="lighting">💡 Lighting</button>
+              <button class="m3-subtab-btn" data-subtab="materials">🎨 Materials</button>
+              <button class="m3-subtab-btn" data-subtab="postfx">✨ Post-FX</button>
+              <button class="m3-subtab-btn" data-subtab="export">💾 Presets</button>
+            </div>
+
+            <!-- Subtab 1: Lighting -->
+            <div class="m3-subtab-content active" id="subtab-lighting">
+              <div class="m3-control-group">
+                <label>Scene Light Exposure: <span id="val-exposure">1.10</span></label>
+                <input type="range" id="input-exposure" min="0.5" max="3.0" step="0.05" value="1.10" class="m3-slider" />
+              </div>
+
+              <div class="m3-control-group">
+                <label>Shadow Intensity: <span id="val-shadow-intensity">1.50</span></label>
+                <input type="range" id="input-shadow-intensity" min="0.0" max="3.0" step="0.1" value="1.5" class="m3-slider" />
+              </div>
+
+              <div class="m3-control-group">
+                <label>Shadow Softness: <span id="val-shadow-softness">0.30</span></label>
+                <input type="range" id="input-shadow-softness" min="0.0" max="1.0" step="0.05" value="0.3" class="m3-slider" />
+              </div>
+
+              <div class="m3-control-group">
+                <label>Environment HDRI Map</label>
+                <select id="select-hdri" class="m3-select">
+                  <option value="./assets/studio.hdr" selected>Standard Automotive Studio</option>
+                  <option value="./assets/studio_5point.hdr">5-Point Studio Lighting (Rim & Overhead)</option>
+                  <option value="neutral">Neutral Soft Studio</option>
+                  <option value="legacy">High Contrast Ambient</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Subtab 2: Marmoset Material Inspector -->
+            <div class="m3-subtab-content" id="subtab-materials">
+              <div class="mat-browser-header">
+                <div class="mat-search-row">
+                  <input type="text" id="mat-search-input" class="m3-input" placeholder="🔍 Search 38+ materials..." />
+                  <button id="btn-viewport-picker" class="m3-btn m3-btn-tonal" title="Click car part in 3D viewport to inspect material">
+                    <span>🎯 Pick Part</span>
+                  </button>
+                </div>
+
+                <div class="m3-chip-scroll-row" id="mat-filter-pills" style="margin-top: 10px;">
+                  <button class="m3-filter-chip liquid-glass-sheen active" data-category="all">All (38)</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-category="lights">💡 Lights (14)</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-category="body">🚗 Body</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-category="interior">💺 Interior</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-category="glass">🪟 Glass</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-category="wheels">🛞 Wheels</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-category="trim">✨ Trims</button>
+                </div>
+
+                <!-- Sphere Previews Carousel -->
+                <div class="mat-sphere-carousel" id="mat-sphere-carousel"></div>
+
+                <!-- Active Material Header -->
+                <div class="mat-active-banner-card liquid-glass-sheen">
+                  <div class="mat-banner-top">
+                    <div class="mat-banner-info">
+                      <div class="mat-banner-pill-row">
+                        <span class="mat-active-tag" id="mat-active-cat-tag">BODY COMPONENT</span>
+                        <span class="mat-active-count" id="mat-mesh-count-tag">1 linked mesh</span>
+                      </div>
+                      <h4 class="mat-active-title" id="mat-active-title">🚘 Exterior Body Shell & Hood</h4>
+                      <p class="mat-active-desc" id="mat-active-desc">Main outer painted bodywork.</p>
+                    </div>
+                  </div>
+                  <div class="m3-control-group" style="margin-top: 12px;">
+                    <label for="select-active-material">Active Material Component:</label>
+                    <select id="select-active-material" class="m3-select"></select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 1-Click Presets -->
+              <div class="mat-presets-bar">
+                <span class="mat-presets-lbl">1-Click Presets:</span>
+                <div class="m3-chip-scroll-row">
+                  <button class="m3-filter-chip liquid-glass-sheen" data-preset="gloss_paint">✨ High Gloss</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-preset="matte_paint">🏎️ Matte Satin</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-preset="carbon_fiber">🏁 Carbon Fiber</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-preset="chrome">🪞 Mirror Chrome</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-preset="leather">💺 Nappa Leather</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-preset="glass">🕶️ Tinted Glass</button>
+                </div>
+              </div>
+
+              <!-- Shader Type -->
+              <div class="m3-control-group">
+                <label for="select-material-type">Material Shader Type</label>
+                <select id="select-material-type" class="m3-select">
+                  <option value="MeshPhysicalMaterial" selected>MeshPhysicalMaterial (Full PBR Clearcoat)</option>
+                  <option value="MeshStandardMaterial">MeshStandardMaterial (Standard Metallic-Roughness)</option>
+                  <option value="MeshPhongMaterial">MeshPhongMaterial (Specular & Shininess)</option>
+                  <option value="MeshLambertMaterial">MeshLambertMaterial (Non-shiny Diffuse)</option>
+                  <option value="MeshToonMaterial">MeshToonMaterial (Cel-Shaded Comic)</option>
+                  <option value="MeshNormalMaterial">MeshNormalMaterial (RGB Surface Normals)</option>
+                  <option value="MeshBasicMaterial">MeshBasicMaterial (Unlit Flat Color)</option>
+                </select>
+                <label class="m3-checkbox-label" style="margin-top: 8px;">
+                  <input type="checkbox" id="mat-transfer-props" checked />
+                  <span>Preserve textures & colors during shader swap</span>
+                </label>
+              </div>
+
+              <!-- Marmoset Accordions -->
+              <div class="marmoset-accordions" id="marmoset-accordions">
+                
+                <!-- Albedo -->
+                <details class="m3-accordion" id="group-albedo" open>
+                  <summary class="m3-accordion-summary">
+                    <span>🎨 Albedo & Base Color</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group">
+                      <label>Color Tint</label>
+                      <div class="color-picker-row">
+                        <input type="color" id="mat-color-picker" value="#FFFFFF" />
+                        <input type="text" id="mat-color-hex" class="m3-input" value="#FFFFFF" maxlength="7" />
+                      </div>
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Opacity: <span id="val-mat-opacity">1.00</span></label>
+                      <input type="range" id="input-mat-opacity" min="0" max="1" step="0.01" value="1.0" class="m3-slider" />
+                    </div>
+                  </div>
+                </details>
+
+                <!-- Roughness & Metalness -->
+                <details class="m3-accordion" id="group-microsurface" open>
+                  <summary class="m3-accordion-summary">
+                    <span>✨ Roughness & Metalness</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group" id="ctrl-roughness">
+                      <label>Roughness: <span id="val-mat-roughness">0.12</span></label>
+                      <input type="range" id="input-mat-roughness" min="0" max="1" step="0.01" value="0.12" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group" id="ctrl-metalness">
+                      <label>Metallic Factor: <span id="val-mat-metalness">0.08</span></label>
+                      <input type="range" id="input-mat-metalness" min="0" max="1" step="0.01" value="0.08" class="m3-slider" />
+                    </div>
+                  </div>
+                </details>
+
+                <!-- Clearcoat -->
+                <details class="m3-accordion" id="group-clearcoat">
+                  <summary class="m3-accordion-summary">
+                    <span>🚗 Clearcoat Lacquer</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group">
+                      <label>Clearcoat Intensity: <span id="val-mat-clearcoat">0.00</span></label>
+                      <input type="range" id="input-mat-clearcoat" min="0" max="1" step="0.01" value="0.0" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Clearcoat Roughness: <span id="val-clearcoat-roughness">0.00</span></label>
+                      <input type="range" id="input-clearcoat-roughness" min="0" max="1" step="0.01" value="0.0" class="m3-slider" />
+                    </div>
+                  </div>
+                </details>
+
+                <!-- Emission -->
+                <details class="m3-accordion" id="group-emission">
+                  <summary class="m3-accordion-summary">
+                    <span>💡 Light Bulb Emission</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group">
+                      <label>Emissive Color</label>
+                      <div class="color-picker-row">
+                        <input type="color" id="mat-emissive-picker" value="#000000" />
+                        <input type="text" id="mat-emissive-hex" class="m3-input" value="#000000" maxlength="7" />
+                      </div>
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Emissive Intensity: <span id="val-mat-emissive-intensity">0.00</span></label>
+                      <input type="range" id="input-mat-emissive-intensity" min="0" max="10" step="0.1" value="0.0" class="m3-slider" />
+                    </div>
+                  </div>
+                </details>
+
+              </div>
+
+              <!-- Footer Actions -->
+              <div class="mat-footer-actions">
+                <button id="btn-reset-single-mat" class="m3-btn m3-btn-tonal m3-btn-sm">🔄 Reset</button>
+                <button id="btn-reset-all-mats" class="m3-btn m3-btn-tonal m3-btn-sm m3-btn-danger">⚠️ Reset All</button>
+                <button id="btn-copy-mat-json" class="m3-btn m3-btn-primary m3-btn-sm">📋 Copy JSON</button>
+              </div>
+            </div>
+
+            <!-- Subtab 3: Post-FX -->
+            <div class="m3-subtab-content" id="subtab-postfx">
+              <div class="m3-control-group">
+                <label>Selective Bloom Mode</label>
+                <button id="btn-bloom-mode" class="m3-btn m3-btn-tonal" style="width: 100%;">Headlight Only Bloom Active</button>
+              </div>
+
+              <div class="m3-control-group">
+                <label>Bloom Intensity: <span id="val-bloom-intensity">1.00</span></label>
+                <input type="range" id="input-bloom-intensity" min="0.0" max="10.0" step="0.1" value="1.00" class="m3-slider" />
+              </div>
+
+              <div class="m3-control-group">
+                <label>Bloom Radius: <span id="val-bloom-radius">0.40</span></label>
+                <input type="range" id="input-bloom-radius" min="0.00" max="1.00" step="0.01" value="0.40" class="m3-slider" />
+              </div>
+
+              <div class="m3-control-group">
+                <label>Bloom Threshold: <span id="val-bloom-threshold">0.74</span></label>
+                <input type="range" id="input-bloom-threshold" min="0.00" max="1.00" step="0.01" value="0.74" class="m3-slider" />
+              </div>
+
+              <div class="m3-control-group">
+                <label>SSAO Shadow Intensity: <span id="val-ssao-intensity">0.00</span></label>
+                <input type="range" id="input-ssao-intensity" min="0.0" max="5.0" step="0.1" value="0.00" class="m3-slider" />
+              </div>
+
+              <div class="m3-control-group">
+                <label>Color Grading Tonemapping</label>
+                <select id="select-tonemapping" class="m3-select">
+                  <option value="aces" selected>ACES Filmic</option>
+                  <option value="commerce">Reinhard (Commerce)</option>
+                  <option value="agx">AgX (Filmic 2)</option>
+                  <option value="neutral">Neutral Studio</option>
+                  <option value="linear">Linear / None</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Subtab 4: Presets Export/Import -->
+            <div class="m3-subtab-content" id="subtab-export">
+              <p class="export-desc">Copy active 3D studio lighting & material configuration as JSON:</p>
+              <textarea id="export-json-text" class="m3-textarea" readonly></textarea>
+              <button id="copy-json-btn" class="m3-btn m3-btn-primary" style="width: 100%; margin-top: 10px;">📋 Copy Config JSON</button>
+
+              <hr class="m3-divider" />
+
+              <p class="export-desc">Import custom preset JSON:</p>
+              <textarea id="import-json-text" class="m3-textarea" placeholder="Paste custom configuration JSON here..."></textarea>
+              <button id="apply-import-json-btn" class="m3-btn m3-btn-tonal" style="width: 100%; margin-top: 10px;">📥 Apply Preset</button>
+            </div>
+
+          </div>
+
         </div>
+      </aside>
+
+      <!-- ==========================================================================
+           Collapsible Liquid Glass Navigation System (Central Morphing Trigger)
+           ========================================================================== -->
+      <div id="m3-dock-wrapper" class="m3-dock-wrapper is-collapsed">
+        
+        <!-- Central Floating Launcher Group (Customize + View in AR) -->
+        <div class="dock-launcher-group">
+          <!-- Central Customize Trigger Button -->
+          <button id="dock-collapse-trigger" class="dock-launcher-btn liquid-glass-sheen" title="Toggle 3D Studio Configurator" aria-label="Toggle Controls">
+            <div class="launcher-icon-wrapper">
+              <!-- Exact Match: Car + Gear Settings Icon from Reference Image -->
+              <svg class="icon-car-gear" width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                <!-- Car Roof & Left Pillar -->
+                <path d="M5.5 13V8.5A2.5 2.5 0 0 1 8 6h7.5" />
+                <!-- Gear Cog on Top Right -->
+                <g transform="translate(19.5, 6.5)">
+                  <circle cx="0" cy="0" r="2.2" stroke-width="2.2" />
+                  <path d="M0 -4.2v1 M0 3.2v1 M-4.2 0h1 M3.2 0h1 M-2.9 -2.9l.8.8 M2.1 2.1l.8.8 M-2.9 2.9l.8-.8 M2.1 -2.1l.8-.8" stroke-width="2" />
+                </g>
+                <!-- Front Facia / Grille Frame -->
+                <rect x="3.5" y="13" width="21" height="9.5" rx="1.8" stroke-width="2.4" />
+                <!-- Headlights -->
+                <circle cx="8" cy="17.8" r="1.6" fill="currentColor" stroke="none" />
+                <circle cx="20" cy="17.8" r="1.6" fill="currentColor" stroke="none" />
+                <!-- Lower Wheels / Stands -->
+                <path d="M6 22.5v2.8M22 22.5v2.8" stroke-width="2.6" />
+              </svg>
+            </div>
+            <span class="launcher-label">Customize</span>
+          </button>
+
+          <!-- Augmented Reality (AR) Button on the Right Side -->
+          <button id="dock-ar-trigger-btn" class="dock-launcher-btn dock-ar-btn liquid-glass-sheen" title="View in Augmented Reality (Google ARCore / WebXR)" aria-label="View in Augmented Reality">
+            <div class="launcher-icon-wrapper">
+              <!-- Spatial AR Floor Plane Reticle & 3D Cube SVG -->
+              <svg class="icon-ar-spatial" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+            </div>
+            <span class="launcher-label">View in AR</span>
+          </button>
+        </div>
+
+        <!-- All-in-One Liquid Glass Dock Bar -->
+        <nav class="liquid-glass-dock-single liquid-glass-sheen" id="m3-spatial-deck" aria-label="3D Studio Navigation Dock">
+          
+          <!-- Left Section: Camera Perspectives Segment -->
+          <div class="deck-camera-segment" id="m3-segmented-camera">
+            <div class="liquid-seg-slider" id="liquid-seg-slider"></div>
+            <button class="m3-seg-btn active" data-cam="front" title="Front 3/4 Perspective">Front</button>
+            <button class="m3-seg-btn" data-cam="side" title="Side Profile">Side</button>
+            <button class="m3-seg-btn" data-cam="cabin" title="Cabin POV">Cabin</button>
+            <button class="m3-seg-btn" data-cam="rear" title="Rear 3/4">Rear</button>
+          </div>
+
+          <div class="deck-vertical-divider"></div>
+
+          <!-- Center Section: 5 Core Configurator Tabs (Vertical Icon + Label Stack, Center Aligned) -->
+          <div class="deck-tabs-wrapper" id="deck-tabs-wrapper">
+            <div class="liquid-tab-slider" id="liquid-tab-slider"></div>
+            <div class="m3-deck-tabs" id="m3-deck-tabs">
+              
+              <button class="m3-deck-tab" data-tab="exterior" title="Exterior Paint & Finishes">
+                <div class="dock-tab-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                </div>
+                <span class="m3-tab-label">Exterior</span>
+              </button>
+
+              <button class="m3-deck-tab" data-tab="wheels" title="Wheels & Rims">
+                <div class="dock-tab-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle><line x1="12" y1="2" x2="12" y2="9"></line><line x1="12" y1="15" x2="12" y2="22"></line><line x1="2" y1="12" x2="9" y2="12"></line><line x1="15" y1="12" x2="22" y2="12"></line></svg>
+                </div>
+                <span class="m3-tab-label">Wheels</span>
+              </button>
+
+              <button class="m3-deck-tab" data-tab="interior" title="Interior Cabin & Leather">
+                <div class="dock-tab-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13v-3a3 3 0 0 1 6 0v3"></path><path d="M5 13h14a2 2 0 0 1 2 2v3H3v-3a2 2 0 0 1 2-2z"></path><path d="M6 18v3"></path><path d="M18 18v3"></path></svg>
+                </div>
+                <span class="m3-tab-label">Interior</span>
+              </button>
+
+              <button class="m3-deck-tab" data-tab="mechanics" title="Doors, Lights & Specs">
+                <div class="dock-tab-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                </div>
+                <span class="m3-tab-label">Mechanics</span>
+              </button>
+
+              <button class="m3-deck-tab" data-tab="studio" title="3D Studio Lab & Materials">
+                <div class="dock-tab-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </div>
+                <span class="m3-tab-label">Studio</span>
+              </button>
+
+            </div>
+          </div>
+
+          <div class="deck-vertical-divider"></div>
+
+          <!-- Right Section: Quick Utility Tools & Collapse Button -->
+          <div class="deck-utils-segment">
+            <button id="theme-toggle-btn" class="m3-icon-button" title="Toggle Dark/Light Studio Theme">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </button>
+            <button id="toggle-fullscreen-btn" class="m3-icon-button" title="Toggle Fullscreen View">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+            </button>
+            <button id="dock-collapse-close-btn" class="m3-icon-button dock-fold-trigger" title="Collapse Navigation Bar" aria-label="Collapse Navigation Bar">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+          </div>
+
+        </nav>
       </div>
 
     </div>
@@ -615,9 +998,9 @@
     <div class="banner-img-container">
       <img src="./assets/engine_cockpit_banner.png" alt="BMW Cockpit" class="banner-img" />
       <div class="banner-overlay">
-        <span class="banner-tag">PERFORMANCE & COCKPIT</span>
+        <span class="m3-badge-accent liquid-glass-sheen">PERFORMANCE & LUXURY</span>
         <h2>COMMAND THE ROAD WITH M POWER</h2>
-        <p>4.4-Liter BMW M TwinPower Turbo V8 Engine with 48V Mild Hybrid Technology.</p>
+        <p>4.4-Liter BMW M TwinPower Turbo V8 Engine with 48V Mild Hybrid Technology producing 523 HP and 553 lb-ft torque.</p>
       </div>
     </div>
   </section>
@@ -625,24 +1008,24 @@
   <!-- Interior Luxury Section -->
   <section id="features" class="interior-section">
     <div class="interior-grid">
-      <div class="interior-card">
+      <div class="interior-card liquid-glass-sheen">
         <img src="./assets/interior_lounge_seats.png" alt="BMW Lounge Seats" class="card-img" />
         <div class="card-body">
-          <h3>Pinnacle 7-Passenger Luxury</h3>
-          <p>Sensafin Upholstery with panoramic glass Sky Lounge sunroof and multi-contour executive seating.</p>
+          <h3>Pinnacle 7-Passenger Executive Luxury</h3>
+          <p>Sensafin Upholstery with panoramic glass Sky Lounge sunroof and multi-contour massage seating.</p>
         </div>
       </div>
 
       <div class="interior-details">
-        <div class="detail-box">
+        <div class="m3-detail-card liquid-glass-sheen">
           <h4>BMW Curved Display</h4>
           <p>A seamless floating glass enclosure housing a 12.3" Information Display and a 14.9" Control Display running iDrive 8.5.</p>
         </div>
-        <div class="detail-box">
+        <div class="m3-detail-card liquid-glass-sheen">
           <h4>Bowers & Wilkins Diamond Surround</h4>
           <p>1,475-watt audio system with 20 speakers, diamond dome tweeters, and illuminated grilles.</p>
         </div>
-        <div class="detail-box">
+        <div class="m3-detail-card liquid-glass-sheen">
           <h4>Executive Drive Pro</h4>
           <p>Active Roll Stabilization and 2-axle air suspension deliver supreme agility and whisper-quiet ride comfort.</p>
         </div>
@@ -653,23 +1036,23 @@
   <!-- Technical Specifications Table -->
   <section id="specs" class="specs-section">
     <div class="section-header">
-      <span class="section-tag">SPECIFICATIONS</span>
-      <h2 class="section-title">BMW X7 Technical Data</h2>
+      <span class="m3-badge-accent liquid-glass-sheen">ENGINEERING</span>
+      <h2 class="section-title">BMW X7 M60i Technical Data</h2>
     </div>
 
-    <div class="specs-table-wrapper">
+    <div class="specs-table-wrapper liquid-glass-sheen">
       <table class="specs-table">
         <tbody>
           <tr>
-            <td class="spec-name">Engine Type</td>
-            <td class="spec-value">4.4-Liter BMW M TwinPower Turbo V8 Engine</td>
+            <td class="spec-name">Engine Architecture</td>
+            <td class="spec-value">4.4-Liter BMW M TwinPower Turbo V8 Engine (48V Mild Hybrid)</td>
           </tr>
           <tr>
-            <td class="spec-name">Horsepower</td>
+            <td class="spec-name">Total System Output</td>
             <td class="spec-value">523 hp @ 5,500 - 6,000 rpm</td>
           </tr>
           <tr>
-            <td class="spec-name">Torque</td>
+            <td class="spec-name">Peak Torque</td>
             <td class="spec-value">553 lb-ft @ 1,800 - 4,600 rpm</td>
           </tr>
           <tr>
@@ -678,57 +1061,37 @@
           </tr>
           <tr>
             <td class="spec-name">Transmission</td>
-            <td class="spec-value">8-speed Sport Automatic with Sport & Manual shift modes</td>
+            <td class="spec-value">8-speed Sport Automatic with Launch Control & Shift Paddles</td>
           </tr>
           <tr>
-            <td class="spec-name">Drivetrain</td>
-            <td class="spec-value">xDrive intelligent all-wheel drive system</td>
+            <td class="spec-name">Drivetrain System</td>
+            <td class="spec-value">xDrive intelligent all-wheel drive with M Sport Differential</td>
           </tr>
           <tr>
-            <td class="spec-name">Seating Capacity</td>
-            <td class="spec-value">7 Passengers (6 with optional Captain's Chairs)</td>
+            <td class="spec-name">Seating Configuration</td>
+            <td class="spec-value">7 Passengers (6 with optional Second-Row Captain's Chairs)</td>
           </tr>
         </tbody>
       </table>
     </div>
   </section>
 
-  <!-- AR Modal for Desktop & QR Launcher -->
-  <div id="ar-modal" class="ar-modal-backdrop">
-    <div class="ar-modal-box">
-      <button id="close-ar-modal" class="modal-close-btn">&times;</button>
-      <div class="ar-modal-header">
-        <h3>Experience BMW X7 in AR</h3>
-        <p>Scan with your iPhone, iPad, or Android phone to launch 3D AR in your room.</p>
-      </div>
 
-      <div class="ar-modal-body">
-        <div class="qr-code-wrapper">
-          <img id="qr-code-img" src="" alt="Scan QR Code to launch AR" />
-        </div>
-        <div class="ar-steps">
-          <div class="step-item"><span class="step-num">1</span> Open camera on your mobile device.</div>
-          <div class="step-item"><span class="step-num">2</span> Point camera at this QR code.</div>
-          <div class="step-item"><span class="step-num">3</span> Tap <strong>"View in AR"</strong> to place life-size BMW X7.</div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Sticky Footer Build Bar -->
-  <div class="sticky-build-bar">
+  <div class="sticky-build-bar liquid-glass-sheen">
     <div class="build-bar-container">
       <div class="build-info">
         <span class="build-model" id="build-model-title">BMW X7 M60i xDrive</span>
-        <span class="build-specs-summary" id="build-summary-lbl">Brooklyn Grey Metallic • 523 HP V8</span>
+        <span class="build-specs-summary" id="build-summary-lbl">Alpine White • 523 HP V8</span>
       </div>
       <div class="build-price">
         <span class="price-lbl">ESTIMATED MSRP</span>
         <span class="price-val" id="total-price-display">$108,700</span>
       </div>
       <div class="build-actions">
-        <button class="btn btn-secondary btn-sm" id="share-build-btn">Share Build</button>
-        <button class="btn btn-primary btn-sm" id="order-now-btn">Order Yours</button>
+        <button class="m3-btn m3-btn-tonal m3-btn-sm liquid-glass-sheen" id="share-build-btn">Share Build</button>
+        <a href="#configurator-studio" class="m3-btn m3-btn-primary m3-btn-sm liquid-glass-sheen" id="order-now-btn">Customize in Studio</a>
       </div>
     </div>
   </div>
@@ -740,19 +1103,32 @@
     </div>
   </footer>
 
-  <!-- SVG Filter for Dynamic Post-FX Bloom -->
-  <svg class="svg-postfx-defs" style="position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none;" aria-hidden="true">
+  <!-- SVG Liquid Glass Refraction & Chromatic Dispersion Filter Defs (WWDC25 Liquid Glass Engine) -->
+  <svg class="svg-liquid-glass-defs" style="position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none;" aria-hidden="true">
     <defs>
-      <filter id="post-fx-bloom-filter" x="-20%" y="-20%" width="140%" height="140%">
-        <feGaussianBlur id="svg-bloom-blur" stdDeviation="4" result="coloredBlur"/>
-        <feMerge>
-          <feMergeNode in="coloredBlur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
+      <!-- Core Fluid Meniscus & Displacement Refraction -->
+      <filter id="liquid-glass-refraction" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.02 0.02" numOctaves="2" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="4.5" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+        <feGaussianBlur in="displaced" stdDeviation="0.4" result="blurred" />
+        <feColorMatrix in="blurred" type="saturate" values="2.2" result="saturated" />
+        <feComponentTransfer in="saturated" result="contrast">
+          <feFuncR type="linear" slope="1.06" />
+          <feFuncG type="linear" slope="1.06" />
+          <feFuncB type="linear" slope="1.06" />
+        </feComponentTransfer>
+        <feBlend in="contrast" in2="SourceGraphic" mode="screen" />
+      </filter>
+
+      <!-- Prismatic Chromatic Dispersion Filter -->
+      <filter id="liquid-glass-chromatic" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="1" result="warp" />
+        <feDisplacementMap in="SourceGraphic" in2="warp" scale="6" xChannelSelector="R" yChannelSelector="B" result="rgbWarp" />
+        <feBlend in="rgbWarp" in2="SourceGraphic" mode="normal" />
       </filter>
     </defs>
   </svg>
 
-  <script type="module" src="./src/main.js?v=1.0.2"></script>
+  <script type="module" src="./src/main.js?v=5.2.0"></script>
 </body>
 </html>

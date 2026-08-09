@@ -1,205 +1,360 @@
 /* ==========================================================================
-   BMW X7 - Interactive 3D Configurator Studio Layout
-   Apple Liquid Glass System Design Architecture (VisionOS / macOS Sonoma Aesthetic)
+   BMW X7 M60i - Apple/VisionOS Liquid Glass Design System
+   Dynamic Optics & Adaptive High-Contrast Typography Engine
+   Learned from: https://kube.io/blog/liquid-glass-css-svg/
    ========================================================================== */
 
 :root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f4f5f7;
-  --bg-dark: #0b0d12;
-  
-  --bmw-blue: #1c69d2;
-  --bmw-dark-blue: #004fb6;
-  --bmw-black: #111318;
-  --bmw-text: #1a1a1a;
-  --bmw-text-muted: #6e6e73;
-  --border-light: rgba(255, 255, 255, 0.6);
-  
-  /* Advanced Liquid Glass Reflex Optics Engine (color-mix() & Multi-Inset Specular Stacks) */
-  --c-glass: #bbbbbc;
+  /* ==========================================================================
+     Liquid Glass Optics Engine (kube.io Physics-based color-mix & Specular Stacks)
+     ========================================================================== */
+  --c-glass: #c8cbd0;
   --c-light: #ffffff;
   --c-dark: #000000;
   --glass-reflex-light: 1;
   --glass-reflex-dark: 1;
   --glass-saturation: 210%;
   
-  --liquid-glass-bg: color-mix(in srgb, var(--c-glass) 14%, transparent);
-  --liquid-glass-dark-bg: color-mix(in srgb, var(--c-glass) 8%, transparent);
-  --liquid-glass-blur: blur(20px) saturate(var(--glass-saturation)) contrast(104%);
-  --liquid-glass-border: 1px solid color-mix(in srgb, var(--c-light) 40%, transparent);
-  --liquid-glass-dark-border: 1px solid color-mix(in srgb, var(--c-light) 20%, transparent);
+  /* Translucent Liquid Glass Surface Mixes (Dark Mode Default) */
+  --liquid-glass-bg: color-mix(in srgb, var(--c-glass) 12%, transparent);
+  --liquid-glass-dark-bg: color-mix(in srgb, var(--c-dark) 45%, transparent);
+  --liquid-glass-card-bg: color-mix(in srgb, var(--c-glass) 8%, transparent);
+  --liquid-glass-hover-bg: color-mix(in srgb, var(--c-glass) 18%, transparent);
+  --liquid-glass-active-bg: color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 22%, transparent);
+  
+  /* Optical Saturation & Blur Filter */
+  --liquid-glass-blur: blur(22px) saturate(var(--glass-saturation)) contrast(104%);
+  --liquid-glass-border: 1px solid color-mix(in srgb, var(--c-light) 35%, transparent);
+  --liquid-glass-border-subtle: 1px solid color-mix(in srgb, var(--c-light) 15%, transparent);
 
-  /* Multi-Tier 10-Point Specular Shadow Stack using color-mix() */
+  /* Multi-Tier 8-Point Specular Inset Shadow Stack */
   --liquid-glass-shadow: 
-    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 12%), transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 14%), transparent),
     inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 95%), transparent), 
     inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 80%), transparent), 
     inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent), 
     inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 12%), transparent), 
-    inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent), 
     inset 0px 3px 4px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 20%), transparent), 
-    inset 2px -6.5px 1px -4px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent), 
-    0px 1px 5px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 10%), transparent), 
-    0px 12px 30px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 14%), transparent);
+    0px 14px 36px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 28%), transparent);
 
-  --liquid-glass-dark-shadow: 
-    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 10%), transparent),
-    inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent), 
-    inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 40%), transparent), 
-    inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 30%), transparent), 
-    inset -1.5px 2.5px 0px -2px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 40%), transparent), 
-    0px 18px 45px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 35%), transparent);
+  --liquid-glass-card-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 12%), transparent),
+    inset 1.2px 2px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 85%), transparent),
+    inset -1.5px -1.5px 0px -1px color-mix(in srgb, var(--c-light) calc(var(--glass-reflex-light) * 60%), transparent),
+    0px 8px 24px 0px color-mix(in srgb, var(--c-dark) calc(var(--glass-reflex-dark) * 22%), transparent);
 
-  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Dynamic Illuminated Sapphire Lens Glow on Active Elements */
+  --liquid-glass-active-glow:
+    inset 0 0 0 1.5px color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 90%, transparent),
+    inset 1.8px 3px 0px -2px color-mix(in srgb, #FFFFFF 95%, transparent),
+    inset 0 0 16px color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 45%, transparent),
+    0 0 24px color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 40%, transparent);
+
+  /* Dynamic Adaptive Text & Surface Color Hierarchy */
+  --md-sys-color-primary: #80D8FF;
+  --md-sys-color-on-primary: #00344D;
+  --md-sys-color-surface: #0E1116;
+  --md-sys-color-surface-dim: #07090C;
+  --md-sys-color-on-surface: #F4F6FB;
+  --md-sys-color-on-surface-variant: #A4ACB9;
   
-  --nav-height: 70px;
-  --radius-sm: 10px;
-  --radius-md: 20px;
-  --radius-lg: 32px;
-  --radius-pill: 9999px;
+  /* Semantic Text Tokens for Dynamic Readability */
+  --text-primary: #F4F6FB;
+  --text-secondary: #A4ACB9;
+  --text-tertiary: #6E798A;
+  --text-accent: var(--md-sys-color-primary, #80D8FF);
+  --text-shadow-contrast: 0 2px 10px rgba(0, 0, 0, 0.5);
+  
+  /* Shapes & Radius */
+  --md-sys-shape-corner-xs: 6px;
+  --md-sys-shape-corner-s: 10px;
+  --md-sys-shape-corner-m: 16px;
+  --md-sys-shape-corner-l: 22px;
+  --md-sys-shape-corner-xl: 32px;
+  --md-sys-shape-corner-full: 9999px;
+  
+  /* Motion */
+  --md-sys-motion-easing-emphasized: cubic-bezier(0.05, 0.7, 0.1, 1.0);
+  --md-sys-motion-duration-short: 200ms;
+  --md-sys-motion-duration-medium: 350ms;
+  
+  /* Typography */
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
+/* ==========================================================================
+   Light Background Dynamic Theme Overrides (High-Contrast Readability)
+   ========================================================================== */
+.light-theme,
+body.light-theme,
+:root.light-theme {
+  --md-sys-color-surface-dim: #F0F4FA;
+  --md-sys-color-surface: #E3E9F2;
+  --md-sys-color-on-surface: #0B0E14;
+  --md-sys-color-on-surface-variant: #424D5D;
+  
+  /* Dynamic High-Contrast Text Tokens */
+  --text-primary: #0B0E14;
+  --text-secondary: #424D5D;
+  --text-tertiary: #64748B;
+  --text-accent: #0066B1;
+  --text-shadow-contrast: 0 1px 2px rgba(255, 255, 255, 0.85);
+
+  /* Inverted Glass Reflex Multipliers */
+  --glass-reflex-light: 0.35;
+  --glass-reflex-dark: 2.2;
+
+  /* Crisp Light Liquid Glass Surfaces */
+  --liquid-glass-bg: color-mix(in srgb, #ffffff 72%, transparent);
+  --liquid-glass-dark-bg: color-mix(in srgb, #000000 8%, transparent);
+  --liquid-glass-card-bg: color-mix(in srgb, #ffffff 58%, transparent);
+  --liquid-glass-hover-bg: color-mix(in srgb, #ffffff 90%, transparent);
+  --liquid-glass-active-bg: color-mix(in srgb, var(--md-sys-color-primary, #0066B1) 18%, transparent);
+
+  --liquid-glass-border: 1px solid color-mix(in srgb, #000000 14%, transparent);
+  --liquid-glass-border-subtle: 1px solid color-mix(in srgb, #000000 8%, transparent);
+
+  /* Light Theme Shadow Stack */
+  --liquid-glass-shadow: 
+    inset 0 0 0 1px color-mix(in srgb, #ffffff 90%, transparent),
+    inset 1.8px 3px 0px -2px color-mix(in srgb, #ffffff 100%, transparent), 
+    inset -2px -2px 0px -2px color-mix(in srgb, #ffffff 80%, transparent), 
+    inset 0px 3px 6px -2px color-mix(in srgb, #000000 10%, transparent), 
+    0px 14px 36px 0px color-mix(in srgb, #000000 14%, transparent);
+
+  --liquid-glass-card-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #ffffff 85%, transparent),
+    inset 1.2px 2px 0px -1px color-mix(in srgb, #ffffff 95%, transparent),
+    0px 6px 20px 0px color-mix(in srgb, #000000 8%, transparent);
+
+  --liquid-glass-active-glow:
+    inset 0 0 0 1.5px color-mix(in srgb, var(--md-sys-color-primary, #0066B1) 90%, transparent),
+    inset 1.8px 3px 0px -2px color-mix(in srgb, #FFFFFF 95%, transparent),
+    inset 0 0 16px color-mix(in srgb, var(--md-sys-color-primary, #0066B1) 30%, transparent),
+    0 0 20px color-mix(in srgb, var(--md-sys-color-primary, #0066B1) 35%, transparent);
+}
+
+/* ==========================================================================
+   Global Reset & Base Setup
+   ========================================================================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
   scroll-behavior: smooth;
-  font-family: var(--font-body);
-  color: var(--bmw-text);
-  background-color: var(--bg-primary);
-  line-height: 1.6;
+  font-family: var(--font-ui);
+  background-color: var(--md-sys-color-surface-dim);
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-size: 16px;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 body {
   overflow-x: hidden;
+  background-color: var(--md-sys-color-surface-dim);
+  color: var(--text-primary);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+  outline: none;
 }
 
 /* ==========================================================================
-   Navigation Header (Apple Liquid Glass Header)
+   Interactive Liquid Glass Raycasting Spotlight Sheen Pseudo-Elements
    ========================================================================== */
-.navbar {
+.liquid-glass-sheen {
+  position: relative;
+  overflow: hidden;
+}
+
+.liquid-glass-sheen::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle 180px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    color-mix(in srgb, var(--c-light) 40%, transparent) 0%,
+    transparent 80%
+  );
+  opacity: var(--mouse-opacity, 0.4);
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   Top App Bar (Liquid Glass Header)
+   ========================================================================== */
+.m3-top-bar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: var(--nav-height);
+  height: 70px;
   z-index: 1000;
   background: var(--liquid-glass-bg);
   backdrop-filter: var(--liquid-glass-blur);
   -webkit-backdrop-filter: var(--liquid-glass-blur);
-  border-bottom: var(--liquid-glass-border);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  border-bottom: var(--liquid-glass-border-subtle);
+  box-shadow: var(--liquid-glass-card-shadow);
+  display: flex;
+  align-items: center;
+  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-emphasized);
 }
 
-.nav-container {
-  max-width: 1440px;
+.m3-top-bar-container {
+  max-width: 1600px;
+  width: 100%;
   margin: 0 auto;
-  padding: 0 2rem;
-  height: 100%;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.brand {
+.m3-brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
-.brand-text {
+.m3-brand-text {
   display: flex;
   flex-direction: column;
 }
 
-.brand-text .series {
-  font-family: var(--font-heading);
-  font-weight: 900;
-  font-size: 1.2rem;
-  letter-spacing: 2px;
-  color: var(--bmw-black);
+.m3-model-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  color: var(--text-primary);
+  text-shadow: var(--text-shadow-contrast);
+  transition: color 0.3s ease;
 }
 
-.brand-text .sub-series {
+.m3-model-badge {
   font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--bmw-text-muted);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-accent);
+  text-transform: uppercase;
 }
 
-.nav-links {
-  display: flex;
-  gap: 2.2rem;
-}
-
-.nav-links a {
-  color: var(--bmw-text-muted);
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 600;
-  transition: color 0.2s ease;
-  padding: 4px 0;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-  color: var(--bmw-black);
-  border-bottom: 2px solid var(--bmw-black);
-}
-
-.nav-actions {
+/* Center Dynamic Status Chip (Liquid Glass Pill) */
+.m3-center-chip {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border);
+  box-shadow: var(--liquid-glass-card-shadow);
+  padding: 7px 18px;
+  border-radius: var(--md-sys-shape-corner-full);
 }
 
-/* Buttons */
-.btn {
+.status-pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--text-accent);
+  box-shadow: 0 0 12px var(--text-accent);
+  animation: liquidPulse 2s infinite ease-in-out;
+}
+
+@keyframes liquidPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.35); opacity: 0.6; }
+}
+
+.chip-title {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+/* Right Actions & Live Price Chip */
+.m3-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.m3-price-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border-subtle);
+  box-shadow: var(--liquid-glass-card-shadow);
+  padding: 6px 16px;
+  border-radius: var(--md-sys-shape-corner-full);
+}
+
+.price-chip-lbl {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+.price-chip-val {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+/* Liquid Glass Extended FAB */
+.m3-fab-extended {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  padding: 10px 22px;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 0.88rem;
-  border-radius: var(--radius-pill);
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  border: 1px solid transparent;
-}
-
-.btn-primary {
-  background: var(--bmw-black);
-  color: #ffffff;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-}
-
-.btn-primary:hover {
-  background: var(--bmw-blue);
-  transform: translateY(-2px);
-}
-
-.btn-secondary {
-  background: rgba(255, 255, 255, 0.55);
+  background: color-mix(in srgb, var(--md-sys-color-primary) 40%, var(--liquid-glass-bg));
   backdrop-filter: var(--liquid-glass-blur);
-  color: var(--bmw-black);
-  border: var(--liquid-glass-border);
-  box-shadow: var(--liquid-glass-shadow);
+  color: var(--text-primary);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 80%, white);
+  box-shadow: var(--liquid-glass-card-shadow), 0 0 20px color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.84rem;
+  letter-spacing: 0.04em;
+  padding: 8px 20px;
+  border-radius: var(--md-sys-shape-corner-full);
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized);
 }
 
-.btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.85);
+.m3-fab-extended:hover {
   transform: translateY(-2px);
+  filter: brightness(1.12);
+  box-shadow: var(--liquid-glass-shadow), 0 0 28px color-mix(in srgb, var(--md-sys-color-primary) 60%, transparent);
 }
 
-.btn-sm {
-  padding: 8px 18px;
-  font-size: 0.8rem;
+.m3-fab-extended:active {
+  transform: scale(0.96);
 }
 
 /* ==========================================================================
@@ -207,13 +362,12 @@ body {
    ========================================================================== */
 .hero-section {
   position: relative;
-  min-height: 80vh;
+  min-height: 82vh;
   display: flex;
-  align-items: flex-end;
-  padding: calc(var(--nav-height) + 40px) 4rem 80px;
-  background: #000;
-  color: #ffffff;
+  align-items: center;
+  padding: 100px 32px 60px;
   overflow: hidden;
+  background: #000000;
 }
 
 .hero-image-wrapper {
@@ -222,12 +376,15 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 1;
 }
 
 .hero-bg-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center 30%;
+  filter: brightness(0.72) contrast(1.1);
 }
 
 .hero-gradient-overlay {
@@ -236,1088 +393,196 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.85) 100%);
+  background: linear-gradient(180deg, rgba(7, 9, 12, 0.4) 0%, rgba(7, 9, 12, 0.88) 85%, #07090C 100%);
 }
 
 .hero-content {
   position: relative;
-  z-index: 10;
-  max-width: 800px;
+  z-index: 2;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-.hero-tag {
-  font-family: var(--font-heading);
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 3px;
-  color: var(--bmw-blue);
+.hero-badge-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.hero-m3-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 6px 14px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border-subtle);
+  box-shadow: var(--liquid-glass-card-shadow);
+  color: #FFFFFF;
+}
+
+.m3-badge-accent {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 25%, var(--liquid-glass-bg));
+  backdrop-filter: var(--liquid-glass-blur);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 50%, transparent);
+  color: var(--text-accent);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  padding: 5px 12px;
+  border-radius: var(--md-sys-shape-corner-full);
+  display: inline-block;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--md-sys-color-primary) 25%, transparent);
 }
 
 .hero-title {
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
   font-weight: 900;
-  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  letter-spacing: -0.02em;
   line-height: 1.05;
-  margin: 6px 0 12px;
+  color: #FFFFFF;
+  margin-bottom: 14px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
 .hero-subtitle {
   font-size: 1.1rem;
-  color: #cccccc;
-  margin-bottom: 2rem;
+  color: #A4ACB9;
+  max-width: 680px;
+  margin-bottom: 36px;
+  line-height: 1.6;
 }
 
 .hero-specs-row {
-  display: flex;
-  gap: 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  max-width: 900px;
 }
 
-.hero-spec {
-  display: flex;
-  flex-direction: column;
+.hero-spec-card {
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border);
+  box-shadow: var(--liquid-glass-card-shadow);
+  border-radius: var(--md-sys-shape-corner-l);
+  padding: 16px 20px;
+  transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized);
 }
 
-.spec-num {
-  font-family: var(--font-heading);
-  font-size: 1.8rem;
+.hero-spec-card:hover {
+  transform: translateY(-4px);
+  background: var(--liquid-glass-hover-bg);
+  box-shadow: var(--liquid-glass-shadow);
+}
+
+.hero-spec-card .spec-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
   font-weight: 800;
+  color: #FFFFFF;
 }
 
-.spec-num small {
-  font-size: 0.9rem;
-  color: var(--bmw-blue);
+.hero-spec-card .spec-num small {
+  font-size: 0.85rem;
+  color: var(--md-sys-color-primary);
+  margin-left: 2px;
 }
 
-.spec-label {
-  font-size: 0.72rem;
-  letter-spacing: 1.5px;
-  color: #aaaaaa;
+.hero-spec-card .spec-label {
+  font-size: 0.7rem;
   font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #A4ACB9;
+  text-transform: uppercase;
 }
 
 /* ==========================================================================
-   3D Studio Configurator Section (Apple Liquid Glass Architecture)
+   3D Studio Configurator Main Section (Rounded Spatial Canvas Container)
    ========================================================================== */
 .studio-section {
-  padding: 20px 0 60px;
+  position: relative;
   width: 100%;
-  max-width: 1600px;
+  max-width: 1680px;
   margin: 0 auto;
+  padding: 40px 24px 60px;
+  background-color: transparent;
+  overflow: visible;
+  transition: background-color 0.5s ease;
 }
 
 .studio-viewport-container {
   position: relative;
   width: 100%;
-  height: 760px;
-  background: radial-gradient(circle at 50% 35%, #ffffff 0%, #e5e9f0 100%);
-  border-radius: var(--radius-lg);
+  height: 86vh;
+  min-height: 720px;
+  max-height: 940px;
+  border-radius: 36px;
   overflow: hidden;
-  box-shadow: 0 25px 60px -15px rgba(0,0,0,0.12);
-  transition: background 0.4s ease;
-}
-
-/* Dark Theme State for Studio */
-.studio-viewport-container.dark-theme {
-  background: radial-gradient(circle at 50% 35%, #1c202c 0%, #0a0b0e 100%);
-  color: #ffffff;
-  --glass-reflex-light: 0.35;
-  --glass-reflex-dark: 2.2;
-}
-
-/* ==========================================================================
-   Universal Apple Liquid Glass Refraction Pseudo-Elements Architecture
-   ========================================================================== */
-.studio-top-left-header,
-.studio-radio-menu,
-.spec-overlay-card,
-.editor-panel,
-.studio-right-dock,
-.drawer-content-box,
-.bottom-tools-left,
-.vr-pill-btn,
-.navbar {
-  position: relative;
-  overflow: hidden;
-  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Layer 1: Fixed Specular Lens Reflection Sheen */
-.studio-top-left-header::before,
-.studio-radio-menu::before,
-.spec-overlay-card::before,
-.editor-panel::before,
-.studio-right-dock::before,
-.drawer-content-box::before,
-.bottom-tools-left::before,
-.vr-pill-btn::before,
-.navbar::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(115deg, rgba(255, 255, 255, 0.40) 0%, rgba(255, 255, 255, 0.08) 40%, transparent 65%);
-  pointer-events: none;
-  border-radius: inherit;
-  z-index: 1;
-}
-
-/* Layer 2: Dynamic Cursor Light Refraction Spotlight (Above Backdrop Blur) */
-.studio-top-left-header::after,
-.studio-radio-menu::after,
-.spec-overlay-card::after,
-.editor-panel::after,
-.studio-right-dock::after,
-.drawer-content-box::after,
-.bottom-tools-left::after,
-.vr-pill-btn::after,
-.navbar::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(
-    circle 240px at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(255, 255, 255, 0.70) 0%,
-    rgba(255, 255, 255, 0.20) 45%,
-    transparent 80%
-  );
-  opacity: var(--mouse-opacity, 0.6);
-  mix-blend-mode: overlay;
-  pointer-events: none;
-  border-radius: inherit;
-  transition: opacity 0.3s ease;
-  z-index: 2;
-}
-
-.dark-theme .studio-top-left-header::after,
-.dark-theme .studio-radio-menu::after,
-.dark-theme .spec-overlay-card::after,
-.dark-theme .editor-panel::after,
-.dark-theme .studio-right-dock::after,
-.dark-theme .drawer-content-box::after,
-.dark-theme .bottom-tools-left::after,
-.dark-theme .vr-pill-btn::after {
-  background: radial-gradient(
-    circle 240px at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(255, 255, 255, 0.35) 0%,
-    rgba(28, 105, 210, 0.25) 50%,
-    transparent 80%
-  );
-  mix-blend-mode: color-dodge;
-}
-
-/* Top Left Overlay Header (Pill Shaped Panel) */
-.studio-top-left-header {
-  position: absolute;
-  top: 32px;
-  left: 36px;
-  z-index: 30;
   display: flex;
-  flex-direction: column;
-  padding: 14px 28px;
-  background: var(--liquid-glass-bg);
-  backdrop-filter: var(--liquid-glass-blur);
-  -webkit-backdrop-filter: var(--liquid-glass-blur);
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 45%, #161D28 0%, #0B0E14 65%, #05070A 100%);
   border: var(--liquid-glass-border);
-  border-radius: var(--radius-pill);
-  box-shadow: var(--liquid-glass-shadow);
+  box-shadow: var(--liquid-glass-shadow), 0 24px 64px rgba(0, 0, 0, 0.48);
+  transition: background 0.5s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
-.dark-theme .studio-top-left-header {
-  background: var(--liquid-glass-dark-bg);
-  border: var(--liquid-glass-dark-border);
-  box-shadow: var(--liquid-glass-dark-shadow);
+.studio-viewport-container:fullscreen {
+  height: 100vh;
+  max-height: 100vh;
+  border-radius: 0;
+  border: none;
 }
 
-.vehicle-title {
-  font-family: var(--font-heading);
-  font-weight: 900;
-  font-size: 1.8rem;
-  letter-spacing: 1px;
-  line-height: 1;
-  text-transform: uppercase;
-  color: var(--bmw-black);
-  z-index: 3;
+.studio-viewport-container.light-theme {
+  background: radial-gradient(circle at 50% 45%, #FFFFFF 0%, #E8EDF5 60%, #D2DBE8 100%);
+  box-shadow: var(--liquid-glass-shadow), 0 20px 50px rgba(0, 0, 0, 0.12);
 }
 
-.dark-theme .vehicle-title {
-  color: #ffffff;
-}
-
-.vehicle-subtitle {
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  color: var(--bmw-text-muted);
-  margin-top: 4px;
-  text-transform: uppercase;
-  z-index: 3;
-}
-
-.dark-theme .vehicle-subtitle {
-  color: var(--bmw-blue);
-}
-
-/* Giant Background Watermark Text */
-.studio-watermark {
+/* Background Cinematic Watermark View Tag (Strictly Behind 3D Car Model) */
+.m3-spatial-watermark {
   position: absolute;
-  top: 45%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 10vw, 8.5rem);
   font-weight: 900;
-  font-size: clamp(7rem, 18vw, 20rem);
-  color: rgba(0, 0, 0, 0.035);
-  letter-spacing: 8px;
-  text-transform: uppercase;
-  user-select: none;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.05);
   pointer-events: none;
-  line-height: 1;
-  z-index: 1;
-  transition: opacity 0.3s ease;
+  user-select: none;
+  z-index: 0; /* Strictly behind 3D car */
   white-space: nowrap;
+  transition: opacity 0.3s ease, color 0.5s ease;
 }
 
-.dark-theme .studio-watermark {
-  color: rgba(255, 255, 255, 0.03);
+.light-theme .m3-spatial-watermark {
+  color: rgba(0, 0, 0, 0.04);
 }
 
-/* Left Radio Menu Navigation (Pill Shaped Panel) */
-.studio-radio-menu {
-  position: absolute;
-  top: 52%;
-  left: 36px;
-  transform: translateY(-50%);
-  z-index: 30;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 22px 24px;
-  background: var(--liquid-glass-bg);
-  backdrop-filter: var(--liquid-glass-blur);
-  -webkit-backdrop-filter: var(--liquid-glass-blur);
-  border: var(--liquid-glass-border);
-  border-radius: 40px;
-  box-shadow: var(--liquid-glass-shadow);
-}
-
-.dark-theme .studio-radio-menu {
-  background: var(--liquid-glass-dark-bg);
-  border: var(--liquid-glass-dark-border);
-  box-shadow: var(--liquid-glass-dark-shadow);
-}
-
-.radio-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.25s ease;
-  padding: 8px 14px;
-  border-radius: var(--radius-pill);
-}
-
-.radio-nav-item:hover {
-  background: rgba(255, 255, 255, 0.55);
-}
-
-.dark-theme .radio-nav-item:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.radio-nav-item input[type="radio"] {
-  display: none;
-}
-
-.radio-circle {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  border: 2px solid var(--bmw-black);
-  background: transparent;
-  position: relative;
-  transition: all 0.2s ease;
-}
-
-.dark-theme .radio-circle {
-  border-color: #ffffff;
-}
-
-.radio-circle::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--bmw-black);
-  transition: transform 0.2s ease;
-}
-
-.dark-theme .radio-circle::after {
-  background: #ffffff;
-}
-
-.radio-text {
-  font-family: var(--font-heading);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  color: var(--bmw-text-muted);
-  transition: color 0.2s ease;
-}
-
-.dark-theme .radio-text {
-  color: #a0a0a0;
-}
-
-.radio-nav-item.active .radio-circle::after {
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.radio-nav-item.active .radio-text {
-  color: var(--bmw-black);
-  font-weight: 900;
-}
-
-.dark-theme .radio-nav-item.active .radio-text {
-  color: #ffffff;
-}
-
-/* Specifications Side Overlay Card (Pill Rounded Panel) */
-.spec-overlay-card {
-  position: absolute;
-  top: 50%;
-  right: 96px;
-  transform: translateY(-50%) translateX(30px);
-  width: 330px;
-  background: var(--liquid-glass-bg);
-  backdrop-filter: var(--liquid-glass-blur);
-  -webkit-backdrop-filter: var(--liquid-glass-blur);
-  border: var(--liquid-glass-border);
-  border-radius: 36px;
-  padding: 1.8rem;
-  box-shadow: var(--liquid-glass-shadow);
-  z-index: 25;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.dark-theme .spec-overlay-card {
-  background: var(--liquid-glass-dark-bg);
-  border: var(--liquid-glass-dark-border);
-  box-shadow: var(--liquid-glass-dark-shadow);
-  color: #ffffff;
-}
-
-.spec-overlay-card.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(-50%) translateX(0);
-}
-
-.spec-card-title {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 1.25rem;
-  letter-spacing: 1px;
-  margin-bottom: 1rem;
-  border-bottom: 2px solid var(--bmw-black);
-  padding-bottom: 6px;
-}
-
-.dark-theme .spec-card-title {
-  border-bottom-color: var(--bmw-blue);
-}
-
-.spec-grid-compact {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-.spec-box {
-  display: flex;
-  flex-direction: column;
-}
-
-.box-lbl {
-  font-size: 0.7rem;
-  color: var(--bmw-text-muted);
-  text-transform: uppercase;
-  font-weight: 600;
-}
-
-.box-val {
-  font-family: var(--font-heading);
-  font-size: 1.05rem;
-  font-weight: 800;
-  color: var(--bmw-black);
-}
-
-.dark-theme .box-val {
-  color: #ffffff;
-}
-
-/* 3D Studio Editor Floating Panel (Pill Rounded Panel) */
-.editor-panel {
-  position: absolute;
-  top: 32px;
-  right: 96px;
-  width: 340px;
-  background: var(--liquid-glass-bg);
-  backdrop-filter: var(--liquid-glass-blur);
-  -webkit-backdrop-filter: var(--liquid-glass-blur);
-  border: var(--liquid-glass-border);
-  border-radius: 36px;
-  box-shadow: var(--liquid-glass-shadow);
-  z-index: 50;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(30px);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden;
-}
-
-.dark-theme .editor-panel {
-  background: var(--liquid-glass-dark-bg);
-  border: var(--liquid-glass-dark-border);
-  box-shadow: var(--liquid-glass-dark-shadow);
-  color: #ffffff;
-}
-
-.editor-panel.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(0);
-}
-
-.editor-panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 22px;
-  border-bottom: 1px solid rgba(0,0,0,0.08);
-  background: rgba(255, 255, 255, 0.25);
-}
-
-.dark-theme .editor-panel-header {
-  border-bottom-color: rgba(255,255,255,0.1);
-  background: rgba(0,0,0,0.2);
-}
-
-.editor-panel-header h3 {
-  font-family: var(--font-heading);
-  font-size: 1.05rem;
-  font-weight: 800;
-}
-
-.editor-close-btn {
-  background: transparent;
-  border: none;
-  font-size: 1.4rem;
-  cursor: pointer;
-  color: var(--bmw-black);
-}
-
-.dark-theme .editor-close-btn {
-  color: #ffffff;
-}
-
-.editor-tabs-nav {
-  display: flex;
-  border-bottom: 1px solid rgba(0,0,0,0.08);
-}
-
-.dark-theme .editor-tabs-nav {
-  border-bottom-color: rgba(255,255,255,0.1);
-}
-
-.editor-tab-btn {
-  flex: 1;
-  padding: 10px 0;
-  background: transparent;
-  border: none;
-  font-family: var(--font-heading);
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--bmw-text-muted);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.dark-theme .editor-tab-btn {
-  color: #a0a0a0;
-}
-
-.editor-tab-btn.active {
-  color: var(--bmw-blue);
-  border-bottom: 2px solid var(--bmw-blue);
-  background: rgba(28, 105, 210, 0.08);
-}
-
-.editor-panel-body {
-  padding: 18px 22px;
-}
-
-.editor-tab-content {
-  display: none;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.editor-tab-content.active {
-  display: flex;
-}
-
-.editor-control-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.editor-control-group label {
-  font-size: 0.76rem;
-  font-weight: 700;
-  color: var(--bmw-text);
-  display: flex;
-  justify-content: space-between;
-}
-
-.dark-theme .editor-control-group label {
-  color: #dddddd;
-}
-
-.editor-control-group input[type="range"] {
-  width: 100%;
-  accent-color: var(--bmw-blue);
-  cursor: pointer;
-}
-
-.editor-select {
-  padding: 8px 12px;
-  border-radius: var(--radius-pill);
-  border: var(--liquid-glass-border);
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-  background: rgba(255, 255, 255, 0.7);
-  color: var(--bmw-black);
-  cursor: pointer;
-}
-
-.dark-theme .editor-select {
-  background: rgba(24, 28, 40, 0.7);
-  border: var(--liquid-glass-dark-border);
-  color: #ffffff;
-}
-
-.fx-mode-btn {
-  width: 100%;
-  padding: 8px 14px;
-  background: rgba(30, 35, 45, 0.88);
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: var(--radius-pill);
-  font-family: var(--font-heading);
-  font-size: 0.82rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.fx-mode-btn:hover {
-  background: rgba(45, 52, 68, 0.95);
-  transform: translateY(-1px);
-}
-
-.color-picker-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.color-picker-row input[type="color"] {
-  width: 44px;
-  height: 32px;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  background: none;
-}
-
-.export-desc {
-  font-size: 0.78rem;
-  color: var(--bmw-text-muted);
-}
-
-.export-textarea {
-  width: 100%;
-  height: 100px;
-  font-family: monospace;
-  font-size: 0.72rem;
-  padding: 10px;
-  border-radius: 18px;
-  border: var(--liquid-glass-border);
-  resize: none;
-  background: rgba(255, 255, 255, 0.5);
-}
-
-.dark-theme .export-textarea {
-  background: rgba(12, 14, 20, 0.5);
-  color: #58a6ff;
-  border: var(--liquid-glass-dark-border);
-}
-
-/* Right Vertical Tool Dock (VisionOS Liquid Glass Circular Disks) */
-.studio-right-dock {
-  position: absolute;
-  top: 50%;
-  right: 32px;
-  transform: translateY(-50%);
-  z-index: 30;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 16px 10px;
-  background: var(--liquid-glass-bg);
-  backdrop-filter: var(--liquid-glass-blur);
-  -webkit-backdrop-filter: var(--liquid-glass-blur);
-  border: var(--liquid-glass-border);
-  border-radius: 40px;
-  box-shadow: var(--liquid-glass-shadow);
-}
-
-.dark-theme .studio-right-dock {
-  background: var(--liquid-glass-dark-bg);
-  border: var(--liquid-glass-dark-border);
-  box-shadow: var(--liquid-glass-dark-shadow);
-}
-
-.dock-btn {
-  width: 64px;
-  background: transparent;
-  border: none;
-  color: var(--bmw-black);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  cursor: pointer;
-  position: relative;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  user-select: none;
-  z-index: 3;
-}
-
-/* 100% Round Circular Liquid Glass Disk */
-.dock-circle-disk {
-  position: relative;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--c-light) 45%, transparent);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  border: 1px solid color-mix(in srgb, var(--c-light) 75%, transparent);
-  box-shadow: 
-    inset 0 1.5px 2px 0 color-mix(in srgb, var(--c-light) 90%, transparent),
-    inset -1px -1px 2px 0 color-mix(in srgb, var(--c-dark) 10%, transparent),
-    0 4px 12px rgba(0, 0, 0, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow: hidden;
-}
-
-.dark-theme .dock-circle-disk {
-  background: color-mix(in srgb, var(--c-light) 8%, transparent);
-  border-color: color-mix(in srgb, var(--c-light) 20%, transparent);
-  box-shadow: 
-    inset 0 1.5px 2px 0 color-mix(in srgb, var(--c-light) 30%, transparent),
-    0 4px 16px rgba(0, 0, 0, 0.4);
-}
-
-/* Diagonal Specular Lens Refraction Sheen on Disk */
-.dock-circle-disk::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, transparent 60%);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.dock-label {
-  font-family: var(--font-heading);
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: var(--bmw-text-muted);
-  transition: color 0.2s ease;
-}
-
-.dark-theme .dock-label {
-  color: #9aa0ac;
-}
-
-/* Hover State */
-.dock-btn:hover {
-  transform: translateY(-2px) scale(1.05);
-}
-
-.dock-btn:hover .dock-circle-disk {
-  background: color-mix(in srgb, var(--c-light) 75%, transparent);
-  box-shadow: 
-    inset 0 1.5px 2.5px 0 #ffffff,
-    0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.dock-btn:hover .dock-label {
-  color: var(--bmw-black);
-}
-
-.dark-theme .dock-btn:hover .dock-circle-disk {
-  background: color-mix(in srgb, var(--c-light) 18%, transparent);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.5);
-}
-
-.dark-theme .dock-btn:hover .dock-label {
-  color: #ffffff;
-}
-
-/* VisionOS Illuminated Active Liquid Glass Disk State */
-.dock-btn.active {
-  transform: scale(1.08);
-}
-
-.dock-btn.active .dock-circle-disk {
-  background: linear-gradient(135deg, var(--bmw-blue) 0%, var(--bmw-dark-blue) 100%);
-  border-color: rgba(255, 255, 255, 0.9);
-  color: #ffffff;
-  box-shadow: 
-    inset 0 1.5px 3px 0 rgba(255, 255, 255, 0.9),
-    inset -1.5px -1.5px 3px 0 rgba(0, 0, 0, 0.3),
-    0 8px 25px rgba(28, 105, 210, 0.55),
-    0 0 15px rgba(28, 105, 210, 0.4);
-  animation: scaleToggle 400ms ease;
-}
-
-.dock-btn.active .dock-circle-disk svg {
-  stroke: #ffffff;
-  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
-}
-
-.dock-btn.active .dock-label {
-  color: var(--bmw-blue);
-  font-weight: 900;
-}
-
-.dark-theme .dock-btn.active .dock-label {
-  color: #58a6ff;
-}
-
-/* Bottom Center Customizer Color Drawer (Pill Shaped Panel & Circular Options!) */
-.bottom-color-drawer {
-  position: absolute;
-  bottom: 84px;
-  left: 50%;
-  transform: translateX(-50%) translateY(30px);
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  z-index: 40;
-  max-width: 92%;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.bottom-color-drawer.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) translateY(0);
-}
-
-/* Pill Shaped Drawer Panel */
-.drawer-content-box {
-  position: relative;
-  background: var(--liquid-glass-bg);
-  backdrop-filter: var(--liquid-glass-blur);
-  -webkit-backdrop-filter: var(--liquid-glass-blur);
-  padding: 16px 26px;
-  border-radius: var(--radius-pill);
-  box-shadow: var(--liquid-glass-shadow);
-  border: var(--liquid-glass-border);
-  max-width: 820px;
-  overflow: hidden;
-}
-
-.dark-theme .drawer-content-box {
-  background: var(--liquid-glass-dark-bg);
-  border: var(--liquid-glass-dark-border);
-  box-shadow: var(--liquid-glass-dark-shadow);
-}
-
-.drawer-close-btn {
-  position: absolute;
-  top: -12px;
-  right: -12px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: var(--liquid-glass-blur);
-  border: var(--liquid-glass-border);
-  color: var(--bmw-black);
-  font-size: 1.2rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  transition: all 0.2s ease;
-  z-index: 50;
-}
-
-.drawer-close-btn:hover {
-  background: var(--bmw-black);
-  color: #ffffff;
-}
-
-.drawer-swatches-row {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-}
-
-.scrollable-swatches {
-  overflow-x: auto;
-  padding: 4px 2px 8px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--bmw-blue) transparent;
-}
-
-.scrollable-swatches::-webkit-scrollbar {
-  height: 4px;
-}
-
-.scrollable-swatches::-webkit-scrollbar-thumb {
-  background: var(--bmw-blue);
-  border-radius: 4px;
-}
-
-.drawer-swatches-row.hide {
-  display: none !important;
-}
-
-/* All Swatch Options are 100% Circle Pills! (USER REQUESTED CIRCULAR OPTIONS!) */
-.color-card {
-  min-width: 82px;
-  width: 82px;
-  height: 82px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  background: rgba(255, 255, 255, 0.45);
-  backdrop-filter: var(--liquid-glass-blur);
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-  padding: 6px;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  flex-shrink: 0;
-  box-shadow: var(--liquid-glass-shadow);
-}
-
-.dark-theme .color-card {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.color-card:hover {
-  transform: translateY(-4px) scale(1.06);
-  background: rgba(255, 255, 255, 0.75);
-}
-
-.dark-theme .color-card:hover {
-  background: rgba(255, 255, 255, 0.18);
-}
-
-.color-card.active {
-  border-color: var(--bmw-black);
-  box-shadow: 0 8px 22px rgba(0,0,0,0.2);
-  background: rgba(255, 255, 255, 0.95);
-}
-
-.dark-theme .color-card.active {
-  border-color: #ffffff;
-  background: rgba(255, 255, 255, 0.25);
-}
-
-/* Circular Swatch Color Box */
-.card-swatch-box {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
-}
-
-.card-price {
-  font-size: 0.6rem;
-  font-weight: 800;
-  color: var(--bmw-blue);
-}
-
-.dark-theme .card-price {
-  color: #58a6ff;
-}
-
-.wheel-icon-preview {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  background: rgba(226, 229, 235, 0.8);
-}
-
-.wheel-icon-preview.black-rim {
-  background: rgba(26, 29, 36, 0.8);
-}
-
-.card-label {
-  font-size: 0.58rem;
-  font-weight: 800;
-  text-align: center;
-  color: var(--bmw-black);
-  line-height: 1.05;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 68px;
-}
-
-.dark-theme .card-label {
-  color: #ffffff;
-}
-
-.drawer-header-text {
-  display: flex;
-  flex-direction: column;
-  pointer-events: none;
-  flex-shrink: 0;
-}
-
-.dh-title {
-  font-family: var(--font-heading);
-  font-weight: 900;
-  font-size: 1.8rem;
-  line-height: 0.9;
-  letter-spacing: 1px;
-  color: var(--bmw-black);
-}
-
-.dark-theme .dh-title {
-  color: #ffffff;
-}
-
-.dh-subtitle {
-  font-family: var(--font-heading);
-  font-weight: 900;
-  font-size: 2.2rem;
-  line-height: 0.9;
-  letter-spacing: 1px;
-  color: var(--bmw-black);
-}
-
-.dark-theme .dh-subtitle {
-  color: var(--bmw-blue);
-}
-
-/* 3D Viewport Hardware Composited Wrapper for Real-time Post-FX */
+/* Central Model Viewer */
 .model-viewer-wrapper {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 5;
-  will-change: filter;
-  transform: translateZ(0);
+  z-index: 1; /* In front of watermark */
+  pointer-events: auto;
 }
 
-/* 3D Canvas with High-Quality Anti-Aliasing & Motion Blur Support */
 model-viewer {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  z-index: 5;
-  will-change: filter;
-  transform: translateZ(0);
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-}
-
-model-viewer.camera-orbiting {
-  /* Prevent overriding live JS Post-FX filters */
-}
-
-/* Volumetric Fog Headlight Cones System */
-.volumetric-fog-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 10;
-  opacity: 0;
-  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.volumetric-fog-wrapper.active {
-  opacity: 1;
-}
-
-.volumetric-beam {
-  position: absolute;
-  top: 48%;
-  width: 180px;
-  height: 340px;
-  background: linear-gradient(180deg, rgba(180, 230, 255, 0.8) 0%, rgba(80, 170, 255, 0.35) 40%, rgba(40, 120, 240, 0.1) 70%, transparent 100%);
-  clip-path: polygon(46% 0%, 54% 0%, 100% 100%, 0% 100%);
-  filter: blur(14px);
-  mix-blend-mode: screen;
-  transform-origin: top center;
-  pointer-events: none;
-}
-
-.beam-left {
-  left: 36%;
-  transform: rotate(-16deg) scaleY(1.1);
-}
-
-.beam-right {
-  right: 36%;
-  transform: rotate(16deg) scaleY(1.1);
+  outline: none;
+  --poster-color: transparent;
+  background: transparent;
 }
 
 /* Loading Spinner */
@@ -1329,211 +594,1721 @@ model-viewer.camera-orbiting {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 24px 36px;
-  background: var(--liquid-glass-bg);
-  backdrop-filter: var(--liquid-glass-blur);
-  border: var(--liquid-glass-border);
-  border-radius: var(--radius-pill);
-  box-shadow: var(--liquid-glass-shadow);
-  color: var(--bmw-text-muted);
-  font-size: 0.85rem;
+  gap: 14px;
+  z-index: 100;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
   font-weight: 600;
-  z-index: 20;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 
-.viewer-loader.hide,
-.viewer-loader[style*="display: none"] {
-  display: none !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
+model-viewer:not([loading]) > .viewer-loader,
+model-viewer[loaded] > .viewer-loader {
+  opacity: 0;
+  visibility: hidden;
 }
 
-.loader-spinner {
-  width: 36px;
-  height: 36px;
-  border: 3px solid rgba(28, 105, 210, 0.2);
-  border-top-color: var(--bmw-blue);
+.m3-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid color-mix(in srgb, var(--c-light) 20%, transparent);
+  border-top-color: var(--text-accent);
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  animation: spin 0.8s linear infinite;
+  box-shadow: 0 0 16px var(--text-accent);
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-/* Bottom Studio Toolbar (Pill Shaped Panel) */
-.studio-bottom-bar {
+/* ==========================================================================
+   Google Model Viewer Native Augmented Reality (Floor Plane Scanning Standard)
+   https://modelviewer.dev/examples/augmentedreality/
+   ========================================================================== */
+#ar-prompt {
   position: absolute;
-  bottom: 24px;
-  left: 0;
-  width: 100%;
-  padding: 0 36px;
-  z-index: 30;
+  left: 50%;
+  bottom: 120px;
+  transform: translateX(-50%);
+  display: none;
+  pointer-events: none;
+  z-index: 100;
+}
+
+model-viewer[ar-status="session-started"] > #ar-prompt {
+  display: block;
+  animation: fadeInPrompt 0.4s ease-out;
+}
+
+.ar-prompt-card {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  pointer-events: none;
+  gap: 16px;
+  padding: 14px 24px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, rgba(10, 14, 22, 0.88) 85%, rgba(255, 255, 255, 0.12));
+  backdrop-filter: blur(28px) saturate(220%);
+  -webkit-backdrop-filter: blur(28px) saturate(220%);
+  border: 1.8px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.85),
+    0 18px 48px rgba(0, 0, 0, 0.65),
+    0 0 28px color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 45%, transparent);
+  color: #FFFFFF;
 }
 
-.bottom-tools-left,
-.bottom-tools-right,
-.vr-pill-btn {
-  pointer-events: auto;
-}
-
-.bottom-tools-left {
-  display: flex;
-  gap: 10px;
-  padding: 6px;
-  background: var(--liquid-glass-bg);
-  backdrop-filter: var(--liquid-glass-blur);
-  -webkit-backdrop-filter: var(--liquid-glass-blur);
-  border: var(--liquid-glass-border);
-  border-radius: var(--radius-pill);
-  box-shadow: var(--liquid-glass-shadow);
-}
-
-.dark-theme .bottom-tools-left {
-  background: var(--liquid-glass-dark-bg);
-  border: var(--liquid-glass-dark-border);
-  box-shadow: var(--liquid-glass-dark-shadow);
-}
-
-.tool-circle-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  color: var(--bmw-black);
+.ar-hand-scan-animation {
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+}
+
+.ar-hand-icon {
+  width: 42px;
+  height: 42px;
+  animation: arHandScanWave 2.4s infinite ease-in-out;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+}
+
+@keyframes arHandScanWave {
+  0% { transform: translateX(-18px) rotate(-16deg); }
+  50% { transform: translateX(18px) rotate(16deg); }
+  100% { transform: translateX(-18px) rotate(-16deg); }
+}
+
+.ar-prompt-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+}
+
+.ar-prompt-badge {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--md-sys-color-primary, #80D8FF);
+  text-transform: uppercase;
+}
+
+.ar-prompt-text-group p {
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+  white-space: nowrap;
+}
+
+@keyframes fadeInPrompt {
+  from { opacity: 0; transform: translate(-50%, 15px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* Volumetric Headlight Beams */
+.volumetric-fog-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: 3;
+}
+
+.volumetric-fog-wrapper.active {
+  opacity: 0.35;
+}
+
+.volumetric-beam {
+  position: absolute;
+  top: 48%;
+  width: 320px;
+  height: 140px;
+  background: radial-gradient(ellipse at 10% 50%, rgba(128, 216, 255, 0.65) 0%, rgba(128, 216, 255, 0.15) 50%, transparent 80%);
+  filter: blur(16px);
+  transform-origin: left center;
+}
+
+.beam-left {
+  left: 36%;
+  transform: rotate(-18deg) scaleX(1.4);
+}
+
+.beam-right {
+  right: 36%;
+  transform: rotate(18deg) scaleX(1.4) scaleY(-1);
+}
+
+/* Liquid Glass Hotspots */
+.m3-hotspot {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--liquid-glass-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border);
+  box-shadow: var(--liquid-glass-card-shadow), 0 0 16px var(--text-accent);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease;
 }
 
-.dark-theme .tool-circle-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.18);
-  color: #ffffff;
+.m3-hotspot:hover {
+  transform: scale(1.25);
 }
 
-.tool-circle-btn:hover {
-  background: var(--bmw-black);
-  color: #ffffff;
+.hotspot-pulse {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border-radius: 50%;
+  border: 1.5px solid var(--text-accent);
+  animation: hotspotRipple 2s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
 }
 
-.vr-pill-btn {
+@keyframes hotspotRipple {
+  0% { transform: scale(0.7); opacity: 1; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.hotspot-popover {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  width: 230px;
+  background: var(--liquid-glass-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border);
+  box-shadow: var(--liquid-glass-shadow);
+  border-radius: var(--md-sys-shape-corner-m);
+  padding: 14px 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized);
+}
+
+.m3-hotspot:hover .hotspot-popover {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.popover-tag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--text-accent);
+  letter-spacing: 0.08em;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.hotspot-popover h4 {
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.hotspot-popover p {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   Collapsible Liquid Glass Navigation Dock (Central Trigger Morphing Engine)
+   ========================================================================== */
+.m3-dock-wrapper {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: calc(100% - 32px);
+  pointer-events: none;
+}
+
+/* Central Floating Launcher Buttons Group */
+.dock-launcher-group {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  pointer-events: auto;
+  transform-origin: center center;
+  transition: transform 0.42s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.3s cubic-bezier(0.2, 0.9, 0.3, 1),
+              visibility 0.3s ease;
+}
+
+/* Central Floating Morphing Launcher Button */
+.dock-launcher-btn {
+  position: relative;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, rgba(255, 255, 255, 0.20) 75%, rgba(0, 0, 0, 0.35));
+  backdrop-filter: blur(36px) saturate(240%) contrast(106%);
+  -webkit-backdrop-filter: blur(36px) saturate(240%) contrast(106%);
+  border: 1.8px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 
+    inset 0 3px 5px rgba(255, 255, 255, 0.9),
+    inset 0 -3px 5px rgba(0, 0, 0, 0.4),
+    0 18px 45px rgba(0, 0, 0, 0.5),
+    0 0 26px color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 40%, transparent);
+  color: #FFFFFF;
+  font-family: var(--font-display);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transform-origin: center center;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.3s ease,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+/* AR Button Specific Styling */
+.dock-ar-btn {
+  background: color-mix(in srgb, rgba(255, 255, 255, 0.22) 65%, var(--md-sys-color-primary, #80D8FF));
+  border-color: color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 80%, #FFFFFF);
+  box-shadow: 
+    inset 0 3px 5px rgba(255, 255, 255, 0.95),
+    inset 0 -3px 5px rgba(0, 0, 0, 0.4),
+    0 18px 45px rgba(0, 0, 0, 0.5),
+    0 0 28px color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 55%, transparent);
+}
+
+.dock-ar-btn:hover {
+  background: color-mix(in srgb, rgba(255, 255, 255, 0.38) 60%, var(--md-sys-color-primary, #80D8FF));
+  border-color: #FFFFFF;
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 
+    inset 0 3px 6px #FFFFFF,
+    0 24px 55px rgba(0, 0, 0, 0.6),
+    0 0 36px color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 80%, transparent);
+}
+
+.light-theme .dock-launcher-btn {
+  background: color-mix(in srgb, #ffffff 88%, transparent);
+  border: 1.8px solid rgba(0, 0, 0, 0.14);
+  color: var(--text-primary);
+  box-shadow: 
+    inset 0 2px 3px rgba(255, 255, 255, 0.95),
+    0 12px 30px rgba(0, 0, 0, 0.18);
+}
+
+.light-theme .dock-ar-btn {
+  background: color-mix(in srgb, #ffffff 80%, var(--text-accent, #0066B1));
+  border-color: color-mix(in srgb, var(--text-accent, #0066B1) 50%, rgba(0, 0, 0, 0.2));
+  color: #FFFFFF;
+  box-shadow: 
+    inset 0 2px 3px #FFFFFF,
+    0 12px 30px color-mix(in srgb, var(--text-accent, #0066B1) 35%, transparent);
+}
+
+.dock-launcher-btn:hover {
+  transform: scale(1.08) translateY(-2px);
+  background: color-mix(in srgb, rgba(255, 255, 255, 0.30) 75%, var(--md-sys-color-primary, #80D8FF));
+  border-color: #FFFFFF;
+  box-shadow: 
+    inset 0 3px 5px rgba(255, 255, 255, 0.95),
+    0 24px 50px rgba(0, 0, 0, 0.55),
+    0 0 32px color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 65%, transparent);
+}
+
+.dock-launcher-btn:active {
+  transform: scale(0.94) translateY(1px);
+  transition-duration: 0.08s;
+}
+
+.launcher-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+}
+
+.launcher-icon-wrapper .icon-car-gear {
+  width: 28px;
+  height: 28px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.launcher-icon-wrapper .icon-ar-spatial {
+  width: 26px;
+  height: 26px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.launcher-label {
+  display: inline-block;
+  line-height: 1;
+}
+
+/* Liquid Glass Dock Single Bar (All-In-One Unified Pill) */
+.liquid-glass-dock-single {
+  position: relative;
+  z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  gap: 10px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, rgba(255, 255, 255, 0.16) 75%, rgba(0, 0, 0, 0.28));
+  backdrop-filter: blur(36px) saturate(240%) contrast(106%);
+  -webkit-backdrop-filter: blur(36px) saturate(240%) contrast(106%);
+  border: 1.8px solid rgba(255, 255, 255, 0.48);
+  box-shadow: 
+    inset 0 3px 5px rgba(255, 255, 255, 0.85),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.45),
+    inset 2.5px 0 5px rgba(255, 255, 255, 0.45),
+    inset -2.5px 0 5px rgba(255, 255, 255, 0.35),
+    0 24px 60px rgba(0, 0, 0, 0.55),
+    0 8px 24px rgba(0, 0, 0, 0.4);
+  user-select: none;
+  max-width: 100%;
+  pointer-events: auto;
+  transform-origin: center center;
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.35s cubic-bezier(0.2, 0.9, 0.3, 1),
+              filter 0.35s ease,
+              visibility 0.35s ease;
+}
+
+/* Morphing Collapse & Expand Mechanics */
+.m3-dock-wrapper.is-collapsed .dock-launcher-group {
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.m3-dock-wrapper.is-collapsed .liquid-glass-dock-single {
+  transform: scale(0.35);
+  opacity: 0;
+  visibility: hidden;
+  filter: blur(16px);
+  pointer-events: none;
+  position: absolute;
+}
+
+.m3-dock-wrapper:not(.is-collapsed) .dock-launcher-group {
+  transform: scale(0.35);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+}
+
+.m3-dock-wrapper:not(.is-collapsed) .liquid-glass-dock-single {
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
+  filter: blur(0);
+  pointer-events: auto;
+  position: relative;
+}
+
+.light-theme .liquid-glass-dock-single {
+  background: color-mix(in srgb, #ffffff 82%, transparent);
+  border: 1.8px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 
+    inset 0 2.5px 3px rgba(255, 255, 255, 0.95),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.1),
+    0 16px 40px rgba(0, 0, 0, 0.15);
+}
+
+.deck-vertical-divider {
+  width: 1.2px;
+  height: 28px;
+  background: color-mix(in srgb, rgba(255, 255, 255, 0.25) 80%, transparent);
+  border-radius: 9999px;
+  margin: 0 2px;
+}
+
+.light-theme .deck-vertical-divider {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* Left Camera Segment */
+.deck-camera-segment {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: color-mix(in srgb, rgba(0, 0, 0, 0.35) 75%, rgba(255, 255, 255, 0.08));
+  border-radius: 9999px;
+  padding: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1.5px 3px rgba(0, 0, 0, 0.35);
+}
+
+.light-theme .deck-camera-segment {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.liquid-seg-slider {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  height: calc(100% - 6px);
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--c-light) 30%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-light) 55%, transparent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+              width 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+              opacity 0.2s ease;
+}
+
+.light-theme .liquid-seg-slider {
+  background: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18), 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+.m3-seg-btn {
+  position: relative;
+  z-index: 2;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 0.73rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1),
+              color 0.2s ease;
+}
+
+.m3-seg-btn:hover {
+  color: var(--text-primary);
+}
+
+.m3-seg-btn:active {
+  transform: scale(0.92);
+  transition-duration: 0.08s;
+}
+
+.m3-seg-btn.active {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+/* Center Configurator Tabs */
+.deck-tabs-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.liquid-tab-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 26%, rgba(255, 255, 255, 0.18));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.4px solid color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 85%, white);
+  box-shadow: 
+    inset 0 1.8px 2.5px rgba(255, 255, 255, 0.8),
+    inset 0 -1.5px 2px rgba(0, 0, 0, 0.3),
+    0 0 20px color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 48%, transparent);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: transform 0.36s cubic-bezier(0.25, 1, 0.5, 1),
+              width 0.36s cubic-bezier(0.25, 1, 0.5, 1),
+              opacity 0.25s ease,
+              background-color 0.3s ease,
+              border-color 0.3s ease;
+}
+
+.light-theme .liquid-tab-slider {
+  background: color-mix(in srgb, var(--text-accent, #0066B1) 18%, #ffffff);
+  border-color: color-mix(in srgb, var(--text-accent, #0066B1) 75%, transparent);
+  box-shadow: 
+    inset 0 1.8px 2px #ffffff,
+    0 0 18px color-mix(in srgb, var(--text-accent, #0066B1) 32%, transparent);
+}
+
+.m3-deck-tabs {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 2;
+}
+
+/* Strictly Center-Aligned Tab Button (Icon Top + Text Bottom) */
+.m3-deck-tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 3px;
+  padding: 6px 18px 5px;
+  min-width: 76px;
+  border-radius: 9999px;
+  color: rgba(255, 255, 255, 0.9);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+              color 0.25s ease,
+              opacity 0.25s ease;
+}
+
+.light-theme .m3-deck-tab {
+  color: var(--text-secondary);
+  text-shadow: none;
+}
+
+.m3-deck-tab:hover {
+  color: #FFFFFF;
+  transform: translateY(-2px);
+}
+
+.light-theme .m3-deck-tab:hover {
+  color: var(--text-primary);
+}
+
+.m3-deck-tab:active {
+  transform: scale(0.92) translateY(1px);
+  transition-duration: 0.08s;
+}
+
+.m3-deck-tab.active {
+  color: #FFFFFF;
+  font-weight: 800;
+}
+
+.light-theme .m3-deck-tab.active {
+  color: var(--text-accent, #0066B1);
+}
+
+.dock-tab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 24px;
+  margin: 0 auto;
+}
+
+.dock-tab-icon svg {
+  display: block;
+  margin: 0 auto;
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              filter 0.25s ease;
+}
+
+.light-theme .dock-tab-icon svg {
+  filter: none;
+}
+
+.m3-deck-tab:hover .dock-tab-icon svg {
+  transform: scale(1.15);
+}
+
+.m3-deck-tab.active .dock-tab-icon svg {
+  color: var(--md-sys-color-primary, #80D8FF);
+  filter: drop-shadow(0 0 12px var(--md-sys-color-primary, #80D8FF));
+  transform: scale(1.18);
+}
+
+.light-theme .m3-deck-tab.active .dock-tab-icon svg {
+  color: var(--text-accent, #0066B1);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--text-accent, #0066B1) 40%, transparent));
+}
+
+.m3-tab-label {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  text-transform: capitalize;
+}
+
+/* Right Quick Utility Buttons (Dark/Light Mode & Fullscreen) */
+.deck-utils-segment {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 26px;
+  flex-shrink: 0;
+}
+
+.m3-icon-button {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  background: color-mix(in srgb, rgba(255, 255, 255, 0.22) 75%, rgba(0, 0, 0, 0.35));
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 
+    inset 0 2px 3px rgba(255, 255, 255, 0.85),
+    inset 0 -1.5px 2px rgba(0, 0, 0, 0.35),
+    0 4px 14px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background 0.2s ease,
+              color 0.2s ease,
+              border-color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+.light-theme .m3-icon-button {
+  color: var(--text-primary);
+  background: color-mix(in srgb, #ffffff 85%, transparent);
+  border: 1.5px solid rgba(0, 0, 0, 0.15);
+  box-shadow: 
+    inset 0 1.5px 2px rgba(255, 255, 255, 0.95),
+    0 3px 10px rgba(0, 0, 0, 0.12);
+}
+
+.m3-icon-button svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
+}
+
+.m3-icon-button:hover {
+  background: color-mix(in srgb, rgba(255, 255, 255, 0.35) 80%, var(--md-sys-color-primary, #80D8FF));
+  border-color: #FFFFFF;
+  color: #FFFFFF;
+  transform: translateY(-2px) scale(1.1);
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.95),
+    0 0 18px color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 55%, transparent),
+    0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.m3-icon-button:active {
+  transform: scale(0.90) translateY(1px);
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.5),
+    0 2px 6px rgba(0, 0, 0, 0.2);
+  transition-duration: 0.08s;
+}
+
+
+/* ==========================================================================
+   M3 Expandable Spatial Canvas (Liquid Glass Floating Side-Sheet inside Canvas)
+   ========================================================================== */
+.m3-spatial-canvas {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 420px;
+  max-height: calc(100% - 48px);
   background: var(--liquid-glass-bg);
   backdrop-filter: var(--liquid-glass-blur);
   -webkit-backdrop-filter: var(--liquid-glass-blur);
   border: var(--liquid-glass-border);
-  border-radius: var(--radius-pill);
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 0.85rem;
-  color: var(--bmw-black);
-  cursor: pointer;
+  border-radius: var(--md-sys-shape-corner-xl);
   box-shadow: var(--liquid-glass-shadow);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+  transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-emphasized),
+              opacity var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-emphasized),
+              visibility var(--md-sys-motion-duration-medium);
 }
 
-.dark-theme .vr-pill-btn {
-  background: var(--liquid-glass-dark-bg);
-  border: var(--liquid-glass-dark-border);
-  box-shadow: var(--liquid-glass-dark-shadow);
-  color: #ffffff;
+.m3-spatial-canvas.closed {
+  transform: translateX(115%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
-.vr-pill-btn:hover {
-  background: var(--bmw-black);
-  color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+.m3-canvas-drag-handle {
+  display: none;
+  width: 36px;
+  height: 4px;
+  background: color-mix(in srgb, var(--c-light) 30%, transparent);
+  border-radius: var(--md-sys-shape-corner-full);
+  margin: 8px auto 0;
 }
 
-.studio-credit {
-  font-size: 0.72rem;
-  color: var(--bmw-text-muted);
+/* Canvas Header */
+.m3-canvas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px 14px;
+  border-bottom: var(--liquid-glass-border-subtle);
+}
+
+.m3-canvas-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.m3-canvas-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--text-accent);
+  text-transform: uppercase;
+}
+
+.m3-canvas-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-shadow: var(--text-shadow-contrast);
+  transition: color 0.3s ease;
+}
+
+/* Canvas Scrollable Body */
+.m3-canvas-body {
+  padding: 18px 22px;
+  overflow-y: auto;
+  max-height: calc(100% - 60px);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.light-theme .m3-canvas-body {
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.m3-canvas-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.m3-canvas-body::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--c-light) 25%, transparent);
+  border-radius: 3px;
+}
+
+.light-theme .m3-canvas-body::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, #000000 20%, transparent);
+}
+
+/* Tab Panels */
+.m3-tab-panel {
+  display: none;
+}
+
+.m3-tab-panel.active {
+  display: block;
+  animation: m3FadeIn var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized);
+}
+
+@keyframes m3FadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* M3 Filter Chips */
+.m3-chip-scroll-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+  scrollbar-width: none;
+}
+
+.m3-chip-scroll-row::-webkit-scrollbar {
+  display: none;
+}
+
+.m3-filter-chip {
+  padding: 6px 14px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border-subtle);
+  box-shadow: var(--liquid-glass-card-shadow);
+  color: var(--text-secondary);
+  font-size: 0.74rem;
   font-weight: 600;
+  white-space: nowrap;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized);
 }
 
-/* Hotspots */
-.hotspot {
+.m3-filter-chip:hover {
+  background: var(--liquid-glass-hover-bg);
+  color: var(--text-primary);
+}
+
+.m3-filter-chip.active {
+  background: var(--liquid-glass-active-bg);
+  color: var(--text-primary);
+  border: 1px solid color-mix(in srgb, var(--text-accent) 80%, white);
+  box-shadow: var(--liquid-glass-active-glow);
+}
+
+/* Active Selection Card */
+.m3-selection-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border);
+  box-shadow: var(--liquid-glass-card-shadow);
+  border-radius: var(--md-sys-shape-corner-m);
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+
+.m3-selection-sub {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  display: block;
+}
+
+.m3-selection-name {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.m3-selection-price {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-accent);
+}
+
+/* ==========================================================================
+   Tab 1: Exterior Paint Swatches Grid (Liquid Glass Cards)
+   ========================================================================== */
+.m3-swatches-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.m3-swatch-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border-subtle);
+  box-shadow: var(--liquid-glass-card-shadow);
+  border-radius: var(--md-sys-shape-corner-m);
+  padding: 10px 12px;
+  text-align: left;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized);
+}
+
+.m3-swatch-card:hover {
+  background: var(--liquid-glass-hover-bg);
+  border-color: color-mix(in srgb, var(--c-light) 40%, transparent);
+  transform: translateY(-2px);
+  box-shadow: var(--liquid-glass-shadow);
+}
+
+.m3-swatch-card.active {
+  background: var(--liquid-glass-active-bg);
+  border: 1.5px solid color-mix(in srgb, var(--text-accent) 90%, white);
+  box-shadow: var(--liquid-glass-active-glow);
+}
+
+.m3-swatch-orb {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 50%;
+  box-shadow: inset 0 2px 5px rgba(255, 255, 255, 0.6), inset 0 -2px 5px rgba(0, 0, 0, 0.5), 0 4px 10px rgba(0, 0, 0, 0.4);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+}
+
+.m3-swatch-details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.swatch-name {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.3s ease;
+}
+
+.swatch-meta {
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   Tab 2 & 3: Visual Cards (Wheels & Interior Seats)
+   ========================================================================== */
+.m3-visual-cards-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.m3-visual-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border-subtle);
+  box-shadow: var(--liquid-glass-card-shadow);
+  border-radius: var(--md-sys-shape-corner-l);
+  padding: 12px 16px;
+  text-align: left;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized);
+}
+
+.m3-visual-card:hover {
+  background: var(--liquid-glass-hover-bg);
+  border-color: color-mix(in srgb, var(--c-light) 40%, transparent);
+  transform: translateY(-2px);
+  box-shadow: var(--liquid-glass-shadow);
+}
+
+.m3-visual-card.active {
+  background: var(--liquid-glass-active-bg);
+  border: 1.5px solid color-mix(in srgb, var(--text-accent) 90%, white);
+  box-shadow: var(--liquid-glass-active-glow);
+}
+
+.m3-card-media {
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+  border-radius: var(--md-sys-shape-corner-m);
+  background: color-mix(in srgb, var(--c-dark) 60%, transparent);
+  border: var(--liquid-glass-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.light-theme .m3-card-media {
+  background: color-mix(in srgb, #000000 8%, transparent);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.m3-wheel-svg,
+.m3-seat-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.m3-card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.m3-card-title {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.m3-card-desc {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   Tab 4: Interactive Mechanics & Performance Specs
+   ========================================================================== */
+.m3-section-label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--text-accent);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.m3-action-switch-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.m3-switch-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border-subtle);
+  box-shadow: var(--liquid-glass-card-shadow);
+  border-radius: var(--md-sys-shape-corner-l);
+  padding: 14px 16px;
+}
+
+.m3-switch-icon-box {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  border-radius: var(--md-sys-shape-corner-m);
+  background: var(--liquid-glass-card-bg);
+  border: var(--liquid-glass-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-accent);
+}
+
+.m3-switch-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.switch-title {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.switch-desc {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+}
+
+/* Toggle Switch (Liquid Glass Pill Switch) */
+.m3-toggle-button {
+  width: 54px;
+  height: 32px;
+  position: relative;
+  cursor: pointer;
+}
+
+.toggle-track {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: color-mix(in srgb, var(--c-dark) 40%, var(--liquid-glass-card-bg));
+  border: var(--liquid-glass-border);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized);
+}
+
+.light-theme .toggle-track {
+  background: color-mix(in srgb, #000000 12%, transparent);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-thumb {
   position: absolute;
-  width: 22px;
-  height: 22px;
-  border: none;
+  top: 4px;
+  left: 5px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 1px 2px #FFFFFF;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized);
+}
+
+.m3-toggle-button.active .toggle-track {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 70%, transparent);
+  border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--md-sys-color-primary) 50%, transparent);
+}
+
+.m3-toggle-button.active .toggle-thumb {
+  transform: translateX(20px);
+  background: #FFFFFF;
+}
+
+/* Specs HUD Grid */
+.m3-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.m3-spec-tile {
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border-subtle);
+  box-shadow: var(--liquid-glass-card-shadow);
+  border-radius: var(--md-sys-shape-corner-m);
+  padding: 12px 14px;
+}
+
+.spec-tile-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.spec-tile-num small {
+  font-size: 0.72rem;
+  color: var(--text-accent);
+  margin-left: 2px;
+}
+
+.spec-tile-lbl {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   Tab 5: 3D Studio Pro Lab (PBR Inspector & Post-FX)
+   ========================================================================== */
+.m3-subtabs-row {
+  display: flex;
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border-subtle);
+  border-radius: var(--md-sys-shape-corner-full);
+  padding: 4px;
+  margin-bottom: 16px;
+}
+
+.m3-subtab-btn {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: var(--md-sys-shape-corner-full);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-align: center;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized);
+}
+
+.m3-subtab-btn.active {
+  background: var(--liquid-glass-hover-bg);
+  border: var(--liquid-glass-border);
+  color: var(--text-primary);
+  box-shadow: var(--liquid-glass-card-shadow);
+}
+
+.m3-subtab-content {
+  display: none;
+}
+
+.m3-subtab-content.active {
+  display: block;
+  animation: m3FadeIn var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized);
+}
+
+/* Controls & Inputs */
+.m3-control-group {
+  margin-bottom: 14px;
+}
+
+.m3-control-group label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.m3-slider {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  background: color-mix(in srgb, var(--c-light) 15%, transparent);
+  border-radius: var(--md-sys-shape-corner-full);
+  outline: none;
+}
+
+.light-theme .m3-slider {
+  background: color-mix(in srgb, #000000 12%, transparent);
+}
+
+.m3-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--text-accent);
+  cursor: pointer;
+  box-shadow: 0 0 12px var(--text-accent);
+  transition: transform 0.1s ease;
+}
+
+.m3-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.m3-select,
+.m3-input,
+.m3-textarea {
+  width: 100%;
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border);
+  border-radius: var(--md-sys-shape-corner-s);
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.82rem;
+  outline: none;
+  transition: border-color 0.2s ease, color 0.3s ease;
+}
+
+.light-theme .m3-select,
+.light-theme .m3-input,
+.light-theme .m3-textarea {
+  background: color-mix(in srgb, #ffffff 82%, transparent);
+}
+
+.m3-select:focus,
+.m3-input:focus,
+.m3-textarea:focus {
+  border-color: var(--text-accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--text-accent) 30%, transparent);
+}
+
+.m3-textarea {
+  height: 110px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  resize: vertical;
+}
+
+.color-picker-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.color-picker-row input[type="color"] {
+  width: 38px;
+  height: 38px;
+  border: var(--liquid-glass-border);
+  border-radius: var(--md-sys-shape-corner-s);
   background: transparent;
   cursor: pointer;
 }
 
-.hotspot-pin {
-  width: 100%;
-  height: 100%;
-  background: var(--bmw-blue);
-  border: 2px solid #ffffff;
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--bmw-blue);
+/* Material Inspector */
+.mat-search-row {
+  display: flex;
+  gap: 8px;
 }
 
-.hotspot-card {
-  position: absolute;
-  bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  padding: 10px 12px;
-  background: var(--liquid-glass-bg);
-  backdrop-filter: var(--liquid-glass-blur);
-  border: var(--liquid-glass-border);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--liquid-glass-shadow);
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.25s ease;
-  pointer-events: none;
+.mat-sphere-carousel {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 2px;
+  scrollbar-width: none;
 }
 
-.hotspot-card h4 {
-  font-family: var(--font-heading);
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: var(--bmw-black);
-}
-
-.hotspot-card p {
-  font-size: 0.72rem;
-  color: var(--bmw-text-muted);
-}
-
-.hotspot:hover .hotspot-card {
-  opacity: 1;
-  visibility: visible;
-}
-
-.ar-overlay-btn {
+.mat-sphere-carousel::-webkit-scrollbar {
   display: none;
 }
 
-/* Cockpit Banner Section */
+.mat-sphere-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border-subtle);
+  border-radius: var(--md-sys-shape-corner-m);
+  padding: 8px 6px;
+  min-width: 68px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mat-sphere-card:hover {
+  background: var(--liquid-glass-hover-bg);
+  transform: translateY(-2px);
+}
+
+.mat-sphere-card.active {
+  background: var(--liquid-glass-active-bg);
+  border-color: var(--text-accent);
+  box-shadow: var(--liquid-glass-active-glow);
+}
+
+.sphere-canvas {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.mat-sphere-name {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 58px;
+}
+
+.mat-active-banner-card {
+  background: var(--liquid-glass-card-bg);
+  border: var(--liquid-glass-border-subtle);
+  border-radius: var(--md-sys-shape-corner-m);
+  padding: 12px;
+  margin-top: 10px;
+}
+
+.mat-active-tag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--text-accent);
+  letter-spacing: 0.08em;
+}
+
+.mat-active-count {
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  margin-left: 8px;
+}
+
+.mat-active-title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-top: 2px;
+  transition: color 0.3s ease;
+}
+
+.mat-active-desc {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* Accordions */
+.m3-accordion {
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border-subtle);
+  border-radius: var(--md-sys-shape-corner-m);
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.m3-accordion-summary {
+  padding: 10px 14px;
+  font-family: var(--font-display);
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  transition: color 0.3s ease;
+}
+
+.m3-accordion-summary::-webkit-details-marker {
+  display: none;
+}
+
+.m3-accordion[open] .m3-accordion-summary {
+  border-bottom: var(--liquid-glass-border-subtle);
+  background: var(--liquid-glass-hover-bg);
+}
+
+.m3-accordion-body {
+  padding: 12px 14px;
+}
+
+/* Buttons */
+.m3-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--md-sys-shape-corner-full);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized);
+}
+
+.m3-btn-primary {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 40%, var(--liquid-glass-bg));
+  backdrop-filter: var(--liquid-glass-blur);
+  color: var(--text-primary);
+  border: 1px solid color-mix(in srgb, var(--md-sys-color-primary) 80%, white);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--md-sys-color-primary) 35%, transparent);
+}
+
+.m3-btn-primary:hover {
+  filter: brightness(1.12);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--md-sys-color-primary) 60%, transparent);
+}
+
+.m3-btn-tonal {
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  color: var(--text-primary);
+  border: var(--liquid-glass-border);
+}
+
+.m3-btn-tonal:hover {
+  background: var(--liquid-glass-hover-bg);
+}
+
+.m3-btn-sm {
+  padding: 6px 14px;
+  font-size: 0.74rem;
+}
+
+.m3-btn-danger {
+  color: #FF5252;
+  border-color: rgba(255, 82, 82, 0.4);
+}
+
+.mat-footer-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.m3-divider {
+  border: 0;
+  border-top: var(--liquid-glass-border-subtle);
+  margin: 14px 0;
+}
+
+.export-desc {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+/* ==========================================================================
+   AR Modal Dialog (Liquid Glass Modal)
+   ========================================================================== */
+.ar-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(14px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-emphasized);
+}
+
+.ar-modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.ar-modal-box {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: var(--liquid-glass-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border);
+  border-radius: var(--md-sys-shape-corner-xl);
+  box-shadow: var(--liquid-glass-shadow);
+  padding: 28px;
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--text-secondary);
+  background: var(--liquid-glass-card-bg);
+  border: var(--liquid-glass-border-subtle);
+}
+
+.modal-close-btn:hover {
+  background: var(--liquid-glass-hover-bg);
+  color: var(--text-primary);
+}
+
+.ar-modal-header {
+  margin-bottom: 20px;
+}
+
+.ar-modal-header h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-top: 4px;
+}
+
+.ar-modal-header p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.qr-code-wrapper {
+  background: #FFFFFF;
+  border-radius: var(--md-sys-shape-corner-l);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.qr-code-wrapper img {
+  width: 200px;
+  height: 200px;
+}
+
+.ar-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+}
+
+.step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--md-sys-color-primary) 30%, var(--liquid-glass-bg));
+  border: 1px solid var(--md-sys-color-primary);
+  color: var(--text-accent);
+  font-weight: 800;
+  font-size: 0.72rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   Content Sections (Cockpit, Interior Luxury, Specifications)
+   ========================================================================== */
 .cockpit-banner-section {
   position: relative;
   width: 100%;
-  height: 480px;
+  min-height: 480px;
   overflow: hidden;
 }
 
 .banner-img-container {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 480px;
 }
 
 .banner-img {
@@ -1548,125 +2323,139 @@ model-viewer.camera-orbiting {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 100%);
+  background: linear-gradient(90deg, rgba(7, 9, 12, 0.95) 0%, rgba(7, 9, 12, 0.6) 50%, transparent 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 4rem;
-  color: #ffffff;
-}
-
-.banner-tag {
-  font-family: var(--font-heading);
-  font-size: 0.8rem;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: var(--bmw-blue);
+  padding: 40px 60px;
+  max-width: 720px;
 }
 
 .banner-overlay h2 {
-  font-family: var(--font-heading);
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin: 6px 0 10px;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 900;
+  color: #FFFFFF;
+  margin: 8px 0;
 }
 
 .banner-overlay p {
-  color: #cccccc;
-  max-width: 500px;
+  font-size: 1rem;
+  color: #A4ACB9;
+  line-height: 1.6;
 }
 
-/* Interior Section */
+/* Interior Luxury Section */
 .interior-section {
-  padding: 90px 2rem;
-  max-width: 1360px;
+  padding: 80px 32px;
+  max-width: 1440px;
   margin: 0 auto;
 }
 
 .interior-grid {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 3rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
   align-items: center;
 }
 
 .interior-card {
-  background: #ffffff;
-  border-radius: var(--radius-lg);
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border);
+  border-radius: var(--md-sys-shape-corner-xl);
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  box-shadow: var(--liquid-glass-shadow);
 }
 
-.card-img {
+.interior-card .card-img {
   width: 100%;
-  height: 360px;
+  height: 320px;
   object-fit: cover;
 }
 
-.card-body {
-  padding: 1.5rem;
+.interior-card .card-body {
+  padding: 24px;
 }
 
-.card-body h3 {
-  font-family: var(--font-heading);
+.interior-card h3 {
+  font-family: var(--font-display);
   font-size: 1.4rem;
   font-weight: 800;
-  margin-bottom: 6px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  transition: color 0.3s ease;
 }
 
-.card-body p {
-  color: var(--bmw-text-muted);
+.interior-card p {
   font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
 .interior-details {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 16px;
 }
 
-.detail-box h4 {
-  font-family: var(--font-heading);
+.m3-detail-card {
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border);
+  box-shadow: var(--liquid-glass-card-shadow);
+  border-radius: var(--md-sys-shape-corner-l);
+  padding: 20px 24px;
+  transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized);
+}
+
+.m3-detail-card:hover {
+  transform: translateX(4px);
+  background: var(--liquid-glass-hover-bg);
+  box-shadow: var(--liquid-glass-shadow);
+}
+
+.m3-detail-card h4 {
+  font-family: var(--font-display);
   font-size: 1.1rem;
   font-weight: 800;
-  color: var(--bmw-black);
-  margin-bottom: 4px;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  transition: color 0.3s ease;
 }
 
-.detail-box p {
+.m3-detail-card p {
   font-size: 0.88rem;
-  color: var(--bmw-text-muted);
+  color: var(--text-secondary);
+  line-height: 1.5;
 }
 
-/* Specs Section */
+/* Specifications Table */
 .specs-section {
-  padding: 80px 2rem;
-  max-width: 1000px;
+  padding: 60px 32px 100px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .section-header {
   text-align: center;
-  margin-bottom: 40px;
-}
-
-.section-tag {
-  font-family: var(--font-heading);
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: var(--bmw-blue);
+  margin-bottom: 36px;
 }
 
 .section-title {
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
   font-size: 2.2rem;
-  font-weight: 800;
+  font-weight: 900;
+  color: var(--text-primary);
+  margin-top: 8px;
+  transition: color 0.3s ease;
 }
 
 .specs-table-wrapper {
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
+  background: var(--liquid-glass-card-bg);
+  backdrop-filter: var(--liquid-glass-blur);
+  border: var(--liquid-glass-border);
+  box-shadow: var(--liquid-glass-shadow);
+  border-radius: var(--md-sys-shape-corner-xl);
   overflow: hidden;
 }
 
@@ -1675,129 +2464,95 @@ model-viewer.camera-orbiting {
   border-collapse: collapse;
 }
 
+.specs-table tr {
+  border-bottom: var(--liquid-glass-border-subtle);
+}
+
+.specs-table tr:last-child {
+  border-bottom: none;
+}
+
 .specs-table td {
-  padding: 1.1rem 1.5rem;
-  border-bottom: 1px solid var(--border-light);
+  padding: 16px 24px;
   font-size: 0.9rem;
 }
 
-.spec-name {
-  color: var(--bmw-text-muted);
-  font-weight: 500;
-  width: 40%;
-}
-
-.spec-value {
-  color: var(--bmw-black);
+.specs-table .spec-name {
   font-weight: 700;
+  color: var(--text-secondary);
+  width: 35%;
 }
 
-/* AR Modal */
-.ar-modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
+.specs-table .spec-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  transition: color 0.3s ease;
 }
 
-.ar-modal-backdrop.active {
-  opacity: 1;
-  visibility: visible;
-}
-
-.ar-modal-box {
-  position: relative;
-  width: 90%;
-  max-width: 440px;
-  background: var(--liquid-glass-bg);
-  backdrop-filter: var(--liquid-glass-blur);
-  border: var(--liquid-glass-border);
-  border-radius: var(--radius-lg);
-  padding: 2rem;
-  box-shadow: var(--liquid-glass-shadow);
-  text-align: center;
-}
-
-.modal-close-btn {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  background: transparent;
-  border: none;
-  font-size: 1.8rem;
-  cursor: pointer;
-}
-
-.qr-code-wrapper img {
-  width: 160px;
-  height: 160px;
-}
-
-.ar-steps {
-  text-align: left;
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 0.85rem;
-}
-
-/* Sticky Build Bar (Pill Liquid Glass Build Bar) */
+/* Sticky Footer Build Bar (Liquid Glass Pill Bar) */
 .sticky-build-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  z-index: 999;
+  height: 68px;
   background: var(--liquid-glass-bg);
   backdrop-filter: var(--liquid-glass-blur);
   -webkit-backdrop-filter: var(--liquid-glass-blur);
   border-top: var(--liquid-glass-border);
-  padding: 12px 2rem;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+  box-shadow: var(--liquid-glass-shadow);
+  z-index: 40;
+  display: flex;
+  align-items: center;
 }
 
 .build-bar-container {
-  max-width: 1400px;
+  max-width: 1600px;
+  width: 100%;
   margin: 0 auto;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+.build-info {
+  display: flex;
+  flex-direction: column;
+}
+
 .build-model {
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
 }
 
 .build-specs-summary {
-  font-size: 0.78rem;
-  color: var(--bmw-text-muted);
+  font-size: 0.74rem;
+  color: var(--text-secondary);
 }
 
-.price-lbl {
+.build-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.build-price .price-lbl {
   font-size: 0.65rem;
-  letter-spacing: 1px;
-  color: var(--bmw-text-muted);
   font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
 }
 
-.price-val {
-  font-family: var(--font-heading);
-  font-size: 1.3rem;
+.build-price .price-val {
+  font-family: var(--font-display);
   font-weight: 800;
-  color: var(--bmw-blue);
+  font-size: 1.15rem;
+  color: var(--text-accent);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--text-accent) 50%, transparent);
 }
 
 .build-actions {
@@ -1807,18 +2562,111 @@ model-viewer.camera-orbiting {
 
 /* Footer */
 .footer {
-  padding: 40px 2rem 100px;
+  padding: 30px 24px 90px;
   text-align: center;
-  background: var(--bg-secondary);
-  color: var(--bmw-text-muted);
-  font-size: 0.82rem;
+  background: var(--md-sys-color-surface-dim);
+  border-top: var(--liquid-glass-border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .studio-radio-menu { left: 20px; }
-  .studio-top-left-header { left: 20px; }
-  .spec-overlay-card { right: 20px; width: 280px; }
-  .editor-panel { right: 20px; width: 300px; }
-  .interior-grid { grid-template-columns: 1fr; }
+/* ==========================================================================
+   Responsive & XR Spatial Ergonomics Media Queries
+   ========================================================================== */
+@media (max-width: 992px) {
+  .interior-grid {
+    grid-template-columns: 1fr;
+  }
 }
+
+@media (max-width: 860px) {
+  .m3-top-bar {
+    height: 60px;
+  }
+  
+  .m3-center-chip {
+    display: none;
+  }
+
+  .studio-section {
+    padding: 16px 12px 30px;
+  }
+
+  .studio-viewport-container {
+    height: 78vh;
+    min-height: 580px;
+    border-radius: 26px;
+  }
+
+  .liquid-glass-dock-single {
+    bottom: 12px;
+    padding: 5px 8px;
+    gap: 6px;
+    max-width: calc(100% - 16px);
+  }
+
+  .deck-camera-segment {
+    display: none;
+  }
+
+  .deck-vertical-divider {
+    display: none;
+  }
+
+  .m3-deck-tab {
+    padding: 5px 10px 4px;
+    min-width: 58px;
+    font-size: 0.7rem;
+  }
+
+  .dock-tab-icon svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .m3-tab-label {
+    font-size: 0.65rem;
+  }
+
+  .m3-icon-button {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Responsive Bottom Sheet on Mobile */
+  .m3-spatial-canvas {
+    top: auto;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    max-height: 72%;
+    border-radius: var(--md-sys-shape-corner-xl) var(--md-sys-shape-corner-xl) 0 0;
+    transform: translateY(0);
+  }
+
+  .m3-spatial-canvas.closed {
+    transform: translateY(105%);
+  }
+
+  .m3-canvas-drag-handle {
+    display: block;
+  }
+
+  .m3-canvas-body {
+    max-height: 58vh;
+  }
+
+  .m3-swatches-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .banner-overlay {
+    padding: 30px 24px;
+  }
+
+  .hero-section {
+    padding: 80px 20px 40px;
+  }
+}
+

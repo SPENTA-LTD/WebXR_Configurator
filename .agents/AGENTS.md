@@ -6,65 +6,44 @@ This repository contains the interactive 3D Studio Configurator and WebXR Augmen
 
 ## 🏗️ Architecture & Technical Stack
 
-- **Frontend:** Standard HTML5, Vanilla CSS3 (Apple Liquid Glass Design Tokens & `color-mix()` Reflex Engine), JavaScript ES6 Modules.
-- **3D Engine:** Google `<model-viewer>` v3.5.0 with custom PBR material controllers.
+- **Frontend:** Standard HTML5, Vanilla CSS3 (Apple/VisionOS Liquid Glass Design Tokens, `color-mix()` Physics Engine, Frosted Spatial Elevation Blur), JavaScript ES6 Modules.
+- **3D Engine:** Google `<model-viewer>` v3.5.0 with `@google/model-viewer-effects` Post-Processing Composer and custom PBR material controllers.
 - **Development Server:** `server.py` (Python HTTP Server with CORS headers and GLB/USDZ/HDR MIME types on port 8080).
 - **Environment Maps & Assets:** Polyhaven Studio HDRI (`./assets/studio.hdr`), Wheel option GLB files (`./assets/bmw_x7_wheel_1.glb`, `./assets/bmw_x7_wheel_2.glb`).
 
 ---
 
-## 🎨 Strict Material Isolation & Design Rules
+## 💎 Apple/VisionOS Liquid Glass UI & Reflex Optics System (`color-mix()` Engine)
 
-1. **Body Paint Material Isolation (`inmx7m60i_body`):**
-   - Color swatches & paint controls MUST strictly target `inmx7m60i_body` (and variants starting with `inmx7m60i_body.`).
-   - Never apply paint colors globally to all materials; black grilles, carbon trim, headlights, taillights, diffusers, and side skirts must remain untouched.
+Learned from [kube.io/blog/liquid-glass-css-svg](https://kube.io/blog/liquid-glass-css-svg/):
 
-2. **Apple Liquid Glass UI & Reflex Optics System (`color-mix()` Engine):**
-   - **Reflex Multipliers:** Uses `--glass-reflex-light` (1.0 light theme, 0.35 dark theme) and `--glass-reflex-dark` (1.0 light theme, 2.2 dark theme) to calculate optical reflections dynamically.
-   - **10-Point Specular Shadow Stack:** Employs multi-tier `color-mix(in srgb, ...)` inset shadows to compute crisp top-left rim highlights, edge caustics, and ambient drop shadows.
-   - **Right Dock Anatomy System:** Vertical glass pill container (`.studio-right-dock`). Each item features a 100% round circular liquid glass disk (`.dock-circle-disk`, 48px), icon, uppercase label text underneath (`.dock-label`), and active VisionOS illuminated sapphire glass lens optics. Excludes green status dots, FAB (8), and Menu icon (9).
-   - **Dual-Layer Refraction Pseudo-Elements:** `::before` fixed lens sheen + `::after` cursor light spotlight (`mix-blend-mode: overlay` / `color-dodge`).
-   - **Lerped Animation Damping:** `requestAnimationFrame` animation loop in `main.js` lerping `--mouse-x`, `--mouse-y`, and `--mouse-opacity` per glass panel.
-   - Curvatures & Swatches: `border-radius: 40px` for panels/drawers, `50%` round circular glass disks for dock buttons, 100% circular swatches with scale toggle spring keyframe feedback.
+1. **`color-mix()` Physical Translucency & High-Saturation Optics:**
+   - Base glass surfaces: `background: color-mix(in srgb, var(--c-glass) 12%, transparent);`.
+   - Optical backdrop blur: `backdrop-filter: blur(22px) saturate(210%) contrast(104%);`.
+   - Glass border: `border: 1px solid color-mix(in srgb, var(--c-light) 35%, transparent);`.
 
-3. **16 Official BMW Paint Finishes & Live MSRP:**
-   - Base Price: **$108,700** starting MSRP.
-   - Finishes: Non-metallic ($0), Metallic ($0), BMW Individual ($1,950–$5,000), Special Order ($5,500).
-   - Baseline PBR setup: `Paint Roughness = 0.12`, `Paint Metallic = 0.08`.
+2. **8-Point Specular Inset Shadow Stack:**
+   - Employs multi-tier physical inset shadows for crisp edge caustics and rim illumination:
+     - Top-Left Rim: `inset 1.8px 3px 0px -2px color-mix(in srgb, var(--c-light) 95%, transparent)`.
+     - Bottom-Right Caustic: `inset -2px -2px 0px -2px color-mix(in srgb, var(--c-light) 80%, transparent)`.
+     - Deep Bevel Rim: `inset -3px -8px 1px -6px color-mix(in srgb, var(--c-light) 60%, transparent)`.
+     - Internal Refraction: `inset -0.3px -1px 4px 0px color-mix(in srgb, var(--c-dark) 12%, transparent)`.
+     - Contact Shadow: `0px 14px 36px 0px color-mix(in srgb, var(--c-dark) 28%, transparent)`.
 
-4. **3D Studio Editor Panel (`⚙️ 3D Studio Editor`):**
-   - Floating panel allowing live adjustments to:
-     - Scene Light Exposure (0.5 - 3.0).
-     - Shadow Intensity & Softness.
-     - Paint & Seat Color pickers.
-     - Paint Roughness & Metallic factors.
-     - Configuration export to structured JSON.
+3. **60fps Dynamic Cursor Spotlight Raycasting:**
+   - Tracks cursor position relative to each `.liquid-glass-sheen` surface.
+   - Smoothly lerps `--mouse-x`, `--mouse-y`, and `--mouse-opacity` at 60fps with a `0.14` damping factor to produce real-time dynamic light caustics across glass panels and cards.
 
-5. **Camera Views & Animations:**
-   - Radio Nav Presets: `overview`, `specifications`, `interior`, `wheels`, `lights`, `doors`.
-   - Wheel Switcher: Seamless GLB swap preserving active paint state.
-   - Non-looping Door Animation: Plays forward once (open) or reverses to frame 0 (closed).
+4. **Illuminated Sapphire Liquid Lenses:**
+   - Active/selected elements glow with dynamic illuminated sapphire liquid lens optics (`box-shadow: 0 0 24px color-mix(in srgb, var(--md-sys-color-primary) 40%, transparent), inset 0 0 16px color-mix(in srgb, var(--md-sys-color-primary) 45%, transparent)`), automatically adapting to the active vehicle paint color.
 
-6. **Post-FX Bloom & Light Material Architecture (`@google/model-viewer-effects`):**
-   - **Additive Blend Mode**: Always use `DEFAULT` additive blending (`BlendFunction.ADD`). Never use `normal` blend mode for bloom, as `NORMAL` replaces rendered pixels with bloom textures instead of adding light glow.
-   - **Shader Value Ranges & Conversions**:
-     - **Threshold (`threshold`)**: Operates on a normalized `0.00` to `1.00` scale. Values `> 1.00` completely disable bloom in WebGL shaders. Keep threshold between `0.00` and `1.00`.
-     - **Radius (`radius`)**: Operates on a normalized `0.00` to `1.00` mipmap blur scale.
-     - **Intensity (`strength`)**: Direct float intensity (`0.0` to `10.0`).
-   - **Strict Light Material Isolation**:
-     - Emissive factors are applied **EXCLUSIVELY to the 14 genuine light materials**:
-       - Headlights & DRLs: `inmx7m60i_headlight`, `inmx7m60i_headlight2`, `inmx7m60i_highbeam`, `inmx7m60i_running_r`, `inmx7m60i_running_l`, `inmx7m60i_fog`.
-       - Taillights & Rear: `inmx7m60i_taillight`, `inmx7m60i_taillight2`, `inmx7m60i_taillight3`, `inmx7m60i_rearlights`, `inmx7m60i_chmsl`.
-       - Signals & License: `inmx7m60i_signalL`, `inmx7m60i_signalR`, `inmx7m60i_licenselight`.
-     - All remaining 24 non-light materials (`inmx7m60i_body`, `inmx7m60i_black`, `inmx7m60i_int`, `inmx7m60i_leather1`, `inmx7m60i_glass`, etc.) MUST be explicitly enforced to `setEmissiveFactor([0, 0, 0])`.
-   - **Selective Bloom Filtering**: Filter selective bloom strictly by `isActualLightMaterial(child.material.name)`. Never filter by mesh node name (`inmx7m60i_headlights1`) as GLB nodes contain non-light housing and trim sub-geometries.
-   - **Lights Button & Default Emissive State**:
-     - Default state: `lightsOn = false` (all material emissives `[0, 0, 0]`).
-     - Right Dock **LIGHTS** button toggles `lightsOn`. Emissives turn ON only when `lightsOn === true` and turn OFF (`[0, 0, 0]`) when `lightsOn === false`.
-   - **Default Post-FX Preset**:
-     - Default paint: **Alpine White** (`#FDFDFD`).
-     - Default bloom mode: `"headlight"` (Bloom is ON by default).
-     - Default Post-FX: `bloomMode: "headlight"`, `bloomIntensity: 1.0`, `bloomRadius: 0.0`, `bloomThreshold: 1.0`, `ssaoIntensity: 0.0`, `ssaoRadius: 0.05`, `colorContrast: 0.0`, `colorSaturation: 0.0`, `colorBrightnessOffset: -0.03`, `tonemapping: "aces"`.
+5. **Unified Spatial Information Architecture:**
+   - **Zero Viewport Clutter:** Consolidates all controls into an ergonomic **Floating Spatial Deck** at bottom-center and an **Expandable Spatial Canvas** (anchored side-sheet on desktop/XR, bottom-sheet on mobile).
+   - **5 Core Tabs:** (1) 🎨 Exterior Paints & Live MSRP, (2) 🛞 Wheels & Rims, (3) 💺 Cabin & Upholstery, (4) ⚡ Interactive Mechanics & Specs HUD, (5) ⚙️ 3D Studio Lab & Marmoset PBR Inspector.
+
+6. **Strict Body Paint & Light Material Isolation:**
+   - **Body Paint Material Isolation (`inmx7m60i_body`):** Swatches and paint controls MUST strictly target `inmx7m60i_body` (and variants starting with `inmx7m60i_body.`). Carbon trim, black grilles, and diffusers remain untouched.
+   - **Strict Light Material Isolation:** Emissive factors apply **EXCLUSIVELY to the 14 genuine light materials** (`inmx7m60i_headlight`, `inmx7m60i_headlight2`, `inmx7m60i_highbeam`, `inmx7m60i_running_r`, `inmx7m60i_running_l`, `inmx7m60i_fog`, `inmx7m60i_signall`, `inmx7m60i_signalr`, `inmx7m60i_taillight`, `inmx7m60i_taillight2`, `inmx7m60i_taillight3`, `inmx7m60i_rearlights`, `inmx7m60i_chmsl`, `inmx7m60i_licenselight`). All 24 non-light materials enforced to `setEmissiveFactor([0, 0, 0])`.
 
 ---
 
@@ -73,4 +52,3 @@ This repository contains the interactive 3D Studio Configurator and WebXR Augmen
 - **Path Rules:** Always use relative paths (`./src/style.css`, `./src/main.js`, `./assets/...`) in `index.html` to guarantee compatibility across static hosting environments.
 - **Testing:** Verify changes locally by running `python server.py` and testing in a modern browser.
 - **Git Hygiene:** Ensure commit messages are descriptive and working directory status is clean before concluding tasks.
-
