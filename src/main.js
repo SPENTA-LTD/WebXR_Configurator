@@ -331,44 +331,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Target headlight meshes for selective-bloom-effect
+  const LIGHT_MESH_NAMES = [
+    'inmx7m60i_headlight',
+    'inmx7m60i_headlight2',
+    'inmx7m60i_highbeam',
+    'inmx7m60i_running_r',
+    'inmx7m60i_running_l',
+    'inmx7m60i_fog',
+    'inmx7m60i_signall',
+    'inmx7m60i_signalr',
+    'inmx7m60i_taillight',
+    'inmx7m60i_taillight2',
+    'inmx7m60i_taillight3',
+    'inmx7m60i_rearlights',
+    'inmx7m60i_chmsl',
+    'inmx7m60i_licenselight'
+  ];
+
+  // Target light component names for selective-bloom-effect
   function updateSelectiveBloomSelection(mode = 'headlight') {
     const bloomEffect = document.getElementById('bloom-effect');
     if (!bloomEffect) return;
 
     if (mode === 'off') {
       bloomEffect.selection = [];
-      if (bloomEffect.effects && bloomEffect.effects[0] && bloomEffect.effects[0].selection) {
-        bloomEffect.effects[0].selection.clear();
-      }
-      return;
-    }
-
-    if (mode === 'headlight') {
-      const lightMeshes = getLightMeshes();
-      if (lightMeshes && lightMeshes.length > 0) {
-        bloomEffect.selection = [...lightMeshes];
-        if (bloomEffect.effects && bloomEffect.effects[0] && bloomEffect.effects[0].selection) {
-          bloomEffect.effects[0].selection.clear();
-          lightMeshes.forEach(mesh => bloomEffect.effects[0].selection.add(mesh));
-        }
-      } else {
-        // Crucial fallback: Do NOT set bloomEffect.selection = [] when lightMeshes is empty!
-        // An empty array [] blocks ALL bloom. Leaving selection empty allows postprocessing
-        // to bloom all emissive surfaces exceeding the luminance threshold.
-        delete bloomEffect.selection;
-        if (bloomEffect.effects && bloomEffect.effects[0] && bloomEffect.effects[0].selection) {
-          bloomEffect.effects[0].selection.clear();
-        }
-      }
+    } else if (mode === 'headlight') {
+      bloomEffect.selection = LIGHT_MESH_NAMES;
+    } else {
+      bloomEffect.selection = [];
     }
   }
 
   // Apply Live Post-FX
   function applyPostFx() {
     if (!modelViewer) return;
-    modelViewer.toneMapping = 'none';
-    modelViewer.setAttribute('tone-mapping', 'none');
 
     const bloomEffect = document.getElementById('bloom-effect');
     const ssaoEffect = document.getElementById('ssao-effect');
@@ -376,45 +372,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const effectComposer = document.getElementById('effect-composer');
 
     if (bloomEffect) {
-      if (bloomMode === 'off' || bloomIntensity <= 0 || (bloomMode === 'headlight' && !lightsOn)) {
-        // Lights off or bloom disabled — skip bloom pass
+      const isBloomActive = bloomMode !== 'off' && bloomIntensity > 0 && (bloomMode === 'full' || lightsOn);
+      if (!isBloomActive) {
         bloomEffect.strength = 0;
         bloomEffect.setAttribute('strength', '0');
-        bloomEffect.blendMode = 'skip';
-        bloomEffect.setAttribute('blend-mode', 'skip');
-        if (bloomEffect.effects && bloomEffect.effects[0]) {
-          bloomEffect.effects[0].intensity = 0;
-        }
       } else {
-        // Lights on — enable bloom pass with active strength, radius, and threshold
-        bloomEffect.blendMode = 'normal';
-        bloomEffect.removeAttribute('blend-mode');
+        updateSelectiveBloomSelection(bloomMode);
         bloomEffect.strength = bloomIntensity;
         bloomEffect.radius = bloomRadius;
         bloomEffect.threshold = bloomThreshold;
         bloomEffect.setAttribute('strength', bloomIntensity.toFixed(2));
         bloomEffect.setAttribute('radius', bloomRadius.toFixed(2));
         bloomEffect.setAttribute('threshold', bloomThreshold.toFixed(2));
-        if (bloomEffect.effects && bloomEffect.effects[0]) {
-          bloomEffect.effects[0].disabled = false;
-          bloomEffect.effects[0].intensity = bloomIntensity;
-          bloomEffect.effects[0].luminanceThreshold = bloomThreshold;
-        }
       }
     }
 
     if (ssaoEffect) {
-      if (ssaoIntensity <= 0) {
-        ssaoEffect.blendMode = 'skip';
-        ssaoEffect.setAttribute('blend-mode', 'skip');
-      } else {
-        ssaoEffect.blendMode = 'normal';
-        ssaoEffect.removeAttribute('blend-mode');
-        ssaoEffect.strength = ssaoIntensity;
-        ssaoEffect.setAttribute('strength', ssaoIntensity.toFixed(2));
-        ssaoEffect.radius = ssaoRadius;
-        ssaoEffect.setAttribute('radius', ssaoRadius.toFixed(2));
-      }
+      ssaoEffect.strength = ssaoIntensity;
+      ssaoEffect.setAttribute('strength', ssaoIntensity.toFixed(2));
+      ssaoEffect.radius = ssaoRadius;
+      ssaoEffect.setAttribute('radius', ssaoRadius.toFixed(2));
     }
 
     if (colorGradeEffect) {
@@ -428,10 +405,8 @@ document.addEventListener('DOMContentLoaded', () => {
       colorGradeEffect.setAttribute('tonemapping', colorTonemapping || 'aces');
     }
 
-    if (effectComposer) {
-      if (typeof effectComposer.requestUpdate === 'function') effectComposer.requestUpdate();
-      if (typeof effectComposer.updateEffects === 'function') effectComposer.updateEffects();
-      if (typeof effectComposer.queueRender === 'function') effectComposer.queueRender();
+    if (effectComposer && typeof effectComposer.queueRender === 'function') {
+      effectComposer.queueRender();
     }
 
     updateEmissiveMaterials();
