@@ -249,24 +249,26 @@ document.addEventListener('DOMContentLoaded', () => {
   function getThreeScene() {
     if (!modelViewer) return null;
     const effectComposer = document.getElementById('effect-composer');
-    if (effectComposer) {
-      const ecSymbols = Object.getOwnPropertySymbols(effectComposer);
-      for (const sym of ecSymbols) {
+    const targets = [effectComposer, modelViewer];
+
+    for (const target of targets) {
+      if (!target) continue;
+      if (target.scene && typeof target.scene.traverse === 'function') return target.scene;
+
+      const keys = [...Object.getOwnPropertyNames(target), ...Object.getOwnPropertySymbols(target)];
+      for (const k of keys) {
         try {
-          const val = effectComposer[sym];
-          if (val && typeof val === 'object' && (val.isScene || typeof val.traverse === 'function')) return val;
+          const val = target[k];
+          if (val && typeof val === 'object') {
+            if (typeof val.traverse === 'function' && (val.isScene || val.isGroup || val.isObject3D)) {
+              return val;
+            }
+            if (val.scene && typeof val.scene.traverse === 'function') {
+              return val.scene;
+            }
+          }
         } catch (e) {}
       }
-    }
-    if (modelViewer.scene && typeof modelViewer.scene.traverse === 'function') return modelViewer.scene;
-    const mvSymbols = Object.getOwnPropertySymbols(modelViewer);
-    for (const sym of mvSymbols) {
-      try {
-        const val = modelViewer[sym];
-        if (val && typeof val === 'object' && (val.isScene || val.isGroup || val.isObject3D) && typeof val.traverse === 'function') {
-          return val;
-        }
-      } catch (e) {}
     }
     return null;
   }
@@ -293,16 +295,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // Update Emissive Factors exclusively on genuine light materials
   // Uses high values (8-20x) to ensure they exceed the bloom threshold
   function updateEmissiveMaterials() {
-    if (!modelViewer || !modelViewer.model) {
-      // Model not ready yet — retry on next animation frame
-      requestAnimationFrame(() => updateEmissiveMaterials());
-      return;
-    }
+    if (!modelViewer || !modelViewer.model) return;
     const materials = modelViewer.model.materials;
-    if (!materials || materials.length === 0) {
-      requestAnimationFrame(() => updateEmissiveMaterials());
-      return;
-    }
+    if (!materials || materials.length === 0) return;
     materials.forEach(mat => {
       const mName = mat.name ? mat.name.toLowerCase() : '';
       if (isActualLightMaterial(mName)) {
@@ -351,10 +346,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (mode === 'headlight') {
       const lightMeshes = getLightMeshes();
-      bloomEffect.selection = [...lightMeshes];
-      if (bloomEffect.effects && bloomEffect.effects[0] && bloomEffect.effects[0].selection) {
-        bloomEffect.effects[0].selection.clear();
-        lightMeshes.forEach(mesh => bloomEffect.effects[0].selection.add(mesh));
+      if (lightMeshes && lightMeshes.length > 0) {
+        bloomEffect.selection = [...lightMeshes];
+        if (bloomEffect.effects && bloomEffect.effects[0] && bloomEffect.effects[0].selection) {
+          bloomEffect.effects[0].selection.clear();
+          lightMeshes.forEach(mesh => bloomEffect.effects[0].selection.add(mesh));
+        }
+      } else {
+        // Crucial fallback: Do NOT set bloomEffect.selection = [] when lightMeshes is empty!
+        // An empty array [] blocks ALL bloom. Leaving selection empty allows postprocessing
+        // to bloom all emissive surfaces exceeding the luminance threshold.
+        delete bloomEffect.selection;
+        if (bloomEffect.effects && bloomEffect.effects[0] && bloomEffect.effects[0].selection) {
+          bloomEffect.effects[0].selection.clear();
+        }
       }
     }
   }
