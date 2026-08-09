@@ -377,30 +377,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (bloomEffect) {
       if (bloomMode === 'off' || bloomIntensity <= 0 || (bloomMode === 'headlight' && !lightsOn)) {
-        // Lights off or bloom disabled — zero out bloom
-        updateSelectiveBloomSelection('off');
+        // Lights off or bloom disabled — skip bloom pass
         bloomEffect.strength = 0;
         bloomEffect.setAttribute('strength', '0');
-        bloomEffect.threshold = 1.0;
-        bloomEffect.setAttribute('threshold', '1.00');
+        bloomEffect.blendMode = 'skip';
+        bloomEffect.setAttribute('blend-mode', 'skip');
         if (bloomEffect.effects && bloomEffect.effects[0]) {
           bloomEffect.effects[0].intensity = 0;
-          bloomEffect.effects[0].disabled = true;
         }
       } else {
-        // Lights on — activate selective bloom on all light meshes
-        updateSelectiveBloomSelection('headlight');
-        bloomEffect.setAttribute('strength', bloomIntensity.toFixed(2));
-        bloomEffect.setAttribute('radius', bloomRadius.toFixed(2));
-        bloomEffect.setAttribute('threshold', bloomThreshold.toFixed(2));
+        // Lights on — enable bloom pass with active strength, radius, and threshold
+        bloomEffect.blendMode = 'normal';
+        bloomEffect.removeAttribute('blend-mode');
         bloomEffect.strength = bloomIntensity;
         bloomEffect.radius = bloomRadius;
         bloomEffect.threshold = bloomThreshold;
+        bloomEffect.setAttribute('strength', bloomIntensity.toFixed(2));
+        bloomEffect.setAttribute('radius', bloomRadius.toFixed(2));
+        bloomEffect.setAttribute('threshold', bloomThreshold.toFixed(2));
         if (bloomEffect.effects && bloomEffect.effects[0]) {
           bloomEffect.effects[0].disabled = false;
           bloomEffect.effects[0].intensity = bloomIntensity;
           bloomEffect.effects[0].luminanceThreshold = bloomThreshold;
-          bloomEffect.effects[0].mipmapBlur = true;
         }
       }
     }
