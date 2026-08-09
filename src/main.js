@@ -984,16 +984,47 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ==========================================================================
-  // Direct Native Augmented Reality Launcher (Google ARCore & WebXR Floor Tracking)
+  // Augmented Reality & WebXR Spatial Engine (Apple Quick Look & Google ARCore)
   // https://modelviewer.dev/examples/augmentedreality/
   // ==========================================================================
+  const arModalBackdrop = document.getElementById('ar-modal-backdrop');
+  const arModalCloseBtn = document.getElementById('ar-modal-close-btn');
+  const arQrImage = document.getElementById('ar-qr-image');
+  const directArLaunchBtn = document.getElementById('direct-ar-launch-btn');
+  const isMobileOrTablet = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+  function openArModal() {
+    if (!arModalBackdrop) return;
+    const currentUrl = window.location.href.split('#')[0];
+    if (arQrImage) {
+      arQrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=10&data=${encodeURIComponent(currentUrl)}`;
+    }
+    if (directArLaunchBtn) {
+      directArLaunchBtn.style.display = isMobileOrTablet ? 'block' : 'none';
+    }
+    arModalBackdrop.classList.add('active');
+    arModalBackdrop.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeArModal() {
+    if (!arModalBackdrop) return;
+    arModalBackdrop.classList.remove('active');
+    arModalBackdrop.setAttribute('aria-hidden', 'true');
+  }
+
   function launchAr() {
     if (!modelViewer) return;
-    try {
-      // Directly activate native Google ARCore / WebXR camera session
-      modelViewer.activateAR();
-    } catch (err) {
-      console.warn('Native AR activation error:', err);
+    // On mobile devices with AR capabilities, activate native AR session directly
+    if (isMobileOrTablet || (modelViewer.canActivateAR && modelViewer.canActivateAR === true)) {
+      try {
+        modelViewer.activateAR();
+      } catch (err) {
+        console.warn('Native AR direct activation fallback to modal:', err);
+        openArModal();
+      }
+    } else {
+      // On desktop / non-AR devices, present the high-res QR code modal
+      openArModal();
     }
   }
 
@@ -1010,6 +1041,34 @@ document.addEventListener('DOMContentLoaded', () => {
       launchAr();
     });
   }
+
+  if (arModalCloseBtn) {
+    arModalCloseBtn.addEventListener('click', closeArModal);
+  }
+
+  if (arModalBackdrop) {
+    arModalBackdrop.addEventListener('click', (e) => {
+      if (e.target === arModalBackdrop) closeArModal();
+    });
+  }
+
+  if (directArLaunchBtn) {
+    directArLaunchBtn.addEventListener('click', () => {
+      if (modelViewer) {
+        try {
+          modelViewer.activateAR();
+        } catch (err) {
+          console.warn('AR trigger error:', err);
+        }
+      }
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && arModalBackdrop && arModalBackdrop.classList.contains('active')) {
+      closeArModal();
+    }
+  });
 
   if (modelViewer) {
     modelViewer.addEventListener('ar-status', (event) => {

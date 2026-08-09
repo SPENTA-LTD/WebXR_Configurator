@@ -124,6 +124,7 @@
           alt="BMW X7 M60i 3D Model"
           ar
           ar-modes="webxr scene-viewer quick-look"
+          quick-look-browsers="safari chrome"
           ar-scale="auto"
           ar-placement="floor"
           camera-controls
@@ -1128,6 +1129,44 @@
       </filter>
     </defs>
   </svg>
+
+  <!-- Augmented Reality (AR) & Spatial QR Code Modal -->
+  <div id="ar-modal-backdrop" class="ar-modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="ar-modal-title">
+    <div class="ar-modal-box liquid-glass-sheen">
+      <button id="ar-modal-close-btn" class="modal-close-btn" aria-label="Close AR Modal">&times;</button>
+      
+      <div class="ar-modal-header">
+        <span class="m3-badge-accent liquid-glass-sheen" style="margin-bottom: 8px; display: inline-block; font-size: 0.72rem;">WEBXR & AR CORE</span>
+        <h3 id="ar-modal-title">Experience BMW X7 in AR</h3>
+        <p>View this 1:1 true-scale BMW X7 M60i in your room or driveway with floor tracking & real-time reflections.</p>
+      </div>
+
+      <!-- Dynamic Live QR Code -->
+      <div class="qr-code-wrapper">
+        <img id="ar-qr-image" src="" alt="Scan QR Code to Open on Mobile" />
+      </div>
+
+      <!-- AR Step Guide -->
+      <div class="ar-steps">
+        <div class="step-item">
+          <span class="step-num">1</span>
+          <span>Scan QR code with your iPhone or Android camera.</span>
+        </div>
+        <div class="step-item">
+          <span class="step-num">2</span>
+          <span>Tap <strong>"View in AR"</strong> to activate spatial camera tracking.</span>
+        </div>
+        <div class="step-item">
+          <span class="step-num">3</span>
+          <span>Point at the floor or driveway to place the car at 1:1 true scale!</span>
+        </div>
+      </div>
+
+      <button id="direct-ar-launch-btn" class="m3-btn m3-btn-primary" style="width: 100%; margin-top: 18px; display: none;">
+        🚀 Launch AR Camera Now
+      </button>
+    </div>
+  </div>
 
   <script type="module" src="./src/main.js?v=5.2.0"></script>
 </body>

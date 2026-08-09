@@ -4,9 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "python server.py",
+    "build": "echo Static site ready",
+    "start": "python server.py",
+    "preview": "python server.py"
   },
   "dependencies": {
     "@google/model-viewer": "^3.5.0",
