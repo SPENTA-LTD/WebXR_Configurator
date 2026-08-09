@@ -922,19 +922,53 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Post-FX Sliders
+  // Post-FX Sliders & Controls
+  const btnBloomMode = document.getElementById('btn-bloom-mode');
   const inputBloomIntensity = document.getElementById('input-bloom-intensity');
   const valBloomIntensity = document.getElementById('val-bloom-intensity');
   const inputBloomRadius = document.getElementById('input-bloom-radius');
   const valBloomRadius = document.getElementById('val-bloom-radius');
   const inputBloomThreshold = document.getElementById('input-bloom-threshold');
   const valBloomThreshold = document.getElementById('val-bloom-threshold');
+
+  const inputSsaoIntensity = document.getElementById('input-ssao-intensity');
+  const valSsaoIntensity = document.getElementById('val-ssao-intensity');
+  const inputSsaoRadius = document.getElementById('input-ssao-radius');
+  const valSsaoRadius = document.getElementById('val-ssao-radius');
+
+  const inputContrast = document.getElementById('input-contrast');
+  const valContrast = document.getElementById('val-contrast');
+  const inputSaturation = document.getElementById('input-saturation');
+  const valSaturation = document.getElementById('val-saturation');
+  const inputBrightness = document.getElementById('input-brightness');
+  const valBrightness = document.getElementById('val-brightness');
+
   const selectTonemapping = document.getElementById('select-tonemapping');
+
+  if (btnBloomMode) {
+    btnBloomMode.addEventListener('click', () => {
+      if (bloomMode === 'headlight') {
+        bloomMode = 'full';
+        btnBloomMode.textContent = '✨ Full Scene Bloom Active';
+      } else if (bloomMode === 'full') {
+        bloomMode = 'off';
+        btnBloomMode.textContent = '❌ Bloom Disabled';
+      } else {
+        bloomMode = 'headlight';
+        btnBloomMode.textContent = '💡 Headlight Only Bloom Active';
+        if (!lightsOn) setLightsState(true);
+      }
+      applyPostFx();
+    });
+  }
 
   if (inputBloomIntensity) {
     inputBloomIntensity.addEventListener('input', (e) => {
       bloomIntensity = parseFloat(e.target.value);
       if (valBloomIntensity) valBloomIntensity.textContent = bloomIntensity.toFixed(2);
+      if (bloomIntensity > 0 && !lightsOn && bloomMode === 'headlight') {
+        setLightsState(true);
+      }
       applyPostFx();
     });
   }
@@ -951,6 +985,46 @@ document.addEventListener('DOMContentLoaded', () => {
     inputBloomThreshold.addEventListener('input', (e) => {
       bloomThreshold = parseFloat(e.target.value);
       if (valBloomThreshold) valBloomThreshold.textContent = bloomThreshold.toFixed(2);
+      applyPostFx();
+    });
+  }
+
+  if (inputSsaoIntensity) {
+    inputSsaoIntensity.addEventListener('input', (e) => {
+      ssaoIntensity = parseFloat(e.target.value);
+      if (valSsaoIntensity) valSsaoIntensity.textContent = ssaoIntensity.toFixed(2);
+      applyPostFx();
+    });
+  }
+
+  if (inputSsaoRadius) {
+    inputSsaoRadius.addEventListener('input', (e) => {
+      ssaoRadius = parseFloat(e.target.value);
+      if (valSsaoRadius) valSsaoRadius.textContent = ssaoRadius.toFixed(2);
+      applyPostFx();
+    });
+  }
+
+  if (inputContrast) {
+    inputContrast.addEventListener('input', (e) => {
+      colorContrast = parseFloat(e.target.value);
+      if (valContrast) valContrast.textContent = colorContrast.toFixed(2);
+      applyPostFx();
+    });
+  }
+
+  if (inputSaturation) {
+    inputSaturation.addEventListener('input', (e) => {
+      colorSaturation = parseFloat(e.target.value);
+      if (valSaturation) valSaturation.textContent = colorSaturation.toFixed(2);
+      applyPostFx();
+    });
+  }
+
+  if (inputBrightness) {
+    inputBrightness.addEventListener('input', (e) => {
+      colorBrightness = parseFloat(e.target.value);
+      if (valBrightness) valBrightness.textContent = colorBrightness.toFixed(2);
       applyPostFx();
     });
   }
