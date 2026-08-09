@@ -1080,13 +1080,19 @@ document.addEventListener('DOMContentLoaded', () => {
   // Model Viewer Load Event & Loader Management
   // ==========================================================================
   const hideLoader = () => {
-    if (viewerLoader) {
-      viewerLoader.style.opacity = '0';
-      viewerLoader.style.pointerEvents = 'none';
-      setTimeout(() => {
-        viewerLoader.style.display = 'none';
-      }, 300);
+    if (modelViewer) {
+      modelViewer.classList.add('model-ready', 'loaded');
+      modelViewer.setAttribute('model-ready', '');
     }
+    const loaders = document.querySelectorAll('.viewer-loader');
+    loaders.forEach(loader => {
+      loader.classList.add('hidden', 'hide');
+      loader.setAttribute('aria-hidden', 'true');
+      loader.style.setProperty('opacity', '0', 'important');
+      loader.style.setProperty('visibility', 'hidden', 'important');
+      loader.style.setProperty('display', 'none', 'important');
+      loader.style.setProperty('pointer-events', 'none', 'important');
+    });
   };
 
   function onModelReady() {
@@ -1111,14 +1117,33 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    modelViewer.addEventListener('model-visibility', (e) => {
+      if (e.detail && e.detail.visible) {
+        onModelReady();
+      }
+    });
+
+    modelViewer.addEventListener('poster-dismissed', () => {
+      hideLoader();
+    });
+
     modelViewer.addEventListener('error', (err) => {
       console.warn('Model Viewer error:', err);
       hideLoader();
     });
 
-    if (modelViewer.loaded) {
+    if (modelViewer.loaded || modelViewer.model) {
       onModelReady();
     }
+
+    // Safety fallback: ensure loader is hidden once model object is attached
+    const modelCheckInterval = setInterval(() => {
+      if (modelViewer && (modelViewer.loaded || modelViewer.model)) {
+        onModelReady();
+        clearInterval(modelCheckInterval);
+      }
+    }, 300);
+    setTimeout(() => clearInterval(modelCheckInterval), 10000);
   }
 
   // Initial State Setup

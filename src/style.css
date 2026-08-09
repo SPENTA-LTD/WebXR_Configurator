@@ -605,10 +605,16 @@ model-viewer {
   transition: opacity 0.35s ease, visibility 0.35s ease;
 }
 
-model-viewer:not([loading]) > .viewer-loader,
-model-viewer[loaded] > .viewer-loader {
-  opacity: 0;
-  visibility: hidden;
+.viewer-loader.hidden,
+.viewer-loader.hide,
+.viewer-loader[aria-hidden="true"],
+model-viewer.model-ready .viewer-loader,
+model-viewer.loaded .viewer-loader,
+model-viewer[model-ready] .viewer-loader {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  display: none !important;
 }
 
 .m3-spinner {
