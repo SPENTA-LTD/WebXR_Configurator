@@ -1,9 +1,7 @@
 {
   "version": 2,
+  "outputDirectory": ".",
   "cleanUrls": true,
-  "buildCommand": "echo 'Static build complete'",
-  "installCommand": "echo 'No installation needed for static app'",
-  "framework": null,
   "headers": [
     {
       "source": "/assets/(.*)",
