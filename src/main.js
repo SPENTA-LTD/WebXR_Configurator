@@ -970,18 +970,98 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Fullscreen
-  if (toggleFullscreenBtn) {
-    toggleFullscreenBtn.addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        if (studioContainer && studioContainer.requestFullscreen) {
-          studioContainer.requestFullscreen();
+  // Universal Cross-Browser Fullscreen Controller
+  function isFullscreenActive() {
+    return !!(
+      document.fullscreenElement ||
+      document.webkitFullscreenElement ||
+      document.mozFullScreenElement ||
+      document.msFullscreenElement ||
+      (studioContainer && studioContainer.classList.contains('is-pseudo-fullscreen'))
+    );
+  }
+
+  function enablePseudoFullscreen() {
+    if (studioContainer) {
+      studioContainer.classList.add('is-pseudo-fullscreen');
+      document.body.style.overflow = 'hidden';
+    }
+    updateFullscreenBtnState(true);
+  }
+
+  function disablePseudoFullscreen() {
+    if (studioContainer) {
+      studioContainer.classList.remove('is-pseudo-fullscreen');
+      document.body.style.overflow = '';
+    }
+    updateFullscreenBtnState(false);
+  }
+
+  function updateFullscreenBtnState(active) {
+    if (toggleFullscreenBtn) {
+      toggleFullscreenBtn.classList.toggle('active', active);
+      toggleFullscreenBtn.style.color = active ? 'var(--text-accent)' : '';
+      toggleFullscreenBtn.title = active ? 'Exit Fullscreen' : 'Toggle Fullscreen View';
+    }
+  }
+
+  function toggleFullscreen() {
+    const elem = studioContainer || document.documentElement;
+
+    if (!isFullscreenActive()) {
+      try {
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen().catch(() => enablePseudoFullscreen());
+        } else if (elem.webkitRequestFullscreen) {
+          elem.webkitRequestFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+          elem.mozRequestFullScreen();
+        } else if (elem.msRequestFullscreen) {
+          elem.msRequestFullscreen();
+        } else {
+          enablePseudoFullscreen();
         }
-      } else {
-        if (document.exitFullscreen) document.exitFullscreen();
+      } catch (err) {
+        console.warn('Native fullscreen error, falling back to pseudo-fullscreen:', err);
+        enablePseudoFullscreen();
       }
+    } else {
+      try {
+        if (document.exitFullscreen && document.fullscreenElement) {
+          document.exitFullscreen().catch(() => disablePseudoFullscreen());
+        } else if (document.webkitExitFullscreen && document.webkitFullscreenElement) {
+          document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen && document.mozFullScreenElement) {
+          document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen && document.msFullscreenElement) {
+          document.msExitFullscreen();
+        }
+      } catch (err) {
+        console.warn('Exit fullscreen error:', err);
+      }
+      disablePseudoFullscreen();
+    }
+  }
+
+  if (toggleFullscreenBtn) {
+    toggleFullscreenBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleFullscreen();
     });
   }
+
+  document.addEventListener('fullscreenchange', () => {
+    updateFullscreenBtnState(isFullscreenActive());
+  });
+  document.addEventListener('webkitfullscreenchange', () => {
+    updateFullscreenBtnState(isFullscreenActive());
+  });
+  document.addEventListener('mozfullscreenchange', () => {
+    updateFullscreenBtnState(isFullscreenActive());
+  });
+  document.addEventListener('MSFullscreenChange', () => {
+    updateFullscreenBtnState(isFullscreenActive());
+  });
 
   // ==========================================================================
   // Augmented Reality & WebXR Spatial Engine (Apple Quick Look & Google ARCore)
