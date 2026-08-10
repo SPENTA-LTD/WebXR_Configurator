@@ -17,7 +17,8 @@
     "imports": {
       "three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.min.js",
       "@google/model-viewer": "https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer-module.min.js",
-      "@google/model-viewer-effects": "https://cdn.jsdelivr.net/npm/@google/model-viewer-effects@1.5.0/dist/model-viewer-effects.min.js"
+      "@google/model-viewer-effects": "https://cdn.jsdelivr.net/npm/@google/model-viewer-effects@1.5.0/dist/model-viewer-effects.min.js",
+      "postprocessing": "https://cdn.jsdelivr.net/npm/postprocessing@6.35.6/build/index.js"
     }
   }
   </script>
@@ -110,10 +111,16 @@
   <!-- 3D Studio Configurator Section (Rounded Spatial Canvas) -->
   <section id="configurator-studio" class="studio-section">
     
-    <div class="studio-viewport-container liquid-glass-sheen" id="studio-container">
+    <div class="studio-viewport-container" id="studio-container">
       
       <!-- Background Cinematic Watermark View Tag (Strictly Behind 3D Car Model) -->
-      <div id="studio-watermark" class="m3-spatial-watermark" aria-hidden="true">EXTERIOR</div>
+      <div id="studio-watermark" class="m3-spatial-watermark" aria-hidden="true">BMW X7 M60i</div>
+
+      <!-- Volumetric Fog Headlight Cones (Strictly Behind 3D Car Model) -->
+      <div id="volumetric-fog-container" class="volumetric-fog-wrapper active">
+        <div class="volumetric-beam beam-left"></div>
+        <div class="volumetric-beam beam-right"></div>
+      </div>
 
       <!-- Interactive 3D Model Viewer Canvas -->
       <div id="model-viewer-wrapper" class="model-viewer-wrapper">
@@ -135,28 +142,24 @@
           environment-image="./assets/studio.hdr"
           camera-orbit="45deg 75deg 6m"
           field-of-view="35deg"
-          min-camera-orbit="auto auto 2.0m"
+          min-camera-orbit="auto auto 0.1m"
           max-camera-orbit="auto auto 12m"
+          min-field-of-view="10deg"
+          max-field-of-view="130deg"
           interaction-prompt="none"
         >
           <!-- Real Post-Processing Effect Composer (@google/model-viewer-effects) -->
-          <effect-composer id="effect-composer" render-mode="quality">
-            <ssao-effect id="ssao-effect" strength="0.00" radius="0.05" blend-mode="skip"></ssao-effect>
-            <selective-bloom-effect id="bloom-effect" strength="1.00" radius="0.40" threshold="0.74"></selective-bloom-effect>
+          <effect-composer id="effect-composer" render-mode="quality" msaa="4">
+            <ssao-effect id="ssao-effect" strength="0.00" radius="0.08" blend-mode="skip"></ssao-effect>
+            <selective-bloom-effect id="bloom-effect" strength="0.00" radius="0.40" threshold="0.80"></selective-bloom-effect>
             <color-grade-effect id="color-grade-effect" contrast="0.00" saturation="0.00" brightness="-0.03" tonemapping="aces"></color-grade-effect>
-            <smaa-effect></smaa-effect>
+            <smaa-effect id="smaa-effect" quality="high" preset="ultra"></smaa-effect>
           </effect-composer>
 
           <!-- Loading Progress Slot -->
           <div slot="progress-bar" class="viewer-loader">
             <div class="m3-spinner"></div>
             <span>Loading 3D Studio Model...</span>
-          </div>
-
-          <!-- Volumetric Fog Headlight Cones Overlay -->
-          <div id="volumetric-fog-container" class="volumetric-fog-wrapper">
-            <div class="volumetric-beam beam-left"></div>
-            <div class="volumetric-beam beam-right"></div>
           </div>
 
           <!-- Interactive 3D Hotspots -->
@@ -205,8 +208,8 @@
         <!-- Canvas Header -->
         <div class="m3-canvas-header">
           <div class="m3-canvas-title-group">
-            <span class="m3-canvas-badge" id="canvas-badge-text">EXTERIOR PAINTS</span>
-            <h3 class="m3-canvas-title" id="canvas-title-text">Paint & Finishes</h3>
+            <span class="m3-canvas-badge" id="canvas-badge-text">BODY PAINT</span>
+            <h3 class="m3-canvas-title" id="canvas-title-text">Body Paint & Finishes</h3>
           </div>
           <button id="close-spatial-canvas-btn" class="m3-icon-button liquid-glass-sheen" title="Close Canvas" aria-label="Close Canvas">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -815,40 +818,334 @@
 
             <!-- Subtab 3: Post-FX -->
             <div class="m3-subtab-content" id="subtab-postfx">
-              <div class="m3-control-group">
-                <label>Selective Bloom Mode</label>
-                <button id="btn-bloom-mode" class="m3-btn m3-btn-tonal" style="width: 100%;">Headlight Only Bloom Active</button>
+              
+              <!-- 1-Click Cinematic FX Presets -->
+              <div class="fx-presets-bar">
+                <span class="mat-presets-lbl">🎬 1-Click Cinematic Presets:</span>
+                <div class="m3-chip-scroll-row" id="fx-presets-row">
+                  <button class="m3-filter-chip liquid-glass-sheen" data-fx-preset="cinema_35mm">🎬 35mm Cinema</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-fx-preset="cyberpunk">⚡ Cyberpunk HUD</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-fx-preset="speed_turntable">🏎️ Motion Velocity</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-fx-preset="portrait_bokeh">📷 Studio Bokeh</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-fx-preset="vintage_sepia">🎞️ Vintage Classic</button>
+                  <button class="m3-filter-chip liquid-glass-sheen" data-fx-preset="pbr_pure">🧼 Pure PBR</button>
+                </div>
               </div>
 
-              <div class="m3-control-group">
-                <label>Bloom Intensity: <span id="val-bloom-intensity">1.00</span></label>
-                <input type="range" id="input-bloom-intensity" min="0.0" max="10.0" step="0.1" value="1.00" class="m3-slider" />
-              </div>
+              <!-- Post-FX Accordions Container -->
+              <div class="marmoset-accordions" id="postfx-accordions" style="margin-top: 14px;">
 
-              <div class="m3-control-group">
-                <label>Bloom Radius: <span id="val-bloom-radius">0.40</span></label>
-                <input type="range" id="input-bloom-radius" min="0.00" max="1.00" step="0.01" value="0.40" class="m3-slider" />
-              </div>
+                <!-- 1. Bloom & Optical Glow -->
+                <details class="m3-accordion" id="group-fx-bloom" open>
+                  <summary class="m3-accordion-summary">
+                    <span>✨ Optical Glow & Bloom</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group">
+                      <label>Selective Bloom Mode</label>
+                      <button id="btn-bloom-mode" class="m3-btn m3-btn-tonal" style="width: 100%;">Headlight Only Bloom Active</button>
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Bloom Intensity: <span id="val-bloom-intensity" class="val-pill">1.00</span></label>
+                      <input type="range" id="input-bloom-intensity" min="0.0" max="10.0" step="0.1" value="1.00" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Bloom Radius: <span id="val-bloom-radius" class="val-pill">0.40</span></label>
+                      <input type="range" id="input-bloom-radius" min="0.00" max="1.00" step="0.01" value="0.40" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Bloom Threshold: <span id="val-bloom-threshold" class="val-pill">0.74</span></label>
+                      <input type="range" id="input-bloom-threshold" min="0.00" max="1.00" step="0.01" value="0.74" class="m3-slider" />
+                    </div>
+                  </div>
+                </details>
 
-              <div class="m3-control-group">
-                <label>Bloom Threshold: <span id="val-bloom-threshold">0.74</span></label>
-                <input type="range" id="input-bloom-threshold" min="0.00" max="1.00" step="0.01" value="0.74" class="m3-slider" />
-              </div>
+                <!-- 2. SSAO Pro Ambient Crevices -->
+                <details class="m3-accordion" id="group-fx-ssao" open>
+                  <summary class="m3-accordion-summary">
+                    <span>🌑 Contact Shadows (SSAO Pro)</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group">
+                      <label>SSAO Shadow Intensity: <span id="val-ssao-intensity" class="val-pill">0.00</span></label>
+                      <input type="range" id="input-ssao-intensity" min="0.0" max="5.0" step="0.05" value="0.00" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>SSAO Radius (Spread): <span id="val-ssao-radius" class="val-pill">0.08m</span></label>
+                      <input type="range" id="input-ssao-radius" min="0.01" max="0.50" step="0.01" value="0.08" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Distance Threshold: <span id="val-ssao-threshold" class="val-pill">0.95</span></label>
+                      <input type="range" id="input-ssao-threshold" min="0.05" max="1.00" step="0.01" value="0.95" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Distance Falloff: <span id="val-ssao-falloff" class="val-pill">0.05</span></label>
+                      <input type="range" id="input-ssao-falloff" min="0.01" max="0.50" step="0.01" value="0.05" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>SSAO Bias (Anti-Acne): <span id="val-ssao-bias" class="val-pill">0.015</span></label>
+                      <input type="range" id="input-ssao-bias" min="0.000" max="0.080" step="0.002" value="0.015" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>SSAO Quality Sampling</label>
+                      <select id="select-ssao-quality" class="m3-select">
+                        <option value="ultra">Ultra Studio (32 Samples, 8 Rings)</option>
+                        <option value="high" selected>High Fidelity (24 Samples, 6 Rings)</option>
+                        <option value="balanced">Balanced (16 Samples, 4 Rings)</option>
+                        <option value="performance">Performance (11 Samples, 3 Rings)</option>
+                      </select>
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Luminance Influence: <span id="val-ssao-luminance" class="val-pill">0.40</span></label>
+                      <input type="range" id="input-ssao-luminance" min="0.00" max="1.00" step="0.05" value="0.40" class="m3-slider" />
+                    </div>
+                  </div>
+                </details>
 
-              <div class="m3-control-group">
-                <label>SSAO Shadow Intensity: <span id="val-ssao-intensity">0.00</span></label>
-                <input type="range" id="input-ssao-intensity" min="0.0" max="5.0" step="0.1" value="0.00" class="m3-slider" />
-              </div>
+                <!-- 3. Cinematic Vignette -->
+                <details class="m3-accordion" id="group-fx-vignette" open>
+                  <summary class="m3-accordion-summary">
+                    <span>🎬 Cinematic Vignette & Edge Optics</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group">
+                      <label>Vignette Darkness: <span id="val-vignette-darkness" class="val-pill">0.00</span></label>
+                      <input type="range" id="input-vignette-darkness" min="0.00" max="1.50" step="0.05" value="0.00" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Vignette Offset: <span id="val-vignette-offset" class="val-pill">0.30</span></label>
+                      <input type="range" id="input-vignette-offset" min="0.00" max="1.00" step="0.05" value="0.30" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Vignette Technique</label>
+                      <select id="select-vignette-technique" class="m3-select">
+                        <option value="default" selected>Default (Smoothstep Natural Falloff)</option>
+                        <option value="eskil">Eskil (High-Contrast Dramatic Falloff)</option>
+                      </select>
+                    </div>
+                  </div>
+                </details>
 
-              <div class="m3-control-group">
-                <label>Color Grading Tonemapping</label>
-                <select id="select-tonemapping" class="m3-select">
-                  <option value="aces" selected>ACES Filmic</option>
-                  <option value="commerce">Reinhard (Commerce)</option>
-                  <option value="agx">AgX (Filmic 2)</option>
-                  <option value="neutral">Neutral Studio</option>
-                  <option value="linear">Linear / None</option>
-                </select>
+                <!-- 4. Film Grain & Analog Shutter -->
+                <details class="m3-accordion" id="group-fx-grain" open>
+                  <summary class="m3-accordion-summary">
+                    <span>🎞️ Film Grain & Analog Noise</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group">
+                      <label>Film Grain Intensity: <span id="val-grain-intensity" class="val-pill">0.00</span></label>
+                      <input type="range" id="input-grain-intensity" min="0.00" max="1.00" step="0.02" value="0.00" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Grain Blend Mode</label>
+                      <select id="select-grain-blend" class="m3-select">
+                        <option value="overlay" selected>Overlay (Film Stock Standard)</option>
+                        <option value="screen">Screen (Luminescent Film)</option>
+                        <option value="soft-light">Soft Light (Subtle Texture)</option>
+                        <option value="multiply">Multiply (Darkened Grit)</option>
+                      </select>
+                    </div>
+                    <div class="m3-control-group">
+                      <label class="m3-checkbox-label">
+                        <input type="checkbox" id="checkbox-grain-animated" checked />
+                        <span>Dynamic 60fps Film Shutter Jitter</span>
+                      </label>
+                    </div>
+                  </div>
+                </details>
+
+                <!-- 5. Camera Motion Blur & Velocity Dynamics -->
+                <details class="m3-accordion" id="group-fx-motion" open>
+                  <summary class="m3-accordion-summary">
+                    <span>🏎️ Camera Motion Blur & Velocity</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group">
+                      <label>Dynamic Orbit Velocity Streak</label>
+                      <button id="btn-motion-dynamic" class="m3-btn m3-btn-primary" style="width: 100%;">⚡ Dynamic Orbit Blur Active</button>
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Motion Blur Strength: <span id="val-motion-blur" class="val-pill">0.00</span></label>
+                      <input type="range" id="input-motion-blur" min="0.00" max="2.00" step="0.05" value="0.00" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Continuous Turntable Streak: <span id="val-motion-streak" class="val-pill">0.00</span></label>
+                      <input type="range" id="input-motion-streak" min="0.00" max="2.00" step="0.05" value="0.00" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Radial Speed Warp: <span id="val-motion-radial" class="val-pill">0.00</span></label>
+                      <input type="range" id="input-motion-radial" min="0.00" max="1.00" step="0.05" value="0.00" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Motion Blur Sample Quality</label>
+                      <select id="select-motion-samples" class="m3-select">
+                        <option value="32">Ultra Studio (32 Samples)</option>
+                        <option value="16" selected>High Fidelity (16 Samples)</option>
+                        <option value="8">Balanced (8 Samples)</option>
+                        <option value="4">High Performance (4 Samples)</option>
+                      </select>
+                    </div>
+                  </div>
+                </details>
+
+                <!-- 6. Chromatic Aberration & Lens Fringing -->
+                <details class="m3-accordion" id="group-fx-chromatic">
+                  <summary class="m3-accordion-summary">
+                    <span>🌈 Chromatic Aberration & Lens Fringing</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group">
+                      <label>Dispersion Offset: <span id="val-chromatic-offset" class="val-pill">0.000</span></label>
+                      <input type="range" id="input-chromatic-offset" min="0.000" max="0.020" step="0.001" value="0.000" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Radial Modulation Falloff: <span id="val-chromatic-falloff" class="val-pill">1.0</span></label>
+                      <input type="range" id="input-chromatic-falloff" min="0.1" max="3.0" step="0.1" value="1.0" class="m3-slider" />
+                    </div>
+                  </div>
+                </details>
+
+                <!-- 7. Depth of Field & Bokeh -->
+                <details class="m3-accordion" id="group-fx-dof">
+                  <summary class="m3-accordion-summary">
+                    <span>📷 Photographic Depth of Field (Bokeh)</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group">
+                      <button id="btn-dof-autofocus" class="m3-btn m3-btn-tonal" style="width: 100%;">🎯 Auto-Focus on BMW X7</button>
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Focus Distance: <span id="val-dof-focus" class="val-pill">4.2m</span></label>
+                      <input type="range" id="input-dof-focus" min="0.1" max="15.0" step="0.1" value="4.2" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Aperture Focal Blur: <span id="val-dof-aperture" class="val-pill">0.00</span></label>
+                      <input type="range" id="input-dof-aperture" min="0.00" max="0.50" step="0.01" value="0.00" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Bokeh Disk Scale: <span id="val-dof-bokeh" class="val-pill">2.0</span></label>
+                      <input type="range" id="input-dof-bokeh" min="0.0" max="10.0" step="0.5" value="2.0" class="m3-slider" />
+                    </div>
+                  </div>
+                </details>
+
+                <!-- 8. Digital Glitch & CRT Telemetry -->
+                <details class="m3-accordion" id="group-fx-glitch">
+                  <summary class="m3-accordion-summary">
+                    <span>⚡ Digital Glitch & CRT Telemetry</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group">
+                      <label>Glitch Mode</label>
+                      <select id="select-glitch-mode" class="m3-select">
+                        <option value="off" selected>Glitch Disabled</option>
+                        <option value="sporadic">Sporadic Pulse (Cyberpunk Burst)</option>
+                        <option value="constant_mild">Constant Mild (Telemetry Distortion)</option>
+                        <option value="constant_wild">Constant Wild (Heavy Static Interference)</option>
+                      </select>
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Glitch Strength: <span id="val-glitch-strength" class="val-pill">0.50</span></label>
+                      <input type="range" id="input-glitch-strength" min="0.00" max="1.00" step="0.05" value="0.50" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Perturbation Ratio: <span id="val-glitch-ratio" class="val-pill">0.50</span></label>
+                      <input type="range" id="input-glitch-ratio" min="0.00" max="1.00" step="0.05" value="0.50" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>CRT Scanline Density: <span id="val-scanline-density" class="val-pill">0.0</span></label>
+                      <input type="range" id="input-scanline-density" min="0.0" max="10.0" step="0.2" value="0.0" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Scanline Opacity: <span id="val-scanline-opacity" class="val-pill">0.00</span></label>
+                      <input type="range" id="input-scanline-opacity" min="0.00" max="1.00" step="0.05" value="0.00" class="m3-slider" />
+                    </div>
+                  </div>
+                </details>
+
+                <!-- 9. Vintage Sepia Tone Wash -->
+                <details class="m3-accordion" id="group-fx-sepia">
+                  <summary class="m3-accordion-summary">
+                    <span>🎞️ Vintage Sepia Tone Wash</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group">
+                      <label>Sepia Tone Intensity: <span id="val-sepia-intensity" class="val-pill">0.00</span></label>
+                      <input type="range" id="input-sepia-intensity" min="0.00" max="1.00" step="0.05" value="0.00" class="m3-slider" />
+                    </div>
+                  </div>
+                </details>
+
+                <!-- 10. Color Grading & Tonemapping -->
+                <details class="m3-accordion" id="group-fx-color" open>
+                  <summary class="m3-accordion-summary">
+                    <span>🎨 Color Grading & Tonemapping</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group">
+                      <label>Tonemapping Algorithm</label>
+                      <select id="select-tonemapping" class="m3-select">
+                        <option value="aces" selected>ACES Filmic (Cinematic Automotive Standard)</option>
+                        <option value="commerce">Reinhard (Commerce Dynamic Range)</option>
+                        <option value="agx">AgX (Filmic 2 Next-Gen Highlight Roll-off)</option>
+                        <option value="neutral">Neutral Studio</option>
+                        <option value="linear">Linear / None</option>
+                      </select>
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Color Contrast: <span id="val-color-contrast" class="val-pill">0.00</span></label>
+                      <input type="range" id="input-color-contrast" min="-1.0" max="1.0" step="0.05" value="0.00" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Color Saturation: <span id="val-color-saturation" class="val-pill">0.00</span></label>
+                      <input type="range" id="input-color-saturation" min="-1.0" max="1.0" step="0.05" value="0.00" class="m3-slider" />
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Color Brightness: <span id="val-color-brightness" class="val-pill">-0.03</span></label>
+                      <input type="range" id="input-color-brightness" min="-0.5" max="0.5" step="0.01" value="-0.03" class="m3-slider" />
+                    </div>
+                  </div>
+                </details>
+
+                <!-- 11. Anti-Aliasing & Viewport Resolution -->
+                <details class="m3-accordion" id="group-fx-aa" open>
+                  <summary class="m3-accordion-summary">
+                    <span>🛡️ Anti-Aliasing (AA Engine)</span>
+                    <span class="chevron">▾</span>
+                  </summary>
+                  <div class="m3-accordion-body">
+                    <div class="m3-control-group">
+                      <label>Anti-Aliasing Mode</label>
+                      <select id="select-aa-mode" class="m3-select">
+                        <option value="hybrid" selected>SMAA + MSAA 4x Studio Hybrid (Recommended)</option>
+                        <option value="msaa-4x">MSAA 4x Hardware Multi-Sampling</option>
+                        <option value="msaa-8x">MSAA 8x Super-Sampling</option>
+                        <option value="smaa-ultra">SMAA Ultra (Subpixel Morphological AA)</option>
+                        <option value="smaa-high">SMAA High Fidelity</option>
+                        <option value="off">Disabled (No AA)</option>
+                      </select>
+                    </div>
+                    <div class="m3-control-group">
+                      <label>Viewport Render Resolution</label>
+                      <select id="select-render-scale" class="m3-select">
+                        <option value="auto" selected>Native Retina / 4K (DPR 2.0x)</option>
+                        <option value="1.5">High Performance (DPR 1.5x)</option>
+                        <option value="1.0">Standard Performance (DPR 1.0x)</option>
+                      </select>
+                    </div>
+                  </div>
+                </details>
+
               </div>
             </div>
 
@@ -934,11 +1231,11 @@
             <div class="liquid-tab-slider" id="liquid-tab-slider"></div>
             <div class="m3-deck-tabs" id="m3-deck-tabs">
               
-              <button class="m3-deck-tab" data-tab="exterior" title="Exterior Paint & Finishes">
+              <button class="m3-deck-tab" data-tab="exterior" title="Body Paint & Finishes">
                 <div class="dock-tab-icon">
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
                 </div>
-                <span class="m3-tab-label">Exterior</span>
+                <span class="m3-tab-label">Body Paint</span>
               </button>
 
               <button class="m3-deck-tab" data-tab="wheels" title="Wheels & Rims">

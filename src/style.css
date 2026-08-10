@@ -547,14 +547,14 @@ button {
 /* Background Cinematic Watermark View Tag (Strictly Behind 3D Car Model) */
 .m3-spatial-watermark {
   position: absolute;
-  top: 40%;
+  top: 22%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: var(--font-display);
-  font-size: clamp(3rem, 10vw, 8.5rem);
+  font-size: clamp(3.8rem, 11.5vw, 11.5rem);
   font-weight: 900;
-  letter-spacing: 0.14em;
-  color: rgba(255, 255, 255, 0.05);
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.07);
   pointer-events: none;
   user-select: none;
   z-index: 0; /* Strictly behind 3D car */
@@ -563,7 +563,7 @@ button {
 }
 
 .light-theme .m3-spatial-watermark {
-  color: rgba(0, 0, 0, 0.04);
+  color: rgba(0, 0, 0, 0.06);
 }
 
 /* Central Model Viewer */
@@ -711,7 +711,7 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
-/* Volumetric Headlight Beams */
+/* Volumetric Headlight Beams (Cinematic Atmosphere Strictly Behind 3D Car Model) */
 .volumetric-fog-wrapper {
   position: absolute;
   top: 0;
@@ -719,33 +719,42 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  opacity: 0;
+  opacity: 0.38;
   transition: opacity 0.6s ease;
-  z-index: 3;
+  z-index: 0; /* Strictly BEHIND 3D model canvas (z-index 1) so it NEVER overlaps the car */
+  mix-blend-mode: screen;
+  isolation: isolate;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .volumetric-fog-wrapper.active {
-  opacity: 0.35;
+  opacity: 0.55;
 }
 
 .volumetric-beam {
   position: absolute;
   top: 48%;
-  width: 320px;
-  height: 140px;
-  background: radial-gradient(ellipse at 10% 50%, rgba(128, 216, 255, 0.65) 0%, rgba(128, 216, 255, 0.15) 50%, transparent 80%);
-  filter: blur(16px);
+  width: 480px;
+  height: 220px;
+  background: radial-gradient(ellipse at 12% 50%, rgba(128, 216, 255, 0.55) 0%, rgba(128, 216, 255, 0.12) 50%, transparent 75%);
+  filter: blur(28px);
   transform-origin: left center;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .beam-left {
-  left: 36%;
-  transform: rotate(-18deg) scaleX(1.4);
+  left: 18%;
+  transform: translate3d(0, 0, 0) rotate(-16deg) scaleX(1.5);
 }
 
 .beam-right {
-  right: 36%;
-  transform: rotate(18deg) scaleX(1.4) scaleY(-1);
+  right: 18%;
+  transform: translate3d(0, 0, 0) rotate(16deg) scaleX(1.5) scaleY(-1);
 }
 
 /* Liquid Glass Hotspots */
@@ -1082,6 +1091,7 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
   left: 0;
   height: calc(100% - 6px);
   border-radius: 9999px;
+  box-sizing: border-box;
   background: color-mix(in srgb, var(--c-light) 30%, transparent);
   border: 1px solid color-mix(in srgb, var(--c-light) 55%, transparent);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.6);
@@ -1102,9 +1112,17 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
 .m3-seg-btn {
   position: relative;
   z-index: 2;
-  padding: 5px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 54px;
+  min-width: 54px;
+  max-width: 54px;
+  box-sizing: border-box;
+  padding: 6px 0;
   border-radius: 9999px;
-  font-size: 0.73rem;
+  font-size: 0.74rem;
   font-weight: 600;
   color: var(--text-secondary);
   background: transparent;
@@ -1141,6 +1159,7 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
   left: 0;
   height: 100%;
   border-radius: 9999px;
+  box-sizing: border-box;
   background: color-mix(in srgb, var(--md-sys-color-primary, #80D8FF) 26%, rgba(255, 255, 255, 0.18));
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -1171,11 +1190,11 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   z-index: 2;
 }
 
-/* Strictly Center-Aligned Tab Button (Icon Top + Text Bottom) */
+/* Strictly Uniform Size & Perfectly Centered Tab Button (Icon Top + Text Bottom) */
 .m3-deck-tab {
   position: relative;
   display: flex;
@@ -1184,8 +1203,11 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
   justify-content: center;
   text-align: center;
   gap: 3px;
-  padding: 6px 18px 5px;
-  min-width: 76px;
+  padding: 7px 4px 6px;
+  width: 86px;
+  min-width: 86px;
+  max-width: 86px;
+  box-sizing: border-box;
   border-radius: 9999px;
   color: rgba(255, 255, 255, 0.9);
   background: transparent;
@@ -1231,15 +1253,15 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 24px;
+  height: 22px;
   margin: 0 auto;
 }
 
 .dock-tab-icon svg {
   display: block;
   margin: 0 auto;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   stroke: currentColor;
   stroke-width: 2.2;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
@@ -1271,11 +1293,12 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
   width: 100%;
   text-align: center;
   font-family: var(--font-display);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: 0.01em;
   text-transform: capitalize;
+  white-space: nowrap;
 }
 
 /* Right Quick Utility Buttons (Dark/Light Mode & Fullscreen) */
@@ -1357,10 +1380,11 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
    ========================================================================== */
 .m3-spatial-canvas {
   position: absolute;
-  top: 24px;
+  top: 20px;
   right: 24px;
-  width: 420px;
-  max-height: calc(100% - 48px);
+  width: 530px;
+  max-width: min(560px, calc(100vw - 36px));
+  max-height: calc(100% - 40px);
   background: var(--liquid-glass-bg);
   backdrop-filter: var(--liquid-glass-blur);
   -webkit-backdrop-filter: var(--liquid-glass-blur);
@@ -1371,7 +1395,10 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transform: translateX(0);
+  isolation: isolate;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   opacity: 1;
   visibility: visible;
   transition: transform var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-emphasized),
@@ -1380,7 +1407,7 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
 }
 
 .m3-spatial-canvas.closed {
-  transform: translateX(115%);
+  transform: translate3d(115%, 0, 0);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -1843,30 +1870,35 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
    ========================================================================== */
 .m3-subtabs-row {
   display: flex;
-  background: var(--liquid-glass-card-bg);
+  gap: 6px;
+  background: color-mix(in srgb, var(--c-dark) 48%, rgba(255, 255, 255, 0.08));
   backdrop-filter: var(--liquid-glass-blur);
+  -webkit-backdrop-filter: var(--liquid-glass-blur);
   border: var(--liquid-glass-border-subtle);
   border-radius: var(--md-sys-shape-corner-full);
-  padding: 4px;
-  margin-bottom: 16px;
+  padding: 5px;
+  margin-bottom: 18px;
 }
 
 .m3-subtab-btn {
   flex: 1;
-  padding: 6px 10px;
+  padding: 8px 12px;
   border-radius: var(--md-sys-shape-corner-full);
-  font-size: 0.72rem;
+  font-family: var(--font-display);
+  font-size: 0.80rem;
   font-weight: 700;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.88);
   text-align: center;
+  white-space: nowrap;
   transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-emphasized);
 }
 
 .m3-subtab-btn.active {
-  background: var(--liquid-glass-hover-bg);
-  border: var(--liquid-glass-border);
-  color: var(--text-primary);
-  box-shadow: var(--liquid-glass-card-shadow);
+  background: color-mix(in srgb, var(--md-sys-color-primary) 40%, rgba(255, 255, 255, 0.24));
+  border: 1px solid color-mix(in srgb, var(--c-light) 70%, transparent);
+  color: #FFFFFF;
+  font-weight: 800;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 14px color-mix(in srgb, var(--md-sys-color-primary) 40%, transparent);
 }
 
 .m3-subtab-content {
@@ -1880,16 +1912,45 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
 
 /* Controls & Inputs */
 .m3-control-group {
-  margin-bottom: 14px;
+  margin-bottom: 15px;
 }
 
 .m3-control-group label {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.95);
   margin-bottom: 6px;
+  letter-spacing: 0.01em;
+}
+
+.light-theme .m3-control-group label {
+  color: rgba(0, 0, 0, 0.90);
+}
+
+.m3-control-group label span {
+  font-family: var(--font-display);
+  font-size: 0.86rem;
+  font-weight: 800;
+  color: var(--text-accent, #80D8FF);
+  letter-spacing: 0.02em;
+}
+
+.m3-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
+  cursor: pointer;
+  user-select: none;
+}
+
+.light-theme .m3-checkbox-label {
+  color: rgba(0, 0, 0, 0.88);
 }
 
 .m3-slider {
@@ -1949,11 +2010,53 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
   box-shadow: 0 0 10px color-mix(in srgb, var(--text-accent) 30%, transparent);
 }
 
+.m3-select option {
+  background-color: #141820;
+  color: #F4F6FB;
+  padding: 8px 12px;
+  font-family: var(--font-ui);
+  font-size: 0.84rem;
+}
+
+.light-theme .m3-select option {
+  background-color: #FFFFFF;
+  color: #0B0E14;
+}
+
+.m3-select option:checked,
+.m3-select option:hover {
+  background-color: var(--md-sys-color-primary, #0066B1);
+  color: #FFFFFF;
+}
+
 .m3-textarea {
   height: 110px;
   font-family: monospace;
   font-size: 0.75rem;
   resize: vertical;
+}
+
+.m3-section-title-row {
+  margin: 14px 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.m3-section-badge {
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--md-sys-color-primary, #80D8FF);
+  text-transform: uppercase;
+}
+
+.m3-section-title-row h4 {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
 }
 
 .color-picker-row {
@@ -1971,35 +2074,103 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
   cursor: pointer;
 }
 
-/* Material Inspector */
+/* Material Inspector Chips & Carousel */
+.m3-chip-scroll-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 6px 2px 10px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  flex-wrap: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
+
+.m3-chip-scroll-row::-webkit-scrollbar {
+  height: 4px;
+}
+
+.m3-chip-scroll-row::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+}
+
+.m3-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  font-family: var(--font-display);
+  font-size: 0.76rem;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+  background: color-mix(in srgb, var(--c-dark) 45%, rgba(255, 255, 255, 0.10));
+  color: #FFFFFF;
+  border: var(--liquid-glass-border);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.m3-filter-chip:hover {
+  background: color-mix(in srgb, var(--c-light) 25%, transparent);
+  border-color: var(--text-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.m3-filter-chip.active {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 40%, rgba(255, 255, 255, 0.25));
+  border-color: var(--text-accent);
+  color: #FFFFFF;
+  font-weight: 800;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--text-accent) 50%, transparent);
+}
+
+.mat-presets-bar {
+  margin-top: 14px;
+  margin-bottom: 12px;
+}
+
+.mat-presets-lbl {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.80rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 4px;
+}
+
 .mat-search-row {
   display: flex;
   gap: 8px;
+  margin-bottom: 10px;
 }
 
 .mat-sphere-carousel {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   overflow-x: auto;
   padding: 10px 2px;
-  scrollbar-width: none;
-}
-
-.mat-sphere-carousel::-webkit-scrollbar {
-  display: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
 .mat-sphere-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   background: var(--liquid-glass-card-bg);
   backdrop-filter: var(--liquid-glass-blur);
   border: var(--liquid-glass-border-subtle);
   border-radius: var(--md-sys-shape-corner-m);
-  padding: 8px 6px;
-  min-width: 68px;
+  padding: 8px 8px;
+  min-width: 72px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -2016,56 +2187,58 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
 }
 
 .sphere-canvas {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
 
 .mat-sphere-name {
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  color: var(--text-primary);
+  color: #FFFFFF;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 58px;
+  max-width: 68px;
 }
 
 .mat-active-banner-card {
-  background: var(--liquid-glass-card-bg);
-  border: var(--liquid-glass-border-subtle);
+  background: color-mix(in srgb, var(--c-dark) 45%, rgba(255, 255, 255, 0.08));
+  border: var(--liquid-glass-border);
   border-radius: var(--md-sys-shape-corner-m);
-  padding: 12px;
-  margin-top: 10px;
+  padding: 14px;
+  margin-top: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 .mat-active-tag {
-  font-size: 0.65rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  color: var(--text-accent);
+  color: var(--text-accent, #80D8FF);
   letter-spacing: 0.08em;
 }
 
 .mat-active-count {
-  font-size: 0.65rem;
-  color: var(--text-secondary);
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.78);
   margin-left: 8px;
+  font-weight: 600;
 }
 
 .mat-active-title {
   font-family: var(--font-display);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 800;
-  color: var(--text-primary);
-  margin-top: 2px;
-  transition: color 0.3s ease;
+  color: #FFFFFF;
+  margin-top: 4px;
 }
 
 .mat-active-desc {
-  font-size: 0.74rem;
-  color: var(--text-secondary);
-  margin-top: 2px;
+  font-size: 0.80rem;
+  color: rgba(255, 255, 255, 0.82);
+  margin-top: 3px;
+  line-height: 1.35;
 }
 
 /* Accordions */
@@ -2158,6 +2331,47 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
   display: flex;
   gap: 8px;
   margin-top: 14px;
+}
+
+.fx-presets-bar {
+  margin-top: 6px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: var(--liquid-glass-border-subtle);
+}
+
+.val-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  color: #80D8FF;
+  background: color-mix(in srgb, #0066B1 30%, rgba(0, 0, 0, 0.55));
+  border: 1px solid color-mix(in srgb, #80D8FF 45%, transparent);
+  box-shadow: 0 0 10px rgba(0, 102, 177, 0.4);
+  margin-left: 6px;
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+}
+
+.m3-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.80rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.90);
+  cursor: pointer;
+  user-select: none;
+}
+
+.m3-checkbox-label input[type="checkbox"] {
+  accent-color: var(--md-sys-color-primary, #0066B1);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }
 
 .m3-divider {
@@ -2615,9 +2829,11 @@ model-viewer[ar-status="session-started"] > #ar-prompt {
   }
 
   .m3-deck-tab {
-    padding: 5px 10px 4px;
-    min-width: 58px;
-    font-size: 0.7rem;
+    padding: 5px 2px 4px;
+    width: 64px;
+    min-width: 64px;
+    max-width: 64px;
+    font-size: 0.68rem;
   }
 
   .dock-tab-icon svg {
